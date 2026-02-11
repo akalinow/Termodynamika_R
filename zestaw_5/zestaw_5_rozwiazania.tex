@@ -1,0 +1,46 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\usepackage[T1]{fontenc}
+\geometry{a4paper, margin=1in}
+
+\title{TIFS R - Ćwiczenia Tydzień 5 i 6}
+\author{}
+\date{11 lutego 2026}
+
+\begin{document}
+
+\maketitle
+
+\section*{Zespół mikrokanoniczny i kanoniczny}
+
+Na wykładzie była mowa o zespole mikrokanonicznym i kanonicznym, statystycznej definicji temperatury, ciśnienia i potencjału chemicznego. Najpierw zadania z mikrokanonicznego (zad. 1-4), a potem z kanonicznego.
+
+\subsection*{Zadanie 1: Klasyczne oscylatory harmoniczne (Dalvit 3.4)}
+Dla układu $N$ trójwymiarowych klasycznych oscylatorów harmonicznych o częstotliwości $\omega$ i ustalonej całkowitej energii $E$ oblicz entropię $S$ i temperaturę $T$ (wykorzystując rozkład mikrokanoniczny).
+
+\subsection*{Zadanie 2: Kwantowe oscylatory harmoniczne (Dalvit 3.5)}
+To samo dla kwantowych oscylatorów harmonicznych. Uwaga - oni będą mieli oscylator w tym tygodniu na kwantach: Zapytajcie się ich, czy mieli, a jak nie, to przenieście to zadanie na przyszły tydzień.
+
+\subsection*{Zadanie 3: Układ dwupoziomowy z degeneracją (Dalvit 3.7)}
+Rozważ układ $N$ rozróżnialnych cząstek, każda z których może przebywać na dwóch poziomach energetycznych: $0$ i $\epsilon > 0$. Wyższy poziom energetyczny jest $g$-krotnie zdegenerowany, a poziom podstawowy jest niezdegenerowany. Używając rozkładu mikrokanonicznego, znajdź entropię układu. Jak zależą obsadzenia poszczególnych poziomów energetycznych od temperatury?
+
+Następnie rozważ przypadek $g=2$. Jeżeli układ ma energię $E = 0.75N\epsilon$ i będzie w kontakcie z dużym układem o stałej temperaturze $T = 500\,\mathrm{K}$, to w którym kierunku nastąpi przepływ ciepła?
+
+\subsection*{Zadanie 4: Rozciąganie biopolimerów}
+Współczesne techniki eksperymentalne pozwalają na rozciąganie pojedynczych łańcuchów biopolimerów (białka, DNA) przez precyzyjne przyłożenie siły do końców łańcucha. Wyobraźmy sobie taki eksperyment, w którym jeden z końców łańcucha polimeru jest umocowany na stałe, a drugi - rozciągnięty stałą siłą $F$. Dla uproszczenia przyjmij, że łańcuch polimera składa się z $N$ połączonych ogniw, każde długości $a$. Kąty między poszczególnymi ogniwami wynoszą $0^\circ$ lub $180^\circ$ (a więc cały łańcuch jest tworem jednowymiarowym). Wiedząc, że energia takiego układu jest dana przez:
+\begin{equation}
+E = -F|X|
+\end{equation}
+gdzie $X$ jest odległością między końcami, oblicz entropię polimeru o danej energii $E$. Następnie pokaż, że dla dużych $N$ entropia przyjmuje postać:
+\begin{equation}
+S = -Nk\left(\frac{1+x}{2}\log\frac{1+x}{2} + \frac{1-x}{2}\log\frac{1-x}{2}\right)
+\end{equation}
+gdzie $x = \frac{|X|}{Na}$. Znajdź temperaturę statystyczną tego układu $T^{-1} = \left(\frac{\partial S}{\partial E}\right)_N$ w funkcji $x$, a następnie pokaż, że (wciąż w granicy dużych $N$) rozciągnięcie $X$ związane jest z siłą relacją:
+\begin{equation}
+X = Na\tanh\left(\frac{NaF}{kT}\right)
+\end{equation}
+
+\end{document}

@@ -1,0 +1,54 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern} % Ensure proper font rendering for Polish characters
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{TIFS R - Ćwiczenia tydzień 11}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Oscylatory, oscylatory, oscylatory...}
+
+Zadanie o układzie $N$ niezależnych trójwymiarowych kwantowych oscylatorów harmonicznych rozwiązywaliśmy przy okazji rozkładu mikrokanonicznego. Teraz zróbmy to szybko z kanonicznego.
+
+\subsection*{Zadanie 1}
+
+Korzystając z rozkładu kanonicznego znajdź energię swobodną i energię wewnętrzną układu $N$ niezależnych trójwymiarowych kwantowych oscylatorów harmonicznych.
+
+\subsection*{Rozwiązanie}
+
+Z niezależności:
+\[
+Z(N, V, T) = Z_1(V, T)^{3N}
+\]
+Gdzie $Z_1$ jest pojedynczym jednowymiarowym oscylatorem. Jego suma statystyczna jest równa:
+\[
+Z_1 = \sum_{n=0}^\infty e^{-\beta \hbar \omega \left(n + \frac{1}{2}\right)} = \frac{e^{-\frac{\beta \hbar \omega}{2}}}{1 - e^{-\beta \hbar \omega}} = \frac{1}{2 \sinh \frac{\beta \hbar \omega}{2}}
+\]
+
+Zatem:
+\[
+Z(N, V, T) = \left(\frac{1}{2 \sinh \frac{\beta \hbar \omega}{2}}\right)^{3N}
+\]
+
+Energia swobodna:
+\[
+F = 3N \left(\frac{1}{2} \hbar \omega + kT \ln \left(1 - e^{-\beta \hbar \omega}\right)\right)
+\]
+
+Energia wewnętrzna:
+\[
+U = -\frac{\partial}{\partial \beta} \ln Z = 3N \left(\frac{1}{2} \hbar \omega + \frac{\hbar \omega}{e^{\beta \hbar \omega} - 1}\right)
+\]
+
+\end{document}

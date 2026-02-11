@@ -1,0 +1,30 @@
+\documentclass[T1]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{geometry}
+\usepackage{hyperref}
+\geometry{a4paper, margin=1in}
+
+\title{TIFS R - Ćwiczenia Tydzień 3}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Model Dyfuzji Bernoulliego-Laplace'a}
+
+Model dyfuzji Bernoulliego-Laplace'a, znany też jako model urnowy Bernoulliego, jest całkiem nieźle opisany pod linkiem:
+\begin{center}
+\url{https://www.randomservices.org/random/markov/BernoulliLaplace.html#rev1}
+\end{center}
+
+\subsection*{Model}
+Załóżmy, że mamy dwie urny: $0$ i $1$. Urna $0$ zawiera $j$ kul, a urna $1$ zawiera $k$ kul. Spośród tych $j + k$ kul $r$ jest czerwonych. W każdej chwili czasu wybieramy po jednej kuli z każdej urny i zamieniamy je miejscami. Możemy o tym myśleć jako o modelu mieszania dwóch nieściśliwych płynów.
+
+\textbf{Intuicje:} Czego się spodziewamy? Po długim czasie ułamki czerwonych kul po obu stronach wyrównają się. Jeśli początkowo np. $\frac{x}{k} \gg \frac{r - x}{j}$ (gdzie $x$ to liczba czerwonych kul w urnie $1$), to ułamek kul czerwonych w urnie $1$ będzie szybko malał, a w urnie $0$ - rósł. Po osiągnięciu stanu równowagi zaczną one fluktuować względem $\frac{r}{j + k}$, przy czym fluktuacje te będą tym wyraźniejsze, im mniej jest kul. Załóżmy, że $r \ll j, k$ (mało czerwonych kul - to pozwoli uniknąć różnych przypadków specjalnych).
+
+\end{document}

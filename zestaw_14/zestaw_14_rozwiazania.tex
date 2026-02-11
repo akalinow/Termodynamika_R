@@ -1,0 +1,39 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern} % Ensure proper font rendering for Polish characters
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{TIFS R - Ćwiczenia tydzień 14 i ostatni}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Wszechświat}
+
+Na wykładzie było trochę o ewolucji Wszechświata i trochę o układach z grawitacją, częściowo na podstawie notatek Kipa Thorne'a (załączam). Kolaps grawitacyjny i w szczególności czarne dziury zostały wskazane jako ścieki entropii we Wszechświecie. Pojawił się wzór na entropię i temperaturę czarnej dziury.
+
+\subsection*{Zadanie 1}
+
+Czarna dziura o masie $M$ znajduje się w środku sferycznego pudła o objętości $V$ dużo większej od objętości dziury $V^{1/3} \gg \frac{2GM}{c^2}$. Pudło to wypełnione jest promieniowaniem o całkowitej energii $E - M c^2$ (a zatem całkowita energia układu to $E$). Czarna dziura emituje promieniowanie Hawkinga, może też pochłaniać promieniowanie wypełniające pudło, co powoduje, że zarówno masa dziury, $M$, jak i energia promieniowania będą się zmieniać.
+
+Załóż, że podczas tej ewolucji promieniowanie jest zawsze w stanie równowagi termodynamicznej, a zatem jego temperatura, $T$, spełnia $\sigma T^4 V = E - M c^2$.
+
+\begin{enumerate}
+    \item Zbadaj zależność entropii układu od ułamka energii zawartej w czarnej dziurze, $x = \frac{M c^2}{E}$. Pokaż, w szczególności, że:
+    \[
+    \frac{dS}{dx} = \frac{\sigma V^{3/4} T}{1-x} - \frac{T}{T_H}
+    \]
+    gdzie $T_H = \frac{\hbar c^3}{8\pi GM k}$ jest temperaturą czarnej dziury. Zinterpretuj otrzymany wzór.
+    \item Wykreśl bezwymiarową entropię $S' = \frac{S \hbar c^5}{4\pi k G E^2}$ jako funkcję $x$ dla różnych wartości $V$. Gdzie znajdują się maksima lokalne tego wykresu w zależności od $V$? W jakich przypadkach czarna dziura przeżywa po tym, jak cały układ osiągnie stan równowagi?
+\end{enumerate}
+
+\end{document}

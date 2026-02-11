@@ -1,0 +1,47 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\usepackage[T1]{fontenc}
+\geometry{a4paper, margin=1in}
+
+\title{TIFS R - Ćwiczenia Tydzień 13}
+\author{}
+\date{11 lutego 2026}
+
+\begin{document}
+
+\maketitle
+
+\section*{Bozony}
+
+\subsection*{Zadanie 1}
+Rozważmy cząstki podlegające statystyce B-E w $d$ wymiarach. Przyjmij, że dla tych cząstek relacja pomiędzy energią i pędem jest w postaci $E \sim |p^\sigma|$. Znaleźć warunek, który muszą spełniać $d$ i $\sigma$, aby miała miejsce kondensacja B-E.
+
+\textbf{Rozwiązanie:} Patrz plik \texttt{bec.pdf}.
+
+\subsection*{Zadanie 2}
+Rozważ gaz bozonów o masach $m$ i spinie $s = 0$ zamknięty w objętości $V$. Załóżmy, że energia pojedynczej cząstki dana jest przez:
+\begin{equation}
+E = \frac{p^2}{2m} + n\Delta
+\end{equation}
+gdzie $\Delta > 0$ jest pewną stałą dodatnią, a $n$ jest liczbą całkowitą równą $0$ bądź $1$. Wyznacz formułę na temperaturę krytyczną $T_c$ takiego gazu, przy której następuje kondensacja. Następnie rozważ granicę $\Delta \gg kT$ - czy w tej granicy $T_c$ jest większe czy mniejsze od temperatury krytycznej w przypadku, gdy $E = \frac{p^2}{2m}$?
+
+\textbf{Rozwiązanie:} Patrz 10.4 w książce Cini.
+
+\section*{Model Isinga}
+
+Na wykładzie był model Isinga, rozwiązany w przybliżeniu pola średniego, z wyprowadzeniem równania samozgodnego na $m$, omówieniem przejść fazowych i krajobrazu energii swobodnej. Do tego dwa zadania z Kubo.
+
+\subsection*{Zadanie 3}
+Oblicz ciepło właściwe w modelu ferromagnetyka Isinga z wykorzystaniem przybliżenia pola średniego. Zbadaj w szczególności jego zachowanie w pobliżu temperatury krytycznej, a także dla $T \ll T_c$. Jaka będzie zmiana entropii $\Delta S = S(T) - S(0)$ dla $T > T_c$?
+
+\textbf{Rozwiązanie:} Patrz zadanie 1 ze strony 322 w książce Kubo. Równanie samozgodne (5.18), które jest punktem wyjścia tego rozwiązania, było na wykładzie.
+
+\subsection*{Zadanie 4}
+Rozważmy antyferromagnetyczny kryształ, w którym każdy atom ma spin $S$. Sąsiednie spiny mają oddziaływanie wymiany $2|J|S_i \cdot S_j$, które ustawia spiny antyrównolegle. Zakłada się, że struktura kryształu jest taka, że cała sieć może być podzielona na dwie podsieci ($A$ i $B$). Spiny należące do każdej podsieci mają tendencję do ustawiania się równolegle, ale antyrównolegle do drugiej podsieci (model antyferromagnetyka Van Vlecka). Oblicz podatność paramagnetyczną $\chi$ w temperaturach powyżej temperatury krytycznej, używając przybliżenia pola średniego.
+
+\textbf{Rozwiązanie:} Patrz zadanie 3 ze strony 322 w książce Kubo. Można sobie uprościć życie i wziąć spiny Isingowskie ($\pm 1$). Jeszcze jedno - na wykładzie nie wypisywałem czynnika $\mu_0$ (momentu magn. pojedynczego spinu), uznając go za jednostkowy.
+
+\end{document}

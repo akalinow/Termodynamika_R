@@ -1,0 +1,71 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern} % Ensure proper font rendering for Polish characters
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{TIFS R - Ćwiczenia tydzień 9}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Wielki zespół kanoniczny}
+
+Na wykładzie pojawił się wielki zespół kanoniczny, wielki potencjał termodynamiczny $\Omega = -pV$ oraz jego różniczka.
+
+\subsection*{Zadanie 1}
+
+Dalvit (Zad 3.24). Płyn cząstek z oddziaływaniami odpychającymi może być modelowany jako "gaz sieciowy" w następujący sposób: Podzielmy naczynie na $N$ komórek, każda o objętości $v$ porównywalnej z objętością cząsteczki. Komórka niezajęta oraz zajęta przez jedną cząstkę mają energię zerową. Komórki zajęte przez dwie cząstki mają energię $\epsilon$ i zakładamy, że w żadnej komórce nie mogą znajdować się więcej niż dwie cząstki. Używając wielkiego rozkładu kanonicznego znajdźcie średnią energię na komórkę $e$, koncentrację cząstek $n$ (czyli średnią liczbę cząstek na komórkę) oraz ciśnienie $p$ wyrażone przez temperaturę i potencjał chemiczny. Znajdźcie odpowiednie wyrażenia na te wielkości w granicy małych koncentracji i w przypadku, gdy $n \to 2$.
+
+\subsection*{Rozwiązanie}
+
+Rozwiązanie jest bardzo porządnie zrobione w Dalvicie. Warto podkreślić, że analogiczne zadanie bardzo trudno liczy się w kanonicznym (nie można wykonać sumy). Warto też podać interpretację wyników, które wychodzą w poszczególnych granicach: gaz doskonały i płyn nieściśliwy (nieskończone ciśnienie).
+
+\subsection*{Zadanie 2}
+
+(Kubo 29/78) Rozpatrzmy powierzchnię adsorbującą, która posiada $N$ węzłów, każdy z których może adsorbować jedną cząsteczkę gazu. Załóżmy, że powierzchnia ta znajduje się w kontakcie z gazem o ustalonym potencjale chemicznym $\mu$ i temperaturze $T$. Załóżmy, że cząsteczki swobodne mają energię $0$, a zaabsorbowane $-\epsilon_0$. Wyznacz współczynnik adsorbcji $\theta$ równy stosunkowi liczby zaabsorbowanych molekuł do liczby węzłów. Policz ten współczynnik dla gazu doskonałego o ciśnieniu $p$ (i temperaturze $T$).
+
+\subsection*{Rozwiązanie}
+
+Wielka suma statystyczna:
+\[
+\Xi = \sum_{N_1} \frac{N!}{N_1!(N-N_1)!} (e^{\beta(\epsilon_0 + \mu)})^{N_1} = (1 + e^{\beta(\epsilon_0 + \mu)})^N
+\]
+
+Współczynnik adsorbcji:
+\[
+\theta = \frac{1}{1 + e^{-\beta(\epsilon_0 + \mu)}}
+\]
+
+Po wstawieniu potencjału chemicznego gazu doskonałego z zadania 1 dostajemy tzw. równanie Langmuira:
+\[
+\theta = \frac{p}{p + \left(\frac{2\pi m k T}{h^2}\right)^{3/2} e^{-\epsilon_0 / k T} k T}
+\]
+
+Dla dużych ciśnień koncentracja cząstek w gazie jest duża i często dają się "złapać" centrom adsorbującym: $\theta \to 1$. Z kolei dla małych ciśnień $\theta \to 0$. Podobnie z temperaturą - im wyższa, tym łatwiej cząstki uciekają z centrów adsorbujących, zatem $\theta$ maleje ze wzrostem $T$.
+
+\subsection*{Zadanie 3}
+
+Oświetlając półprzewodnik wiązką światła laserowego, można wywołać powstawanie par elektronów (o ładunku $-e$ i masie efektywnej $m_e$) i dziur (o ładunku $+e$ i masie efektywnej $m_d$). Przeciwnie naładowane elektrony i dziury mogą łączyć się w pary (podobnie do elektronu z protonem w atomie wodoru) i tworzyć gaz ekscytonów. Rozważmy bardzo uproszczony model tego procesu:
+
+\begin{enumerate}
+    \item Oblicz energię swobodną gazu złożonego z $N$ elektronów i $N$ dziur w (wysokiej) temperaturze $T$, traktując je jako klasyczne, nieoddziałujące cząstki o masach odpowiednio $m_e$ i $m_d$.
+    \item Łącząc się w stan ekscytonowy, para elektron-dziura obniża swoją energię o $\epsilon$. (Można pokazać, że $\epsilon \approx \frac{m_r e^4}{2\hbar^2 \epsilon^2}$, gdzie $\epsilon$ jest przenikalnością dielektryczną, zaś $m_r^{-1} = m_e^{-1} + m_d^{-1}$ jest masą zredukowaną układu elektron-dziura). Oblicz energię swobodną gazu złożonego z $N_p$ ekscytonów, traktując je jako klasyczne nieoddziałujące cząstki o masie $m_p = m_e + m_d$.
+    \item W stanie równowagi potencjały chemiczne poszczególnych składników spełniać będą warunek:
+    \[
+    \mu_e + \mu_d = \mu_p
+    \]
+    Korzystając z powyższego, znajdź stosunek gęstości ekscytonów, $n_p$, do całkowitej gęstości nośników ($n = n_e + n_d = 2n_e$).
+\end{enumerate}
+
+(Rozwiązanie na kartkach)
+
+\end{document}

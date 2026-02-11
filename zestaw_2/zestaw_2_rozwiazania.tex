@@ -1,0 +1,128 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern} % Ensure proper font rendering for Polish characters
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{TIFS R - Drugi Tydzień}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Jednowymiarowe błądzenie przypadkowe}
+
+Na wykładzie będzie jednowymiarowe błądzenie przypadkowe po sieci, czyli układ, w którym cząstka zaczyna z $x = 0$ a potem w każdym kroku (wykonywanym co $\delta t$) może przesunąć się o $\pm \delta x$ na prawo (lewo). Pokażemy, że w takim ruchu $\langle x(t) \rangle = 0$ zaś $\langle x^2(t) \rangle = 2Dt$, przy czym $D = \frac{\delta x^2}{2\delta t}$. Chciałbym, żebyście na ćwiczeniach znaleźli rozkład prawdopodobieństwa znalezienia cząstki w różnych węzłach siatki po $N$ skokach (rozkład dwumienny) a potem pokazali, że w przypadku ciągłym to przekształca się w Gaussa.
+
+\subsection*{Rozwiązanie}
+
+Spodziewamy się, że średnio będzie $N/2$ skoków na prawo, więc wprowadzamy nową zmienną
+\[ z = k - \frac{N}{2} \]
+
+Gdzie $k$ to liczba skoków na prawo. Wtedy:
+\[
+    p(z) = \frac{N!}{(N/2 + z)!(N/2 - z)!} \cdot \frac{1}{2^N}
+\]
+
+Używając przybliżenia Stirlinga dla silni:
+\[
+    \log m! = \frac{1}{2} \log 2\pi + \left(m + \frac{1}{2}\right) \log m - m + \ldots
+\]
+
+Dostajemy:
+\[
+    \log p = -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N - N - \left(\frac{N}{2} + z + \frac{1}{2}\right) \log \left(\frac{N}{2} + z\right) + \left(\frac{N}{2} + z\right) \\
+    - \left(\frac{N}{2} - z + \frac{1}{2}\right) \log \left(\frac{N}{2} - z\right) + \left(\frac{N}{2} - z\right) - N \log 2 + \ldots
+\]
+
+Zbierając:
+\[
+    \log p = -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N - \frac{N+1}{2} \log \left(\frac{N}{2} + z\right) \left(\frac{N}{2} - z\right) - z \log \frac{N/2 + z}{N/2 - z} - N \log 2
+\]
+
+Przybliżając $\log(1 + x) \approx x$, dostajemy:
+\[
+    \log p \approx -\frac{1}{2} \log 2\pi + \frac{1}{2} \log \frac{2}{N\pi} - \frac{2z^2}{N}
+\]
+
+Co prowadzi do:
+\[
+    p = \sqrt{\frac{2}{\pi N}} e^{-\frac{2z^2}{N}}
+\]
+
+Wracając do zmiennej $k$:
+\[
+    p(k) = \sqrt{\frac{2}{\pi N}} e^{-\frac{(2k - N)^2}{2N}}
+\]
+
+Ostatecznie otrzymujemy ciągły rozkład Gaussa (ze średnią $N/2$ i wariancją $N/4$). Jest to przejaw centralnego twierdzenia granicznego.
+
+\section*{Rozwiązywanie równania dyfuzji}
+
+Na wykładzie wypisaliśmy równanie Master dla jednowymiarowego błądzenia przypadkowego i przeszliśmy do granicy ciągłej, co doprowadziło nas do jednowymiarowego równania dyfuzji:
+\[
+    \frac{\partial c}{\partial t} = D \frac{\partial^2 c}{\partial x^2}
+\]
+
+Chciałbym, żebyście znaleźli jego rozwiązanie dla warunku początkowego $c(x, 0) = \delta(x)$, otrzymując Gaussa:
+\[
+    p = \frac{1}{\sqrt{4\pi Dt}} e^{-\frac{x^2}{4Dt}}
+\]
+
+To można robić na kilka sposobów, np. metodą skalowania lub przez transformację Fouriera. Skomentujcie, że finalnie dostajemy to samo co w zadaniu 1.
+
+\section*{Samochody i ciężarówki}
+
+Wiadomo, że średnio na cztery ciężarówki jadące po drodze za trzema jedzie samochód osobowy, podczas gdy wśród pięciu samochodów osobowych jest średnio tylko jeden, za którym jedzie ciężarówka. Jaka część pojazdów na drogach to ciężarówki?
+
+\subsection*{Rozwiązanie}
+
+Modelowanie problemu za pomocą stanów $C$ (ciężarówka) i $S$ (samochód osobowy). Przejścia między stanami:
+\[
+    p(C \to C) = \frac{1}{4}, \quad p(C \to S) = \frac{3}{4}, \quad p(S \to C) = \frac{1}{5}, \quad p(S \to S) = \frac{4}{5}
+\]
+
+Macierz przejść:
+\[
+    p = \begin{bmatrix}
+        \frac{1}{4} & \frac{3}{4} \\
+        \frac{1}{5} & \frac{4}{5}
+    \end{bmatrix}
+\]
+
+Rozwiązanie stacjonarne:
+\[
+    P_{C}^{eq} = \frac{4}{19}, \quad P_{S}^{eq} = \frac{15}{19}
+\]
+
+Czas powrotu ciężarówki: $T_C = \frac{1}{P_C^{eq}} = \frac{19}{4}$, czyli średnio trzeba odczekać pięć pojazdów.
+
+\section*{Błądzenie przypadkowe z dryfem i ścianką}
+
+Rozważmy błądzenie przypadkowe z prawdopodobieństwem przejścia $p(0 \to 1) = 1$, $p(i \to i+1) = p < 0.5$, $p(i \to i-1) = 1-p > 0.5$. Znaleźć rozkład równowagowy i odpowiednie równanie ciągłe.
+
+\subsection*{Rozwiązanie}
+
+Rozkład równowagowy:
+\[
+    P^{eq}(n) = \frac{1-2p}{2(1-p)} \left(\frac{p}{1-p}\right)^{n-1}, \quad n \geq 1
+\]
+
+Równanie ciągłe:
+\[
+    \frac{\partial P}{\partial t} = D \frac{\partial^2 P}{\partial x^2} + U \frac{\partial P}{\partial x}
+\]
+
+Rozwiązanie równowagowe:
+\[
+    P^{eq} = e^{-\frac{Ux}{D}}
+\]
+
+\end{document}

@@ -1,0 +1,103 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage[T1]{fontenc}
+
+\title{TIFS R - Ćwiczenia Tydzień 8}
+\author{}
+\date{11 lutego 2026}
+
+\begin{document}
+
+\maketitle
+
+\section*{Silniki, lodówki, entropia}
+
+Silnik cieplny - urządzenie do przetwarzania energii cieplnej na energię mechaniczną; silnik cieplny pobiera ciepło ze źródła o temperaturze wyższej (ciepło spalania paliwa w silniku spalinowym lub w turbinie), przetwarza jego część na pracę mechaniczną, a resztę oddaje w chłodnicy.
+
+Wynalazcą pierwszego urządzenia zmieniającego ciepło na pracę był Heron z Aleksandrii (I w. n.e.). Skonstruował on mianowicie tzw. banię Herona obracaną strumieniami pary wydostającymi się z niej przez odpowiednio zagięte rurki - wzór turbiny parowej.
+
+Sprawność silnika - stosunek pracy wykonanej przez układ do pobranego ciepła:
+\begin{equation}
+\eta = \frac{W}{Q_1}
+\end{equation}
+
+\subsection*{Zadanie 1}
+Udowodnić równość Clausiusa dla cyklu Carnota, a następnie znaleźć sprawność silnika Carnota.
+
+\textbf{Rozwiązanie:}
+
+Wzór Clausiusa wyszedł nam już dwukrotnie - dla gazu doskonałego i gazu fotonów, teraz dostaniemy sformułowanie ogólne i okaże się, że tamte wyniki były nieprzypadkowe. Rozwiązanie jest proste, ale subtelne - omawiajcie każdy krok i podkreślajcie, z której zasady kiedy korzystamy.
+
+Najpierw z I-szej zasady termodynamiki:
+\begin{equation}
+0 = \Delta U_u = Q_1 + Q_2 + W
+\end{equation}
+
+Wielkości z indeksem $u$ odnoszą się do układu, z indeksem $1$ - grzejnik, $2$ - chłodnica. Potem z II-ej zasady (proces odwracalny!):
+\begin{equation}
+0 = \Delta S = \Delta S_1 + \Delta S_2 + \Delta S_u
+\end{equation}
+
+Układ wraca do stanu początkowego, więc $\Delta S_u = 0$, stąd ostatecznie:
+\begin{equation}
+\Delta S_1 + \Delta S_2 = 0
+\end{equation}
+
+Zmiany entropii termostatów policzyć łatwo, z definicji mają bowiem stałe temperatury, więc:
+\begin{equation}
+Q_1 = -T_1 \Delta S_1
+\end{equation}
+
+Uwaga na znak: $T_1 \Delta S_1$ to ciepło oddane przez układ termostatowi. Analogicznie:
+\begin{equation}
+Q_2 = -T_2 \Delta S_2
+\end{equation}
+
+Skąd dostajemy równość Clausiusa:
+\begin{equation}
+\frac{Q_1}{T_1} + \frac{Q_2}{T_2} = 0
+\end{equation}
+
+Pozwala to też na obliczenie sprawności:
+\begin{equation}
+\eta = \frac{-W}{Q_1} = \frac{Q_1 + Q_2}{Q_1} = 1 - \frac{T_2}{T_1}
+\end{equation}
+
+Typowe wielkości - w elektrociepłowniach termostaty mają ok. $700\,\mathrm{K}$, chłodnice (woda) - $300\,\mathrm{K}$, co dawałoby idealne sprawności ok. $57\%$, w rzeczywistości silniki nie są idealne i jest gorzej - ok. $33\%$. (Dla porównania elektrownie niecieplne - np. wodne mają sprawność zamiany energii potencjalnej wody na prąd elektryczny rzędu $85\%$).
+
+Uwaga: Można również odwrócić kota ogonem i przyjąć stwierdzenie: \textit{Stosunek $|Q_2|/|Q_1| (T_2/T_1)$ jest taki sam dla wszystkich procesów Carnota (niezależnie od substancji roboczej) operujących między termostatami o temperaturze $T_1$ i $T_2$} za alternatywne sformułowanie drugiej zasady termodynamiki.
+
+\subsection*{Zadanie 2}
+Pokazać, że żaden inny silnik cieplny nie będzie działał sprawniej od silnika Carnota.
+
+\textbf{Rozwiązanie:}
+
+(Przytaczam rozwiązanie za skryptem G.K do wykładu M.N - konwencja oznaczeń jest troszkę inna niż zwykle).
+
+Niech w czasie jednego cyklu silnik wykonuje pracę $W$, przy czym w trakcie cyklu pobiera z otoczenia ciepło $Q_+$ oraz oddaje do otoczenia ciepło $Q_-$. W czasie cyklu zmiana energii wewnętrznej silnika wynosi zero, więc z pierwszej zasady termodynamiki uzyskujemy:
+\begin{equation}
+0 = \Delta U = Q_+ - (W + Q_-)
+\end{equation}
+
+czyli:
+\begin{equation}
+W = Q_+ - Q_-
+\end{equation}
+
+Zgodnie z nierównością Clausiusa:
+\begin{equation}
+\oint \frac{\delta Q}{T} \leq 0
+\end{equation}
+
+Rozdzielmy cykl na odcinki odpowiadające poszczególnym kierunkom przepływu ciepła między silnikiem a otoczeniem:
+\begin{equation}
+\int_+ \frac{\delta Q_+}{T} - \int_- \frac{\delta Q_-}{T} \leq 0
+\end{equation}
+
+Temperaturę w pierwszej całce oszacujmy przez najwyższą temperaturę osiąganą w trakcie cyklu, zaś w drugiej - najniższą. Wówczas...
+
+\end{document}

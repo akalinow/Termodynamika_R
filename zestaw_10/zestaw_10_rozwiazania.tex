@@ -1,0 +1,71 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\usepackage[T1]{fontenc}
+\geometry{a4paper, margin=1in}
+
+\title{TIFS R - Ćwiczenia Tydzień 10}
+\author{}
+\date{11 lutego 2026}
+
+\begin{document}
+
+\maketitle
+
+\section*{Równowaga faz i przejścia fazowe}
+
+\subsection*{Zadanie 1}
+Rozpatrzmy dwa pojemniki z jednoatomowymi gazami doskonałymi $A$ i $B$, które w chwili początkowej były oddzielone przegrodą, a w chwili końcowej - zmieszane. Załóżmy, że zmiennymi niezależnymi (kontrolowanymi przez kontakt z otoczeniem) są ciśnienie $p$ i temperatura $T$. Pokaż, że proces mieszania jest nieodwracalny.
+
+\textbf{Rozwiązanie:}
+
+Odpowiednim potencjałem termodynamicznym jest tu $G = \mu N$. Jeżeli okaże się, że $\Delta G < 0$, to proces będzie nieodwracalny. Ale $G = \mu N$, zaś wzór na potencjał chemiczny gazu doskonałego w zmiennych $p,T$ wyprowadzaliśmy jakiś czas temu i miał postać:
+\begin{equation}
+\mu_i = kT \log\left(\frac{p}{kT}\left(\frac{h^2}{2\pi m_i kT}\right)^{3/2}\right) = kT \log p + f_i(T)
+\end{equation}
+
+Stąd na początku:
+\begin{equation}
+G_p = G_A + G_B = N_A \mu_A + N_B \mu_B = NkT \log p + N_A f_A(T) + N_B f_B(T)
+\end{equation}
+
+Natomiast po zmieszaniu, ciśnienia każdego ze składników zmaleją (względem ciśnienia początkowego), a ciśnienie całkowite - nie zmieni się. Zgodnie z prawem Daltona:
+\begin{equation}
+p_A = \frac{N_A}{N}p, \quad p_B = \frac{N_B}{N}p
+\end{equation}
+
+A zatem końcowy potencjał Gibbsa:
+\begin{equation}
+G_k = N_A kT \log p_A + N_B kT \log p_B + N_A f_A(T) + N_B f_B(T)
+\end{equation}
+
+Różnica potencjałów:
+\begin{equation}
+\Delta G = N_A kT \log\frac{p_A}{p} + N_B kT \log\frac{p_B}{p}
+\end{equation}
+
+Można przekształcić do postaci:
+\begin{equation}
+\Delta G = N_A kT \log\frac{N_A}{N} + N_B kT \log\frac{N_B}{N}
+\end{equation}
+
+Dla małych wartości:
+\begin{equation}
+\Delta g = kT(x \log x + (1 - x)\log(1 - x))
+\end{equation}
+
+dla $x = \frac{N_A}{N}$. Nietrudno zobaczyć, że $\Delta g(x)$ jest symetryczna względem $x = \frac{1}{2}$, poza tym $\Delta g(0) = \Delta g(1) = 0$ oraz pochodna zeruje się tylko dla $x = \frac{1}{2}$, w którym to punkcie funkcja przyjmuje wartość ujemną. A zatem $\Delta g(x) < 0$ i faktycznie proces jest nieodwracalny.
+
+Z drugiej strony pamiętamy, że $G = U - TS + pV$. W tym przypadku $U = \text{const.}$, $T = \text{const.}$ oraz $p = \text{const.}$. Nietrudno też zauważyć, że nie zmieni się objętość zajmowana przez gazy, gdyż przed zmieszaniem $V = V_A + V_B = \frac{N_A kT}{p} + \frac{N_B kT}{p}$, a po zmieszaniu $V = \frac{(N_A + N_B)kT}{p}$. Możemy więc proces izobaryczno-izotermicznego zmieszania wyobrazić sobie jako usuwanie przegrody w naczyniu o ustalonej objętości $V$. Tak czy inaczej w naszym przypadku:
+\begin{equation}
+\Delta G = -T \Delta S
+\end{equation}
+
+a zatem:
+\begin{equation}
+\Delta S = -k\left(N_A \log\frac{N_A}{N} + N_B \log\frac{N_B}{N}\right) \equiv \Delta S_{\text{mix}}
+\end{equation}
+
+\end{document}
