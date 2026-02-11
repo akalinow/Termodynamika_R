@@ -1,0 +1,285 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
+
+\frenchspacing
+
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{hepnames}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
+%\usepackage{upgreek}
+
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
+
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
+
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
+
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
+
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\  {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\  {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
+
+
+\begin{document}         
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R 
+  Zestaw I: Rachunek prawdopodobieństwa
+  }} \\  
+\end{centering}
+
+\vspace{1cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[Rosyjska ruletka]
+W grze w rosyjską ruletkę umieszcza się pojedynczy nabój w bębenku sześciostrzałowego rewolweru. Potem obraca się bębenkiem, celuje w głowę i pociąga za spust.
+Jakie jest prawdopodobieństwo:
+\begin{enumerate}[(a)]
+    \item pozostania przy życiu po $N$ rundach ruletki?
+    \item zostania postrzelonym w $N$-tej rundzie, po przeżyciu poprzednich $N-1$?
+\end{enumerate}
+
+{\bf Wskazówka:} zdarzenia są niezależne:
+\[P(A \cap B) = P(A)P(B)
+\]
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\begin{enumerate}[(a)]
+    \item Prawdopodobieństwo pozostania przy życiu po $N$ rundach ruletki:
+    \[ P = \left(\frac{5}{6}\right)^N \]
+    \item Prawdopodobieństwo zostania postrzelonym w $N$-tej rundzie, po przeżyciu poprzednich $N-1$:
+    \[ P = \left(\frac{1}{6}\right) \left(\frac{5}{6}\right)^{N-1} \]
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[Dwie papugi]
+Miała baba dwie papugi.
+\begin{enumerate}[(a)]
+    \item Na pytanie: Czy przynajmniej jedna z papug to samiec? \\
+    odpowiedziała -- Tak \\
+    \item Na pytanie: Czy ta papuga to samiec? \\
+    odpowiedziała -- Tak
+\end{enumerate}
+
+Jakie jest prawdopodobieństwo tego, że obie papugi to samce w każdym z powyższych przypadków?
+
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+
+\begin{enumerate}[(a)]
+    \item $\frac{1}{3}$
+    \item $\frac{1}{2}$
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[Lekkomyślny członek ławy przysięgłych]
+
+Trzyosobowa ława przysięgłych składa się z dwóch ``porządnych ludzi'', każdy z których (niezależnie) wydaje sprawiedliwy wyrok z prawdopodobieństwem $p$ oraz osobnika, który po prostu rzuca monetą przed wydaniem wyroku. Ostateczna decyzja ławy jest podejmowana większością głosów. Czy taka ława przysięgłych wyda sprawiedliwy wyrok z większym czy mniejszym prawdopodobieństwem od pojedynczego, porządnego ławnika (który orzeka sprawiedliwie z prawdopodobieństwem $p$)?
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\textbf{Odpowiedź:} Z takim samym.
+
+\newpage
+
+\zadanie[Teleturniej ``Idź na całość'']
+
+Gracz ma wybrać jedne z trzech drzwi: za jednymi z nich jest cenna nagroda. W pierwszym etapie gracz wskazuje losowo jedne z drzwi (nazwijmy je A) i wtedy prowadzący teleturniej (który wie, gdzie jest nagroda) otwiera jedne z pozostałych drzwi (nazwijmy je B) -- za którymi nagrody nie ma. Prowadzący pyta gracza: ``Pozostajesz przy swoim wyborze czy go zmieniasz?''. Co ma zrobić gracz? Z jakim prawdopodobieństwem wygra?
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\textbf{Odpowiedź:} Zmienić -- wygra wtedy z prawdopodobieństwem $\frac{2}{3}$. Jeśli nic nie zrobi -- prawdopodobieństwo wygranej wyniesie $\frac{1}{3}$.
+
+\newpage
+
+\zadanie[Błądzący pijak]
+
+Pijak stoi o krok od przepaści. Porusza się przypadkowo, albo w kierunku przepaści (z prawdopodobieństwem $\frac{1}{3}$) albo w kierunku przeciwnym -- z prawdopodobieństwem $\frac{2}{3}$. Jakie jest prawdopodobieństwo uniknięcia upadku?
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\textbf{Odpowiedź:} $\frac{1}{2}$. Uogólnijcie to też na dowolne prawdopodobieństwo ruchu od przepaści, $p$, i pokażcie, że rozwiązanie zmienia charakter dla $p = \frac{1}{2}$. Obliczcie średnią liczbę kroków do upadku dla $p = \frac{1}{2}$ i zinterpretujcie. Jeśli starczy Wam czasu, rozwiążcie to dla przypadku stanu początkowego $m$ kroków od przepaści. Zinterpretujcie wynik w języku graczy hazardowych ($m$ to początkowy kapitał) i ostrzeżcie ich, że to powoduje silną asymetrię w grze przeciw kasyna, które ma zwykle dużo większe fundusze niż my, nawet jeśli gra jest sprawiedliwa albo nawet lekko sprzyjająca nam.
+
+\newpage
+
+\zadanie[Błądzący pijak w 2D - problem Polya'i]
+
+Pijak z poprzedniego zadania jest w punkcie A i w każdym odcinku czasu przesuwa się o jeden krok albo na północ albo na południe i jednocześnie jeden krok albo na wschód albo na zachód (czyli chodzi po "przekątnych"). Oblicz prawdopodobieństwo powrotu do punktu początkowego.
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\textbf{Odpowiedź:} $p=1$. Jak Wam starczy czasu to możecie omówić też problem 3D i wyliczyć, że procent pijaków, którzy wtedy się wrócą do początku wynosi 0.239.
+
+\newpage
+
+\zadanie[Przypadkowy pociąg]
+
+W pewnym kraju po torach jeżdżą lokomotywy z numerami $1 \ldots N$. Po przyjeździe do tego kraju napotkaliśmy na pociąg nr 60. Oszacuj na podstawie tej informacji całkowitą liczbę pociągów w tym kraju. Rozważ też drugą wersję tego zadania, w której napotkaliśmy 5 pociągów, z których największy numer to 60.
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\textbf{Odpowiedź:} 119, 71.
+
+\newpage
+
+\zadanie[Roztrzepana sekretarka]
+
+Sekretarka przygotowała do wysłania $n$ listów i $n$ zaadresowanych kopert, ale włożyła listy do kopert w sposób przypadkowy. Ilu odbiorców (średnio) dostanie swój list?
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\textbf{Odpowiedź:} 1. Dla ambitniejszych -- jakie jest prawdopodobieństwo, że $r$ adresatów dostanie swój list?
+
+\newpage
+
+\zadanie[Te same urodziny]
+
+Przy jakiej minimalnej liczbie osób prawdopodobieństwo tego, że są wśród nich dwie osoby, które obchodzą urodziny tego samego dnia, nie jest mniejsze niż $1/2$?
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\textbf{Odpowiedź:} 23. Można rozszerzyć o pytanie: ile osób musi liczyć grupa, żeby prawdopodobieństwo tego, że ktoś ma urodziny w tym samym dniu co my, wynosi nie mniej niż $1/2$? Wtedy odpowiedź brzmi 253.
+
+\newpage
+
+\zadanie[Rozkręcone działo]
+
+Działo obracające się ze stałą prędkością kątową strzela w losowo wybranej chwili. Wyznaczyć rozkład prawdopodobieństwa położenia punktu trafienia na ekranie znajdującym się w odległości $d$ od działa.
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\[
+P(x) = \frac{1}{\pi} \frac{d}{d^2 + x^2}
+\]
+
+Komentarz: wyszedł rozkład Cauchy'ego, przy rozwiązywaniu warto przypomnieć, że
+\[
+P(y) = \int \delta(y - f(x))P(x)dx
+\]
+
+gdzie $P(y)$ -- rozkład zmiennej losowej $y = f(x)$.
+
+\newpage
+
+\zadanie[Igła Buffona (1733)]
+
+Rzucamy w sposób przypadkowy igłą o długości $2l$ na płaszczyznę, na której narysowano proste równoległe odległe o $2a$ ($a > l$). Jakie jest prawdopodobieństwo przecięcia przez igłę którejkolwiek prostej?
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\[
+P = \frac{2l}{\pi a}
+\]
+
+Komentarze:
+
+(a) Możliwość doświadczalnego wyznaczenia liczby $\pi$.
+
+(b) Wyniki doświadczeń: Wolf (1850) -- 5000 rzutów, $\pi = 3.1596$, Shmit (1855) -- 3204 rzuty, $\pi = 3.1553$.
+
+(c) Istnieje modyfikacja tego zadania: "kluska Buffona" -- rzut igłą, która niekoniecznie jest prosta, lecz może mieć dowolny kształt (ale taką samą długość $2l$). Co ciekawe, wynik jest identyczny.
+
+\newpage
+
+\zadanie[Naczynie z gazem]
+
+Rozpatrzmy gaz złożony z $N_0$ nieoddiałujących cząstek w pojemniku o objętości $V_0$. Wydzielmy teraz myślowo część tego pojemnika o objętości $V$ i oznaczmy przez $N$ liczbę cząstek gazu znajdujących się w $V$. Załóżmy, że każda z cząstek gazu z równym prawdopodobieństwem może znajdować się w dowolnym miejscu pojemnika, a zatem prawdopodobieństwo, że znajdzie się w $V$ wynosi $P = \frac{V}{V_0}$.
+
+\vspace{1cm}
+{\bf Rozwiązanie:}
+\vspace{1cm}
+
+\begin{enumerate}[(a)]
+    \item Jaka jest średnia liczba cząstek w $V$? Odpowiedź wyraź poprzez $N_0$, $V_0$ i $V$.
+    \[
+    \text{Odp. } \frac{N_0 V}{V_0}
+    \]
+    \item Znajdź względną dyspersję $\frac{<(N - <N>)^2>}{<N>^2}$. Odpowiedź wyraź poprzez $<N>$, $V_0$ i $V$.
+    \[
+    \text{Odp. } \frac{1 - (V / V_0)}{<N>}
+    \]
+    \item Jak wygląda odpowiedź z punktu b) kiedy $V \ll V_0$?
+    \[
+    \text{Odp. } \frac{1}{<N>}
+    \]
+    \item Spróbuj przewidzieć, jaką wartość powinna osiągać dyspersja $<(N - <N>)^2>$ kiedy $V \to V_0$. Czy odpowiedź z punktu b) zgadza się z tymi przewidywaniami?
+    \[
+    \text{Odp. } 0
+    \]
+\end{enumerate}
+
+\end{document}
