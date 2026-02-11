@@ -1,0 +1,88 @@
+name: LaTeX CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Install LaTeX
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-lang-polish
+    
+    - name: Find and compile all LaTeX files
+      run: |
+        # Find all .tex files in the repository
+        tex_files=$(find . -name "*.tex" -type f)
+        
+        if [ -z "$tex_files" ]; then
+          echo "No .tex files found in the repository"
+          exit 1
+        fi
+        
+        echo "Found LaTeX files:"
+        echo "$tex_files"
+        echo ""
+        
+        # Compile each .tex file
+        failed=0
+        for tex_file in $tex_files; do
+          echo "=========================================="
+          echo "Compiling: $tex_file"
+          echo "=========================================="
+          
+          # Change to the directory containing the .tex file
+          dir=$(dirname "$tex_file")
+          file=$(basename "$tex_file")
+          
+          cd "$dir"
+          
+          # Try to compile the file
+          # Run pdflatex twice to resolve references
+          if pdflatex -interaction=nonstopmode -halt-on-error "$file"; then
+            echo "First pass successful"
+            pdflatex -interaction=nonstopmode -halt-on-error "$file"
+            echo "✓ Successfully compiled: $tex_file"
+          else
+            echo "✗ Failed to compile: $tex_file"
+            failed=$((failed + 1))
+          fi
+          
+          # Return to the original directory
+          cd - > /dev/null
+          echo ""
+        done
+        
+        # Report results
+        echo "=========================================="
+        echo "Compilation Summary"
+        echo "=========================================="
+        total=$(echo "$tex_files" | wc -l)
+        successful=$((total - failed))
+        echo "Total files: $total"
+        echo "Successful: $successful"
+        echo "Failed: $failed"
+        
+        if [ $failed -gt 0 ]; then
+          echo "Some LaTeX files failed to compile"
+          exit 1
+        fi
+        
+        echo "All LaTeX files compiled successfully!"
+    
+    - name: Upload PDF artifacts
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled-pdfs
+        path: "**/*.pdf"
+        retention-days: 7
