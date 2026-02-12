@@ -12,6 +12,7 @@
 \frenchspacing
 
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{bm}
 \usepackage{gensymb}
 \usepackage{epsfig}
@@ -92,13 +93,37 @@ Jakie jest prawdopodobieństwo:
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
+Poszzcególne próby są niezależne, więc prawdopodobieństwo 
+pozostania przy życiu po $N$ rundach to iloczyn prawdopodobieństw, $p_{0}$
+pozostania przy życiu w każdej z rund:
+
+Prawdopodobieństwo pozostania przy życiu w każdej rundzie, $p_{0}$, to:
+\begin{align*}
+    p_{0} = \frac{5}{6}
+\end{align*}
+
+Prawdopodobieństwo postrzału, $p_{1}$, w każdej rundzie to:
+\begin{align*}
+    p_{1} = 1 - p_{0} = 1 - \frac{5}{6} = \frac{1}{6}
+\end{align*}
+
+Poszczególne próby są niezależne, więc prawdopodobieństwo 
+pozostania przy życiu po $N$ rundach to iloczyn prawdopodobieństw, $p_{0}$
+pozostania przy życiu w każdej z rund:
+
+
 \begin{enumerate}[(a)]
     \item Prawdopodobieństwo pozostania przy życiu po $N$ rundach ruletki:
     \[ P = \left(\frac{5}{6}\right)^N \]
     \item Prawdopodobieństwo zostania postrzelonym w $N$-tej rundzie, po przeżyciu poprzednich $N-1$:
-    \[ P = \left(\frac{1}{6}\right) \left(\frac{5}{6}\right)^{N-1} \]
+    \[ P = \left(\frac{5}{6}\right)^{N-1} \left(\frac{1}{6}\right) \]
 \end{enumerate}
 
+Czy założenie $p_{1}=1/6$ jest realistyczne? \\
+
+Wyobraźmy sobie jednorodny cylinder  (bębenek) z dodatkowym obciążeniem (nabojem)
+które łamie jego symetrię obrotową. Jaka orientacja bębenka minimalizuje
+energię układu?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -111,61 +136,236 @@ Miała baba dwie papugi.
     odpowiedziała -- Tak
 \end{enumerate}
 
-Jakie jest prawdopodobieństwo tego, że obie papugi to samce w każdym z powyższych przypadków?
+Jakie jest prawdopodobieństwo tego, że obie papugi to samce 
+w każdym z powyższych przypadków?
 
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-
 \begin{enumerate}[(a)]
-    \item $\frac{1}{3}$
-    \item $\frac{1}{2}$
+    \item wypiszmy wszystkie możliwe kombinacje płci papug, 
+          które spełniają warunek, że przynajmniej jedna z nich jest samcem:
+            \begin{itemize}
+                \item Samiec - Samiec
+                \item Samiec - Samica
+                \item Samica - Samiec
+            \end{itemize}
+          Kombinacji jest 3, z czego tylko jedna spełnia warunek,           
+          że obie papugi to samce prawdopodobieństwo wynosi $\frac{1}{3}$.
+          Istotnym faktem jest że nie wiemy która z papug jest samcem, 
+          więc musimy uwzględnić obie możliwości, że samiec jest pierwszą 
+          lub drugą papugą.\\
+    \item sytuacja jest prostrza, ponieważ wiemy, że jedna, {\bf konkretna} papuga 
+          jest samcem, więc mamy tylko dwie możliwości:
+            \begin{itemize}
+                \item Samiec - Samiec
+                \item Samiec - Samica
+            \end{itemize}
+          Kombinacji jest 2, z czego tylko jedna spełnia warunek,           
+          że obie papugi to samce prawdopodobieństwo wynosi $\frac{1}{2}$
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\zadanie[Lekkomyślny członek ławy przysięgłych]
+\zadanie[Ława przysięgłych]
 
-Trzyosobowa ława przysięgłych składa się z dwóch ``porządnych ludzi'', każdy z których (niezależnie) wydaje sprawiedliwy wyrok z prawdopodobieństwem $p$ oraz osobnika, który po prostu rzuca monetą przed wydaniem wyroku. Ostateczna decyzja ławy jest podejmowana większością głosów. Czy taka ława przysięgłych wyda sprawiedliwy wyrok z większym czy mniejszym prawdopodobieństwem od pojedynczego, porządnego ławnika (który orzeka sprawiedliwie z prawdopodobieństwem $p$)?
+Rozważ dwie ławy przysięgłych:
+\begin{enumerate}[(a)]
+    \item trzysobowa ława przysięgłych składa się z dwóch ``porządnych ludzi'', 
+    każdy z których (niezależnie) wydaje sprawiedliwy wyrok z prawdopodobieństwem 
+    $p$ oraz osobnika który po prostu rzuca monetą przed wydaniem wyroku. 
+    Ostateczna decyzja ławy jest podejmowana większością głosów.
+    \item jednosobowa składa się z jednego porządnego człowieka, 
+    który wydaje sprawiedliwy wyrok z prawdopodobieństwem $p$.
+\end{enumerate}
+
+Która z tych ław przysięgłych wyda sprawiedliwy wyrok z większym prawdopodobieństwem?
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-\textbf{Odpowiedź:} Z takim samym.
+Prawdopodobieństwo, sprawiedliwego wyroku dla ławy A.
+Sprawiedliwy wyrok będzie wydany jeśli dwu ławników wyda sprawiedliwy wyrok.
+Możemy to obliczyć na dwa sposoby:
+\begin{itemize}
+    \item bezpośrednio, wypisując wszystkie możliwe kombinacje:
+    \begin{itemize}
+        \item obu sprawiedliwych "trafiło", nie ma znaczenia wyrok trzeciego $p^{2}$
+        \item jeden sprawiedliwy trafił, drugi nie, a losowy wyrok jest sprawiedliwy.
+               W tym wypadku musimy uwzględnić, że sprawiedliwych jest dwu:
+               $2 p\cdot(1-p) \cdot \frac{1}{2}$
+    \end{itemize}
+    Sumując oba przypadki otrzymujemy:
+    \begin{align*}
+        P_A &= p^{2} + 2 p\cdot(1-p) \cdot \frac{1}{2} = p^{2} + p\cdot(1-p) = p
+    \end{align*}
 
+    \item obliczając prawdopodobieństwo, błędnego wyroku i biorąc jego dopełnienie:
+    \begin{itemize}
+        \item obu sprawiedliwych "spudłowało", nie ma znaczenia wyrok trzeciego $(1-p)^{2}$
+        \item jeden sprawiedliwy trafił, drugi nie, a losowy wyrok jest błędny.
+               W tym wypadku musimy uwzględnić, że sprawiedliwych jest dwu:
+               $2 p\cdot(1-p) \cdot \frac{1}{2}$
+    \end{itemize}
+    Sumując oba przypadki otrzymujemy prawdopodobieństwo błędnego wyroku:
+    \begin{align*}
+        P_{\text{błędny}} &= (1-p)^{2} + 2 p\cdot(1-p) \cdot \frac{1}{2} = (1-p)^{2} + p\cdot(1-p) = 1 - p
+    \end{align*}
+    a zatem prawdopodobieństwo sprawiedliwego wyroku to:
+    \begin{align*}        
+        P_A &= 1 - P_{\text{błędny}} = p
+    \end{align*}
+\end{itemize}
+       
+Prawdopodobieństwo sprawiedliwego wyroku dla ławy B to po prostu $p$.
+Podsumowując: obie ławy przysięgłych wydadzą sprawiedliwy wyrok z takim 
+samym prawdopodobieństwem $p$.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Teleturniej ``Idź na całość'']
 
-Gracz ma wybrać jedne z trzech drzwi: za jednymi z nich jest cenna nagroda. W pierwszym etapie gracz wskazuje losowo jedne z drzwi (nazwijmy je A) i wtedy prowadzący teleturniej (który wie, gdzie jest nagroda) otwiera jedne z pozostałych drzwi (nazwijmy je B) -- za którymi nagrody nie ma. Prowadzący pyta gracza: ``Pozostajesz przy swoim wyborze czy go zmieniasz?''. Co ma zrobić gracz? Z jakim prawdopodobieństwem wygra?
+Gracz ma wybrać jedne z trzech drzwi: A, B, C. Za jednymi z nich jest cenna nagroda.
+Prowadzący turniej wie  gdzie jest nagroda.
+
+Gra składa się z dwóch etapów:
+\begin{enumerate}
+    \item gracz wskazuje losowo jedne z drzwi: A 
+    \item prowadzący turniej otwiera 
+    jedne z pozostałych drzwi, za którymi nagrody {\bf nie ma}: B
+    \item prowadzący pyta gracza: ``Pozostajesz przy swoim wyborze czy go zmieniasz?''.
+\end{enumerate}
+ 
+Co ma zrobić gracz by zmaksymalizować prawdopodobieństwo wygranej, $p$?
+Ile wynosi $p$ w przypadku pozostania przy swoim wyborze, 
+a ile w przypadku zmiany wyboru?
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-\textbf{Odpowiedź:} Zmienić -- wygra wtedy z prawdopodobieństwem $\frac{2}{3}$. Jeśli nic nie zrobi -- prawdopodobieństwo wygranej wyniesie $\frac{1}{3}$.
+\textbf{Odpowiedź:} 
 
+Rozważmy oba warianty:
+\begin{itemize}
+    \item pozostanie przy swoim wyborze: gracz wygra tylko wtedy, 
+          gdy jego pierwotny wybór był trafny, a prawdopodobieństwo 
+          tego wynosi po prostu $\frac{1}{3}$.
+    \item zmiana wyboru: gracz wygra wtedy, gdy jego pierwotny wybór był nietrafny,
+          a prawdopodobieństwo tego wynosi $\frac{2}{3}$.
+\end{itemize}
+
+
+Podsumowując: gracz powinien zmienić swój wybór, 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Błądzący pijak]
 
-Pijak stoi o krok od przepaści. Porusza się przypadkowo, albo w kierunku przepaści (z prawdopodobieństwem $\frac{1}{3}$) albo w kierunku przeciwnym -- z prawdopodobieństwem $\frac{2}{3}$. Jakie jest prawdopodobieństwo uniknięcia upadku?
+Osoba pod wpływem środków odurzających stoi o krok od przepaści.
+Osoba ta wykonuje losowe kroki w kierunku przepaści, 
+z prawdopodobieństwem $p_{0} = \frac{1}{3}$, albo w kierunku przeciwnym.
+Jakie jest prawdopodobieństwo uniknięcia upadku w granicy $t \to \infty$?
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-\textbf{Odpowiedź:} $\frac{1}{2}$. Uogólnijcie to też na dowolne prawdopodobieństwo ruchu od przepaści, $p$, i pokażcie, że rozwiązanie zmienia charakter dla $p = \frac{1}{2}$. Obliczcie średnią liczbę kroków do upadku dla $p = \frac{1}{2}$ i zinterpretujcie. Jeśli starczy Wam czasu, rozwiążcie to dla przypadku stanu początkowego $m$ kroków od przepaści. Zinterpretujcie wynik w języku graczy hazardowych ($m$ to początkowy kapitał) i ostrzeżcie ich, że to powoduje silną asymetrię w grze przeciw kasyna, które ma zwykle dużo większe fundusze niż my, nawet jeśli gra jest sprawiedliwa albo nawet lekko sprzyjająca nam.
+Niech $p(n)$ oznacza prawdopodobieństwo uniknięcia upadku, 
+zaczynając z pozycji $n$ kroków od przepaści. 
+Zależnie od kierunku ruchu w danym kroku czasowym prawdopodobieństwa 
+uniknięcia upadku można wyrazić jako:
 
+\begin{itemize}
+\item $p_0 \cdot p(n-1)$ - ruch w kierunku przepaści 
+\item $(1-p_0) \cdot p(n+1)$ - ruch w kierunku przeciwnym 
+\end{itemize}
+
+Więc prawdopodobieństwo uniknięcia upadku to suma tych dwóch wariantów:
+\[
+p(n) = p_0 \cdot p(n-1) + (1-p_0) \cdot p(n+1),
+\]
+
+Warunki brzegowe to:
+\begin{itemize}
+\item $p(0) = 0$ - jeśli osoba osiągnie przepaść, to spada
+\item $p(\infty) = 1$ - jeśli jest nieskończenie daleko od przepaści, to 
+                   nigdy do niej nie dojdzie
+\end{itemize}
+
+Dostaliśmy równanie rekurencyjne, ale poradzimy sobie z nim.
+Przekształcamy równanie rekurencyjne:
+\begin{align*}
+    p(n) + p_{0}p(n) = p_0 \cdot p(n-1) + (1-p_0) \cdot p(n+1) + p_{0}p(n) \\
+    p_{0}[p(n) - p(n-1)] = (1-p_0)(p(n+1) - p(n)) \\
+    \frac{p_0}{1-p_0} \cdot [p(n) - p(n-1)\big] = p(n+1) - p(n)
+\end{align*}
+
+
+Oznaczmy $Q(n) = p(n) - p(n-1)$. Wtedy:
+\begin{align*}
+Q(n+1) = \frac{p_0}{1-p_0} \cdot Q(n) \rightarrow 
+\frac{Q(n+1)}{Q(n)} = \frac{p_0}{1-p_0} = q
+\end{align*}
+
+Otrzymaliśmy więc ciąg geometryczny o ilorazie $q = \frac{p_0}{1-p_0}$, więc
+Q(n) możemy wyrazić przez $Q(1)$:
+
+\begin{align*}
+Q(n) = Q(1) \cdot \left(\frac{p_0}{1-p_0}\right)^{n-1}.
+\end{align*}
+
+$Q(n)$ to różnica $p(n) - p(n-1)$, więc możemy znaleźć $p(n)$ 
+sumując $Q(k)$ od 1 do n:
+
+
+\begin{align*}
+p(n) &= \sum_{k=1}^n Q(k) = \\
+     &= Q(1) \cdot \sum_{k=1}^n \left(\frac{p_0}{1-p_0 }\right)^{k-1} = \\
+     &= Q(1) \cdot \frac{1 - \left(\frac{p_0}{1-p_0}\right)^n}{1 - \frac{p_0}{1-p_0}}
+\end{align*}
+
+Wartość $Q(1)$ wyznaczamy z warunku brzegowego $p(\infty) = 1$.
+Zauważmy że p(n) jest skończone dla 
+\begin{align*}
+\left(\frac{p_0}{1-p_0 }\right) <1 \rightarrow p_0 < \frac{1}{2}
+\end{align*}
+
+\begin{align*}
+p(\infty) = \lim_{n \to \infty} Q(1) \cdot \frac{1 - \left(\frac{p_0}{1-p_0}\right)^n}{1 - \frac{p_0}{1-p_0}} = \\
+Q(1) \cdot \frac{1}{1 - \frac{p_0}{1-p_0}} =  Q(1) \frac{1-2p_0}{1-p_0} = 1 \rightarrow \\
+Q(1) = \frac{1-2p_0}{1-p_0}.
+\end{align*}
+
+Ostatecznie:
+\begin{align*}
+p(n) = \frac{1-2p_0}{1-p_0} \frac{1 - \left(\frac{p_0}{1-p_0}\right)^n}{1 - \frac{p_0}{1-p_0}} = \\
+\frac{1-2p_0}{1-p_0} \cdot \frac{1-p_0}{1-2p_0} \cdot \left[1 - \left(\frac{p_0}{1-p_0}\right)^n\right] = \\
+1 - \left(\frac{p_0}{1-p_0}\right)^n
+\end{align*}
+
+Dla $p_0 = \frac{1}{3}$ i $n=1$ otrzymujemy:
+\begin{align*}
+p(n) = 1 - \left(\frac{1/3}{1-1/3}\right) = 1 - \left(\frac{1}{2}\right) = \frac{1}{2}
+\end{align*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Błądzący pijak w 2D - problem Polya'i]
 
-Pijak z poprzedniego zadania jest w punkcie A i w każdym odcinku czasu przesuwa się o jeden krok albo na północ albo na południe i jednocześnie jeden krok albo na wschód albo na zachód (czyli chodzi po "przekątnych"). Oblicz prawdopodobieństwo powrotu do punktu początkowego.
+Pijak z poprzedniego zadania jest w punkcie A i 
+w każdym odcinku czasu przesuwa się o jeden krok 
+albo na północ albo na południe i jednocześnie 
+jeden krok albo na wschód albo na zachód (czyli chodzi po "przekątnych"). 
+Oblicz prawdopodobieństwo powrotu do punktu początkowego.
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
@@ -173,11 +373,16 @@ Pijak z poprzedniego zadania jest w punkcie A i w każdym odcinku czasu przesuwa
 
 \textbf{Odpowiedź:} $p=1$. Jak Wam starczy czasu to możecie omówić też problem 3D i wyliczyć, że procent pijaków, którzy wtedy się wrócą do początku wynosi 0.239.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Przypadkowy pociąg]
 
-W pewnym kraju po torach jeżdżą lokomotywy z numerami $1 \ldots N$. Po przyjeździe do tego kraju napotkaliśmy na pociąg nr 60. Oszacuj na podstawie tej informacji całkowitą liczbę pociągów w tym kraju. Rozważ też drugą wersję tego zadania, w której napotkaliśmy 5 pociągów, z których największy numer to 60.
+W pewnym kraju po torach jeżdżą lokomotywy z numerami $1 \ldots N$. 
+Po przyjeździe do tego kraju napotkaliśmy na pociąg nr 60. 
+Oszacuj na podstawie tej informacji całkowitą liczbę pociągów w tym kraju. 
+Rozważ też drugą wersję tego zadania, w której napotkaliśmy 5 pociągów, 
+z których największy numer to 60.
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
@@ -185,64 +390,177 @@ W pewnym kraju po torach jeżdżą lokomotywy z numerami $1 \ldots N$. Po przyje
 
 \textbf{Odpowiedź:} 119, 71.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Roztrzepana sekretarka]
 
-Sekretarka przygotowała do wysłania $n$ listów i $n$ zaadresowanych kopert, ale włożyła listy do kopert w sposób przypadkowy. Ilu odbiorców (średnio) dostanie swój list?
+Sekretarka przygotowała do wysłania $N$ listów i $N$ zaadresowanych kopert, 
+ale włożyła listy do kopert w sposób przypadkowy. Ilu średnio odbiorców
+dostanie swój list?
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-\textbf{Odpowiedź:} 1. Dla ambitniejszych -- jakie jest prawdopodobieństwo, że $r$ adresatów dostanie swój list?
+Zagadnienie możemy sformułować następująco: 
+\begin{itemize}
+\item N odbiorców $\to$ N prób
+\item k dobrze zaadresowanych kopert $\to$ k sukcesów
+\end{itemize}
 
+W tej sytuacji rozkład pradowpodobieństwa liczby dobrze zaadresowanych kopert 
+jest rozkładem wielomianowym, a jego parametrami są $N$ i prawdopodobieństwo 
+sukcesu w pojedynczej próbie $p$:
+\begin{align*}
+P(k) = \binom{N}{k} p^k (1-p)^{N-k} &= \frac{N!}{k!(N-k)!} p^k (1-p)^{N-k} \\
+<k> &= \sum_{k=0}^N k P(k) = N \cdot p = \frac{N}{N} = 1
+\end{align*}
+
+W naszym przypadku $p = \frac{1}{N}$, więc średnia liczba dobrze 
+zaadresowanych kopert to 1.
+
+\vspace{1cm}
+
+Przypomnienie skąd się biorą człony w rozkładzie wielomianowym:
+\begin{itemize}
+\item liczba sposobów wyboru k dobrze zaadresowanych kopert spośród N:\\
+    \begin{itemize}
+    \item $N!$ - liczba permutacji N kopert, 
+    \item $k!$ - liczba permutacji k dobrze zaadresowanych kopert - każda 
+     z nich jest równoważna, więc musimy podzielić przez $k!$,
+    \item $(N-k)!$ - liczba permutacji pozostałych N-k kopert - każda z nich 
+    jest równoważna, więc musimy podzielić przez $(N-k)!$
+    \end{itemize}
+\item $p^k$ -- prawdopodobieństwo, że k kopert jest dobrze zaadresowanych
+\item $(1-p)^{N-k}$ -- prawdopodobieństwo, że pozostałe N-k kopert jest źle zaadresowanych
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Te same urodziny]
 
-Przy jakiej minimalnej liczbie osób prawdopodobieństwo tego, że są wśród nich dwie osoby, które obchodzą urodziny tego samego dnia, nie jest mniejsze niż $1/2$?
+Przy jakiej minimalnej liczbie osób prawdopodobieństwo tego, 
+że:
+\begin{enumerate}[(a)]
+\item są wśród nich dwie osoby, które obchodzą urodziny tego samego dnia, 
+\item ktoś ma urodziny w tym samym dniu co my, 
+\end{enumerate}
+
+wynosi nie mniej niż $1/2$?
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-\textbf{Odpowiedź:} 23. Można rozszerzyć o pytanie: ile osób musi liczyć grupa, żeby prawdopodobieństwo tego, że ktoś ma urodziny w tym samym dniu co my, wynosi nie mniej niż $1/2$? Wtedy odpowiedź brzmi 253.
+a) Zagadnienie możemy sformułować następująco:
 
+....
+
+
+b) Zagadnienie możemy sformułować następująco:
+
+\begin{itemize}
+\item N osób $\to$ N prób
+\item k par osób obchodzących urodziny tego samego dnia $\to$ k sukcesów
+\end{itemize}   
+ Rozkład prawdopodobieństwa liczby par osób obchodzących urodziny tego samego dnia 
+jest rozkładem wielomianowym, a jego parametrami są $N$, 
+i prawdopodobieństwo sukcesu w pojedynczej próbie $p$:
+\begin{align*}
+P(k) = \binom{N}{k} p^k (1-p)^{N-k} &= \frac{N!}{k!(N-k)!} p^k (1-p)^{N-k} 
+\end{align*}
+
+Poszukujemy $N$ takiego, że $P(k \geq 1) \geq \frac{1}{2}$, 
+czyli $P(k=0) = 1 - P(k \geq 1) \leq \frac{1}{2}$.
+\begin{align*}
+P(k=0) = (1-p)^{N} = \left(1 - \frac{1}{365}\right)^{N} \leq \frac{1}{2} \rightarrow 
+N \log(1-p) \leq \log(\frac{1}{2}) \rightarrow \\
+N \geq \frac{\log(1/2)}{\log(1 - 1/365)} = 252.7
+\end{align*}
+
+Czyli potrzebujemy co najmniej 253 osób.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Rozkręcone działo]
 
-Działo obracające się ze stałą prędkością kątową strzela w losowo wybranej chwili. Wyznaczyć rozkład prawdopodobieństwa położenia punktu trafienia na ekranie znajdującym się w odległości $d$ od działa.
+Działo obracające się ze stałą prędkością kątową strzela w losowo wybranej chwili. 
+Wyznaczyć rozkład prawdopodobieństwa położenia punktu trafienia na ekranie 
+znajdującym się w odległości $d$ od działa.
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-\[
-P(x) = \frac{1}{\pi} \frac{d}{d^2 + x^2}
-\]
+Zagadnienie sprowadza się do zamiany zmiennych losowych:
+kąta wystrzału $\varphi$ na położenie punktu trafienia $x$ na ekranie.
+Rozkład prawdopodobieństwa kąta wystrzału jest rozkładem 
+jednostajnym na przedziale $[0, \pi)$:
+\begin{align*}
+P(\varphi) = \frac{1}{\pi}
+\end{align*}
 
-Komentarz: wyszedł rozkład Cauchy'ego, przy rozwiązywaniu warto przypomnieć, że
-\[
-P(y) = \int \delta(y - f(x))P(x)dx
-\]
+{\bf Uwaga:} Bierzemy pod uwagę tylko kąt $\varphi$ w przedziale $[0, \pi)$, ponieważ
+działo trafi w ekran tylko wtedy, gdy będzie skierowane w jego stronę.
 
-gdzie $P(y)$ -- rozkład zmiennej losowej $y = f(x)$.
+Przyjmując, że $x=0$ odpowiada kątowi $\varphi=0$, a $x$ rośnie wraz z $\varphi$,
+położenie punktu trafienia $x$ na ekranie jest związane z kątem wystrzału $\varphi$
+następującym wzorem:
+\begin{align*}
+x = d \cdot \tan(\varphi)
+\end{align*}
 
+Poszukiwany rozkład prawdopodobieństwa położenia punktu trafienia $P(x)$ 
+ma postać:
+\begin{align*}
+P(x) = P(\varphi) \cdot \left|\frac{d\varphi}{dx}\right| = 
+\frac{1}{\pi} \cdot \left|\frac{d\varphi}{dx}\right| = \\
+\frac{1}{\pi} \cdot \left|\frac{d}{dx} \arctan\left(\frac{x}{d}\right)\right| = 
+\frac{1}{\pi} \cdot \frac{1}{1 + \left(\frac{x}{d}\right)^2} = \\
+\frac{1}{\pi} \cdot \frac{d}{d^2 + x^2}
+\end{align*}
+
+Uzyskany rozkład prawdopodobieństwa jest nazywany  rozkładem Cauchy'ego. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Igła Buffona (1733)]
 
-Rzucamy w sposób przypadkowy igłą o długości $2l$ na płaszczyznę, na której narysowano proste równoległe odległe o $2a$ ($a > l$). Jakie jest prawdopodobieństwo przecięcia przez igłę którejkolwiek prostej?
+Rzucamy w sposób przypadkowy igłę o długości $2l$ na płaszczyznę, 
+na której narysowano proste równoległe odległe o $2a$ ($a > l$). 
+Jakie jest prawdopodobieństwo przecięcia przez igłę którejkolwiek prostej?
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-\[
-P = \frac{2l}{\pi a}
-\]
+Wynik rzutu igłą opisujemy dwiema zmiennymi losowymi:
+\begin{itemize}
+\item $x$ -- odległość środka igły od najbliższej prostej
+\item $\varphi$ -- kąt między igłą a prostą łączącą środek igły z najbliższą prostą
+\end{itemize}
+
+Rozkład prawdopodobieństwa tych zmiennych jest rozkładem jednostajnym na
+prostokącie $[0, a] \times [0, \pi)$:
+\begin{align*}
+P(x, \varphi) = \frac{1}{a} \cdot \frac{2}{\pi} = \frac{1}{\pi a}
+\end{align*}
+
+Igła przetnie prostą jeśli odległość $x$ środka igły od najbliższej 
+prostej będzie mniejsza niż rzut jej długości na oś prostopadłą do prostych, 
+czyli $l \cdot |\cos(\varphi)|$. Musimy więc scałkować rozkład prawdopodobieństwa 
+$P(x, \varphi)$ po obszarze $x < l \cdot |\cos(\varphi)|$. Efekt modułu uwzględniamy 
+biorąc $\varphi$ z przedziału $[0, \pi/2)$, gdzie $\cos(\varphi)$ jest dodatnie,
+i mnożąc wynik przez 2:
+\begin{align*}
+P = 2\int_{0}^{\pi/2} \int_{0}^{l \cdot \cos(\varphi)} P(x, \varphi) dx d\varphi = 
+2  \frac{1}{\pi a} \int_{0}^{\pi/2} \int_{0}^{l \cdot \cos(\varphi)} dx d\varphi = \\
+\frac{2}{\pi a} \int_{0}^{\pi/2} l \cdot \cos(\varphi) d\varphi = 
+\frac{2l}{\pi a} \sin(\varphi) \Big|_{0}^{\pi/2} = \frac{2l}{\pi a}
+\end{align*}
 
 Komentarze:
 
@@ -250,13 +568,21 @@ Komentarze:
 
 (b) Wyniki doświadczeń: Wolf (1850) -- 5000 rzutów, $\pi = 3.1596$, Shmit (1855) -- 3204 rzuty, $\pi = 3.1553$.
 
-(c) Istnieje modyfikacja tego zadania: "kluska Buffona" -- rzut igłą, która niekoniecznie jest prosta, lecz może mieć dowolny kształt (ale taką samą długość $2l$). Co ciekawe, wynik jest identyczny.
+(c) Istnieje modyfikacja tego zadania: "kluska Buffona" -- rzut igłą, 
+która niekoniecznie jest prosta, lecz może mieć dowolny kształt 
+(ale taką samą długość $2l$). Co ciekawe, wynik jest identyczny.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Naczynie z gazem]
 
-Rozpatrzmy gaz złożony z $N_0$ nieoddiałujących cząstek w pojemniku o objętości $V_0$. Wydzielmy teraz myślowo część tego pojemnika o objętości $V$ i oznaczmy przez $N$ liczbę cząstek gazu znajdujących się w $V$. Załóżmy, że każda z cząstek gazu z równym prawdopodobieństwem może znajdować się w dowolnym miejscu pojemnika, a zatem prawdopodobieństwo, że znajdzie się w $V$ wynosi $P = \frac{V}{V_0}$.
+Rozpatrzmy gaz złożony z $N_0$ nieoddziałujących cząstek w pojemniku o 
+objętości $V_0$. Wydzielmy teraz myślowo część tego pojemnika o objętości 
+$V$ i oznaczmy przez $N$ liczbę cząstek gazu znajdujących się w $V$. 
+Załóżmy, że każda z cząstek gazu z równym prawdopodobieństwem może 
+znajdować się w dowolnym miejscu pojemnika, a zatem prawdopodobieństwo, 
+że znajdzie się w $V$ wynosi $P = \frac{V}{V_0}$.
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
