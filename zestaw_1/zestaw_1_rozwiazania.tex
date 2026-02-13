@@ -371,8 +371,12 @@ Oblicz prawdopodobieństwo powrotu do punktu początkowego.
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-\textbf{Odpowiedź:} $p=1$. Jak Wam starczy czasu to możecie omówić też problem 3D i wyliczyć, że procent pijaków, którzy wtedy się wrócą do początku wynosi 0.239.
+\vspace*{2cm}
+{\bf FIX ME}
+\vspace*{2cm}
 
+
+\textbf{Odpowiedź:} Prawdopodobieństwo powrotu do punktu początkowego wynosi $p = 1$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -388,8 +392,14 @@ z których największy numer to 60.
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-\textbf{Odpowiedź:} 119, 71.
+Rozważmy oba przypadki:
 
+
+
+\textbf{Odpowiedź:} \begin{itemize}
+    \item W przypadku obserwacji jednego pociągu o numerze 60, oszacowana liczba pociągów wynosi $\hat{N} = 120$.
+    \item W przypadku obserwacji 5 pociągów, z których największy numer to 60, oszacowana liczba pociągów wynosi $\hat{N} = 72$.
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -441,7 +451,7 @@ Przypomnienie skąd się biorą człony w rozkładzie wielomianowym:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Te same urodziny]
 
-Przy jakiej minimalnej liczbie osób prawdopodobieństwo tego, 
+Przy jakiej minimalnej liczbie osób, N, prawdopodobieństwo tego, 
 że:
 \begin{enumerate}[(a)]
 \item są wśród nich dwie osoby, które obchodzą urodziny tego samego dnia, 
@@ -454,18 +464,41 @@ wynosi nie mniej niż $1/2$?
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-a) Zagadnienie możemy sformułować następująco:
+a) zagadnienie rozwiążemy korzystając z dopełnienia, czyli 
+obliczymy prawdopodobieństwo, że wszyscy mają różne urodziny 
+i odejmiemy je od 1. Mnożymy prawdopodobieństwa, że każda 
+kolejna osoba ma urodziny w innym dniu niż poprzednie osoby:
+\begin{itemize}
+\item pierwsza osoba może mieć urodziny w dowolnym dniu, więc mamy 1.0
+\item druga osoba musi mieć urodziny w innym dniu niż pierwsza, 
+      więc mamy $\frac{364}{365}$
+\item trzecia osoba musi mieć urodziny w innym dniu niż pierwsza i druga,
+      więc mamy $\frac{363}{365}$
+\item N-ta osoba musi mieć urodziny w innym dniu niż poprzednie N-1 osób, 
+      więc mamy $\frac{365-N+1}{365}$
+\end{itemize}
 
-....
+Otrzymujemy:
+
+\begin{align*}
+P(\text{wszyscy mają różne urodziny}) = \frac{365}{365} \cdot \frac{364}{365} \cdot \ldots \cdot \frac{365-N+1}{365} = \\
+= \frac{365!}{(365-N)! \cdot 365^N}
+\end{align*}
+
+Szukamy takiego N, że $P(\text{wszyscy mają różne urodziny}) \leq \frac{1}{2}$:
 
 
-b) Zagadnienie możemy sformułować następująco:
+\vspace{2cm}
+{\bf FIX ME}
+\vspace{2cm}
+
+b) zagadnienie możemy sformułować następująco:
 
 \begin{itemize}
 \item N osób $\to$ N prób
-\item k par osób obchodzących urodziny tego samego dnia $\to$ k sukcesów
+\item k osób urodziny tego samego dnia co my $\to$ k sukcesów
 \end{itemize}   
- Rozkład prawdopodobieństwa liczby par osób obchodzących urodziny tego samego dnia 
+ Rozkład prawdopodobieństwa liczby osób urodziny tego samego dnia co my 
 jest rozkładem wielomianowym, a jego parametrami są $N$, 
 i prawdopodobieństwo sukcesu w pojedynczej próbie $p$:
 \begin{align*}
@@ -563,15 +596,15 @@ P = 2\int_{0}^{\pi/2} \int_{0}^{l \cdot \cos(\varphi)} P(x, \varphi) dx d\varphi
 \end{align*}
 
 Komentarze:
-
-(a) Możliwość doświadczalnego wyznaczenia liczby $\pi$.
-
-(b) Wyniki doświadczeń: Wolf (1850) -- 5000 rzutów, $\pi = 3.1596$, Shmit (1855) -- 3204 rzuty, $\pi = 3.1553$.
-
-(c) Istnieje modyfikacja tego zadania: "kluska Buffona" -- rzut igłą, 
-która niekoniecznie jest prosta, lecz może mieć dowolny kształt 
-(ale taką samą długość $2l$). Co ciekawe, wynik jest identyczny.
-
+\begin{enumerate}[a)]
+    \item możliwość doświadczalnego wyznaczenia liczby $\pi$.
+    \item wyniki doświadczeń: Wolf (1850) -- 5000 rzutów, $\pi = 3.1596$, Shmit (1855) -- 3204 rzuty, $\pi = 3.1553$.
+    \item istnieje modyfikacja tego zadania: "kluska Buffona" -- rzut igłą, 
+          która niekoniecznie jest prosta, lecz może mieć dowolny kształt 
+          (ale taką samą długość $2l$). Co ciekawe, jest oczywiście identyczny,
+          ponieważ kluczową rolę odgrywa rzut długości igły/kluski na oś prostopadłą 
+          do prostych, a ten jest taki sam dla każdej igły o tej samej długości.
+\end{enumerate}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -583,28 +616,49 @@ $V$ i oznaczmy przez $N$ liczbę cząstek gazu znajdujących się w $V$.
 Załóżmy, że każda z cząstek gazu z równym prawdopodobieństwem może 
 znajdować się w dowolnym miejscu pojemnika, a zatem prawdopodobieństwo, 
 że znajdzie się w $V$ wynosi $P = \frac{V}{V_0}$.
+\vspace{1cm}
+\begin{enumerate}[a)]
+    \item Jaka jest średnia liczba cząstek w $V$? Odpowiedź wyraź poprzez $N_0$, $V_0$ i $V$.
+    \item Znajdź względną dyspersję $\frac{<(N - <N>)^2>}{<N>^2}$. Odpowiedź wyraź poprzez $<N>$, $V_0$ i $V$.
+    \item Jak wygląda odpowiedź z punktu b) kiedy $V \ll V_0$?
+    \item Spróbuj przewidzieć, jaką wartość powinna osiągać dyspersja $<(N - <N>)^2>$ kiedy $V \to V_0$. Czy odpowiedź z punktu b) zgadza się z tymi przewidywaniami?
+\end{enumerate}
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-\begin{enumerate}[(a)]
-    \item Jaka jest średnia liczba cząstek w $V$? Odpowiedź wyraź poprzez $N_0$, $V_0$ i $V$.
-    \[
-    \text{Odp. } \frac{N_0 V}{V_0}
-    \]
-    \item Znajdź względną dyspersję $\frac{<(N - <N>)^2>}{<N>^2}$. Odpowiedź wyraź poprzez $<N>$, $V_0$ i $V$.
-    \[
-    \text{Odp. } \frac{1 - (V / V_0)}{<N>}
-    \]
-    \item Jak wygląda odpowiedź z punktu b) kiedy $V \ll V_0$?
-    \[
-    \text{Odp. } \frac{1}{<N>}
-    \]
-    \item Spróbuj przewidzieć, jaką wartość powinna osiągać dyspersja $<(N - <N>)^2>$ kiedy $V \to V_0$. Czy odpowiedź z punktu b) zgadza się z tymi przewidywaniami?
-    \[
-    \text{Odp. } 0
-    \]
+
+\begin{enumerate}[a)]
+    \item Jaka jest średnia liczba cząstek w $V$? \\
+     Zagadnienie formułujemy jako problem wielomianowy: 
+     jaka jest średnia liczba sukcesów (cząstek w $V$) w $N_0$ próbach (cząstkach)?
+     \begin{align*}
+        <N> = N_0 \cdot P = N_0 \cdot \frac{V}{V_0}
+     \end{align*}
+
+    \item Względna dyspersja $\frac{<(N - <N>)^2>}{<N>^2}$. \\
+    Kontynuujemy rozważania z punktu widzenia rozkładu wielomianowego.
+    Dyspersja rozkładu wielomianowego to $N_0 \cdot P \cdot (1-P)$, więc:
+    \begin{align*}
+        \frac{<(N - <N>)^2>}{<N>^2} = \frac{N_0 \cdot P \cdot (1-P)}{(N_0 \cdot P)^2} = 
+        \frac{1-P}{N_0 \cdot P} = 
+        \frac{1 - (V / V_0)}{<N>}
+    \end{align*}
+ 
+    \item Jak wygląda względna dyspersja dla  $V \ll V_0$?
+    \begin{align*}
+        \frac{<(N - <N>)^2>}{<N>^2} = \frac{1 - (V / V_0)}{<N>} \approx \frac{1}{<N>}
+    \end{align*}
+
+    \item Szacujemy dyspersję dla  $V \to V_0$. 
+    W sytuacji gdy $V$ zbliża się do $V_0$, prawdopodobieństwo, 
+    cząstki powinny znajdować się w $V$ i nie ma żadnych fluktuacji, 
+    więc dyspersja będzie dążyć do 0. Odpowiedź z punktu b) zgadza się z tym przewidywaniem, ponieważ
+    \begin{align*}
+        \frac{<(N - <N>)^2>}{<N>^2} = \frac{1 - (V / V_0)}{<N>} \to 0
+    \end{align*}
 \end{enumerate}
+
 
 \end{document}
