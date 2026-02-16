@@ -392,13 +392,66 @@ z których największy numer to 60.
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-Rozważmy oba przypadki:
+Mamy przed sobą zagadnienie estymacji parametru rozkładu prawdopodobieństwa
+na podstawie danych - tym zajmuje się estymacja parametryczna. 
+Podstawowym narzędziem estymacji parametrycznej jest metoda największej wiarygodności,
+która polega na znalezieniu parametrów rozkładu, $\mu$ które maksymalizują funkcję 
+wiarygodności, czyli prawdopodobieństwo zaobserwowanych danych dla danego parametru 
+rozkładu:
+\begin{align*}
+L(\text{dane}| \mu) = P(\text{dane}| N) = \prod_{i=1}^k P(\text{dane}_i | \mu)\\
+\hat{\mu} = \arg \max_{\mu} L(\text{dane}| \mu)
+\end{align*}
 
+Pierwszym krokiem w takiej analize jest sformułowanie modelu, 
+czyli rozkładu prawdopodobieństwa, który opisuje proces generowania danych.
+Założymy, że rozkład prawdopodobieństwa numerów pociągów jest płaski:
+\begin{align*}
+P(\text{numer pociągu} = n | N) = \frac{1}{N} \text{ dla } n = 1, 2, \ldots, N
+\end{align*}
 
+Rozważmy przypadki:
+\begin{itemize}
+    \item pojedynczy pomiar: $n = 60$
+    W naszym przypadku funkcja wiarygodności nie zależy danych, ale dane nakładają 
+    ograniczenie na możliwe wartości parametru rozkładu: $N \geq 60$.
+    Wartością minimalizującą funkcję wiarygodności jest więc $N = 60$.
+    Nasz estymator to $\hat{N} = N_{obs}$.
+    Oszacujmy czy nasz estymator jest obciążony, czyli czy jego wartość oczekiwana 
+    jest równa prawdziwej wartości parametru rozkładu:
+    \begin{align*}
+E[\hat{N}] = \sum_{n=1}^N n \cdot P(n|N) = \sum_{n=1}^N n \cdot 
+\frac{1}{N} = \frac{1}{N} \cdot \frac{N(N+1)}{2} = \frac{N+1}{2} \neq N
+    \end{align*}
 
-\textbf{Odpowiedź:} \begin{itemize}
-    \item W przypadku obserwacji jednego pociągu o numerze 60, oszacowana liczba pociągów wynosi $\hat{N} = 120$.
-    \item W przypadku obserwacji 5 pociągów, z których największy numer to 60, oszacowana liczba pociągów wynosi $\hat{N} = 72$.
+    Korygujemy więc estymator, by był nieobciążony:
+    \begin{align*}
+\hat{N}_{unbias} = 2 \cdot N_{obs} - 1 = 2 \cdot 60 - 1 = 119
+    \end{align*}
+
+    Jest dobrze, ale słono zapłaciliśmy za tę korektę $\to$ wariancja estymatora 
+    wzrosła z grubsza czterokrotnie.
+
+    \item pięć pomiarów: $n_1, n_2, n_3, n_4, n_5$ z których największy to 60.
+    W tym przypadku funkcja wiarygodności jest równa:
+    \begin{align*}
+     L(N) = P(n_1, n_2, n_3, n_4, n_5 | N) = \prod_{i=1}^5 P(n_i | N) = \prod_{i=1}^5 \frac{1}{N} = \frac{1}{N^5}
+    \end{align*}
+
+    Dane nakładają ograniczenie na możliwe wartości parametru rozkładu: $N \geq 60$.
+    Wartością minimalizującą funkcję wiarygodności jest więc $N = 60$.
+    Nasz estymator to $\hat{N} = N_{obs}$. Oszacujmy obciążenie estymatora.
+    Rozkład prawdopodobieństwa największego numeru pociągu wśród 5 obserwacji jest 
+    rozkładem prawdopodobieństwa maksimum z $n$ prób z rozkładu płaskiego $[0,N]$:
+    Wartość oczekiwana tego rozkładu to:
+    \begin{align*}
+E[max|N, n] = \frac{n}{n+1} \cdot N = \frac{5}{6} \cdot N
+    \end{align*}
+
+    Korygujemy więc estymator, by był nieobciążony:
+    \begin{align*}
+\hat{N}_{unbias} = \frac{n+1}{n} \cdot N_{obs} = \frac{6}{5} \cdot 60 = 72
+    \end{align*}    
 \end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -485,12 +538,24 @@ P(\text{wszyscy mają różne urodziny}) = \frac{365}{365} \cdot \frac{364}{365}
 = \frac{365!}{(365-N)! \cdot 365^N}
 \end{align*}
 
-Szukamy takiego N, że $P(\text{wszyscy mają różne urodziny}) \leq \frac{1}{2}$:
+Szukamy takiego N, że $P(\text{wszyscy mają różne urodziny}) \leq \frac{1}{2}$.
+Obliczenia wykonamy numerycznie używając 
+\href{https://www.wolframalpha.com/input?i=table+N%5B365%21%2F%5B%28365-x%29%21*365%5Ex%5D%5D+for+x+from+10+to+25}{Wolpram Alpha}.
+Wolphram szybciej wykona obliczenia niż ChatGPT, czy Gemini, ale 
+Gemini daje odpowiedź w wygodniejszej formie.
+%add plot
+\begin{center}
+\includegraphics[width=0.48\textwidth]{plots/wolphram_alpha_birthday.png}
+\end{center}
 
 
-\vspace{2cm}
-{\bf FIX ME}
-\vspace{2cm}
+W przypadku 23 osób prawdopodobieństwo, że wszyscy mają różne urodziny 
+jest mniejsze niż $1/2$, więc potrzebujemy co najmniej 23 osób by 
+prawdopodobieństwo tego, że są wśród nich dwie osoby, które obchodzą 
+urodziny tego samego dnia było większe $1/2$.
+
+\vspace{1cm}
+
 
 b) zagadnienie możemy sformułować następująco:
 
