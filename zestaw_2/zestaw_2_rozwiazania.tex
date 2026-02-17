@@ -8,9 +8,6 @@
 \usepackage{wrapfig}    % for wrapping figures, tables
 \usepackage{isotope}
 \usepackage{hyperref}
-
-\frenchspacing
-
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{bm}
@@ -20,7 +17,6 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{xspace}
 \xspaceaddexceptions{[]\{\}}
-%\usepackage{upgreek}
 
 %
 %
@@ -64,6 +60,29 @@
 \newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\  {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
 \newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\  {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
+%dynamic solutions hiding
+\usepackage{comment}
+
+\newif\ifshowsolutions
+
+%\showsolutionstrue   % ← show solutions
+% \showsolutionsfalse % ← hide solutions
+
+\def\showsolutions{}
+
+\newif\ifshowsolutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
+
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}         
 
@@ -83,63 +102,126 @@ Proszę rozważyć jednowymiarowe błądzenie przypadkowe po sieci o kroku $a$
 i znaleźć:
 \begin{itemize}
     \item rozkład prawdopodobieństwa położenia cząstki po $N$ skokach:
-          $p(x|N)$, gdzie $x = na$ 
+          $p(x|N)$, gdzie $x = Na$ 
     \item postać rozkładu w granicy $a \to 0$, $N \to \infty$ i 
           odpowiedniej korelacji między $a$ i $N$.
 \end{itemize}
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
+{\bf Wskazówki:} 
+\begin{itemize}
+\item użyć zmiennej $z = k - N/2$, gdzie $k$ to liczba skoków na prawo, 
+\item użyć przybliżenia Stirlinga dla silni
+\end{itemize}
 
 
-Spodziewamy się, że średnio będzie $N/2$ skoków na prawo, więc wprowadzamy nową zmienną
-\[ z = k - \frac{N}{2} \]
+\begin{solution}
 
-Gdzie $k$ to liczba skoków na prawo. Wtedy:
-\[
-    p(z) = \frac{N!}{(N/2 + z)!(N/2 - z)!} \cdot \frac{1}{2^N}
-\]
+Położenie to $x = [k - (N - k)]a = (2k - N)a$, gdzie $k$ to liczba skoków na prawo. 
+Prawdopodobieństwo znalezienia cząstki w położeniu $x$ po $N$ skokach to
+prawdopodobieństwo, sekwencji $k$ skoków na prawo i $N-k$ skoków na lewo,
+pomnożone przez liczbę możliwych sekwencji, czyli:
+\begin{align*}
+    p(x|N) &= \frac{N!}{k!(N-k)!} \cdot \frac{1}{2^N} 
+\end{align*}
 
-Używając przybliżenia Stirlinga dla silni:
-\[
-    \log m! = \frac{1}{2} \log 2\pi + \left(m + \frac{1}{2}\right) \log m - m + \ldots
-\]
+Zsymetryzujmy wzór, wprowadzając zmienną $z = k - N/2$, 
+czyli liczbę skoków na prawo ponad średnią. Wtedy:
 
-Dostajemy:
-\[
-    \log p = -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N - N - \left(\frac{N}{2} + z + \frac{1}{2}\right) \log \left(\frac{N}{2} + z\right) + \left(\frac{N}{2} + z\right) \\
-    - \left(\frac{N}{2} - z + \frac{1}{2}\right) \log \left(\frac{N}{2} - z\right) + \left(\frac{N}{2} - z\right) - N \log 2 + \ldots
-\]
+\begin{align*}
+    p(z) &= \frac{N!}{(N/2 + z)!(N/2 - z)!} \cdot \frac{1}{2^N}
+\end{align*}
+
+Przybliżenie Stirlinga dla silni:
+\begin{align*}
+    \log n! = \frac{1}{2} \log 2\pi + \left(n + \frac{1}{2}\right) \log n - n + \ldots
+\end{align*}
+
+Aplikujemy do wzoru na $p(z)$:
+\begin{align*}
+    \log p \simeq \\
+        \frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N - N - \\
+       - \left[\frac{1}{2} \log 2\pi + \left(\frac{N}{2} + z + \frac{1}{2}\right) \log \left(\frac{N}{2} + z\right)  - \frac{N}{2} - z\right]  \\
+       - \left[\frac{1}{2} \log 2\pi + \left(\frac{N}{2} - z + \frac{1}{2}\right) \log \left(\frac{N}{2} - z\right)  - \frac{N}{2} + z\right]  \\
+       - N \log 2 
+\end{align*}
+
 
 Zbierając:
-\[
-    \log p = -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N - \frac{N+1}{2} \log \left(\frac{N}{2} + z\right) \left(\frac{N}{2} - z\right) - z \log \frac{N/2 + z}{N/2 - z} - N \log 2
-\]
 
-Przybliżając $\log(1 + x) \approx x$, dostajemy:
-\[
-    \log p \approx -\frac{1}{2} \log 2\pi + \frac{1}{2} \log \frac{2}{N\pi} - \frac{2z^2}{N}
-\]
+\begin{align*}
+    \log p = -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N - \left(N + \frac{1}{2}\right) \log \left[\left(\frac{N}{2} + z\right) \left(\frac{N}{2} - z\right) \right] - z \log \frac{N/2 + z}{N/2 - z} - N \log 2
+\end{align*}
 
-Co prowadzi do:
-\[
-    p = \sqrt{\frac{2}{\pi N}} e^{-\frac{2z^2}{N}}
-\]
+Wyrażenia typu $\log(\frac{N}{2} + z)$ można przybliżyć dla $N \gg z$ jako:
+\begin{align*}
+    \log(\frac{N}{2} + z) = \log \frac{N}{2} + \log(1 + \frac{2z}{N}) \approx \log \frac{N}{2} + \frac{2z}{N}
+\end{align*}
 
-Wracając do zmiennej $k$:
-\[
-    p(k) = \sqrt{\frac{2}{\pi N}} e^{-\frac{(2k - N)^2}{2N}}
-\]
 
-Ostatecznie otrzymujemy ciągły rozkład Gaussa (ze średnią $N/2$ i wariancją $N/4$). Jest to przejaw centralnego twierdzenia granicznego.
+Używając tego przybliżenia, dostajemy:
+\begin{align*}
+p \approx -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N \\
+         - \frac{N+1}{2} \left[ 2\log(\frac{N}{2}) + \frac{2z}{N} - \frac{2z}{N} \right] \\
+         - z \left[\frac{2z}{N} + \frac{2z}{N} \right] \\
+         - N \log 2 = \\ \\
+          -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N \\
+          - (N+1) \left[ \log(N) - \log(2) \right] \\
+          - \frac{4z^2}{N} \\
+          - N \log 2 = \\
+          -\frac{1}{2} \log 2\pi - \frac{1}{2} \log N + \log 2 - \frac{2z^2}{N} = \\
+          -\frac{1}{2} \log 2\pi - \frac{1}{2} \log N + \frac{1}{2} \log 2^{2} - \frac{2z^2}{N} = \\
+          -\frac{1}{2} \log \left( \frac{4}{\pi N} \right) - \frac{2z^2}{N}
+\end{align*}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Powracając do $p$:
+\begin{align*}
+    p(z) = \sqrt{\frac{2}{\pi N}} e^{-\frac{2z^2}{N}}
+\end{align*}
+
+Wracając do zmiennej $x = (2k - N)a$:
+\begin{align*}
+    z = k - \frac{N}{2} = \frac{x}{2a} + \frac{N}{2}  - \frac{N}{2} = \frac{x}{2a}
+\end{align*}
+
+Musimy uwzględnić nie tylko zmianę zmiennej, ale też fakt, 
+że $p(z)dz = p(x)dx$, czyli $p(x) = p(z) \frac{dz}{dx}$:
+
+\begin{align*}
+    p(x) = \sqrt{\frac{2}{\pi N}} e^{-\frac{x^2}{2Na^2}} \frac{dz}{dx}  = \\
+        = \sqrt{\frac{2}{\pi N}} e^{-\frac{x^2}{2Na^2}} \cdot \frac{1}{2a} = \\
+        = \sqrt{\frac{1}{2\pi Na^2}} e^{-\frac{x^2}{2Na^2}} = \\
+    \frac{1}{\sqrt{2\pi \sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}, 
+    ~ \mu = 0, ~ \sigma^2 = Na^2
+\end{align*}
+
+To samo z użyciem centralnego twierdzenia granicznego (CTG).
+Położenie to suma $N$ niezależnych zmiennych losowych o 
+wartościach $\pm a$ z prawdopodobieństwami $1/2$. 
+Z CTG wynika, że rozkład sumy tych zmiennych losowych zmierza do rozkładu 
+normalnego dla $N \to \infty$. W przypadku gdy składniki sumy są losowane 
+z tego samego rozkładu - dwumianiowego, parametry granicznego rozkładu to:
+\begin{align*}
+    \mu = N \langle x \rangle = N(2<k> - N)a  = N ( 2\frac{1}{2}N - \frac{1}{2})a = 0 \\
+    \sigma^2 = N \sigma_{x}^{2} = N4a \sigma_{k} = Na^2
+\end{align*}
+
+Ostatni krok: zamiana z liczby kroków $N$ na czas $t$. 
+Jeśli skoki wykonywane są co $\delta t$, to:
+\begin{align*}
+    N = \frac{t}{\delta t} \\
+    \sigma^2 = Na^2 = \frac{t}{\delta t} a^2 = 2Dt, \quad D = \frac{a^2}{2\delta t}
+\end{align*}
+
+Ostatecznie postać rozkładu prawdopodobieństa w granicy ciągłej to:
+\begin{align*}
+    p(x|t) = \frac{1}{\sqrt{4\pi Dt}} e^{-\frac{x^2}{4Dt}}
+\end{align*}
+
 \newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Równanie dyfuzji]
-
-
 
 Na wykładzie wypisaliśmy równanie Master dla jednowymiarowego 
 błądzenia przypadkowego i przeszliśmy do granicy ciągłej, 
