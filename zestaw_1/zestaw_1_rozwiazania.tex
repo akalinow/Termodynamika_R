@@ -8,9 +8,6 @@
 \usepackage{wrapfig}    % for wrapping figures, tables
 \usepackage{isotope}
 \usepackage{hyperref}
-
-\frenchspacing
-
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{bm}
@@ -20,7 +17,6 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{xspace}
 \xspaceaddexceptions{[]\{\}}
-%\usepackage{upgreek}
 
 %
 %
@@ -64,7 +60,29 @@
 \newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\  {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
 \newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\  {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
+%dynamic solutions hiding
+\usepackage{comment}
 
+\newif\ifshowsolutions
+
+%\showsolutionstrue   % ← show solutions
+% \showsolutionsfalse % ← hide solutions
+
+\def\showsolutions{}
+
+\newif\ifshowsolutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
+
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}         
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -89,11 +107,10 @@ Jakie jest prawdopodobieństwo:
 \[P(A \cap B) = P(A)P(B)
 \]
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
 
-Poszzcególne próby są niezależne, więc prawdopodobieństwo 
+\begin{solution}
+
+Poszczególne próby są niezależne, więc prawdopodobieństwo 
 pozostania przy życiu po $N$ rundach to iloczyn prawdopodobieństw, $p_{0}$
 pozostania przy życiu w każdej z rund:
 
@@ -124,8 +141,10 @@ Czy założenie $p_{1}=1/6$ jest realistyczne? \\
 Wyobraźmy sobie jednorodny cylinder  (bębenek) z dodatkowym obciążeniem (nabojem)
 które łamie jego symetrię obrotową. Jaka orientacja bębenka minimalizuje
 energię układu?
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Dwie papugi]
 Miała baba dwie papugi.
@@ -139,11 +158,8 @@ Miała baba dwie papugi.
 Jakie jest prawdopodobieństwo tego, że obie papugi to samce 
 w każdym z powyższych przypadków?
 
-
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
-
+\begin{solution}
+    
 \begin{enumerate}[(a)]
     \item wypiszmy wszystkie możliwe kombinacje płci papug, 
           które spełniają warunek, że przynajmniej jedna z nich jest samcem:
@@ -167,8 +183,9 @@ w każdym z powyższych przypadków?
           że obie papugi to samce prawdopodobieństwo wynosi $\frac{1}{2}$
 \end{enumerate}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Ława przysięgłych]
 
@@ -184,10 +201,8 @@ Rozważ dwie ławy przysięgłych:
 
 Która z tych ław przysięgłych wyda sprawiedliwy wyrok z większym prawdopodobieństwem?
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
-
+\begin{solution}
+    
 Prawdopodobieństwo, sprawiedliwego wyroku dla ławy A.
 Sprawiedliwy wyrok będzie wydany jeśli dwu ławników wyda sprawiedliwy wyrok.
 Możemy to obliczyć na dwa sposoby:
@@ -225,9 +240,9 @@ Prawdopodobieństwo sprawiedliwego wyroku dla ławy B to po prostu $p$.
 Podsumowując: obie ławy przysięgłych wydadzą sprawiedliwy wyrok z takim 
 samym prawdopodobieństwem $p$.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Teleturniej ``Idź na całość'']
 
@@ -246,11 +261,8 @@ Co ma zrobić gracz by zmaksymalizować prawdopodobieństwo wygranej, $p$?
 Ile wynosi $p$ w przypadku pozostania przy swoim wyborze, 
 a ile w przypadku zmiany wyboru?
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
 
-\textbf{Odpowiedź:} 
+\begin{solution}
 
 Rozważmy oba warianty:
 \begin{itemize}
@@ -262,10 +274,11 @@ Rozważmy oba warianty:
 \end{itemize}
 
 
-Podsumowując: gracz powinien zmienić swój wybór, 
+Podsumowując: gracz powinien zmienić swój wybór.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Błądzący pijak]
 
@@ -274,9 +287,7 @@ Osoba ta wykonuje losowe kroki w kierunku przepaści,
 z prawdopodobieństwem $p_{0} = \frac{1}{3}$, albo w kierunku przeciwnym.
 Jakie jest prawdopodobieństwo uniknięcia upadku w granicy $t \to \infty$?
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
+\begin{solution}
 
 Niech $p(n)$ oznacza prawdopodobieństwo uniknięcia upadku, 
 zaczynając z pozycji $n$ kroków od przepaści. 
@@ -308,7 +319,6 @@ Przekształcamy równanie rekurencyjne:
     \frac{p_0}{1-p_0} \cdot [p(n) - p(n-1)\big] = p(n+1) - p(n)
 \end{align*}
 
-
 Oznaczmy $Q(n) = p(n) - p(n-1)$. Wtedy:
 \begin{align*}
 Q(n+1) = \frac{p_0}{1-p_0} \cdot Q(n) \rightarrow 
@@ -324,7 +334,6 @@ Q(n) = Q(1) \cdot \left(\frac{p_0}{1-p_0}\right)^{n-1}.
 
 $Q(n)$ to różnica $p(n) - p(n-1)$, więc możemy znaleźć $p(n)$ 
 sumując $Q(k)$ od 1 do n:
-
 
 \begin{align*}
 p(n) &= \sum_{k=1}^n Q(k) = \\
@@ -356,8 +365,9 @@ Dla $p_0 = \frac{1}{3}$ i $n=1$ otrzymujemy:
 p(n) = 1 - \left(\frac{1/3}{1-1/3}\right) = 1 - \left(\frac{1}{2}\right) = \frac{1}{2}
 \end{align*}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Błądzący pijak w 2D - problem Polya'i]
 
@@ -367,19 +377,97 @@ albo na północ albo na południe i jednocześnie
 jeden krok albo na wschód albo na zachód (czyli chodzi po "przekątnych"). 
 Oblicz prawdopodobieństwo powrotu do punktu początkowego.
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
+\begin{solution}
 
-\vspace*{2cm}
-{\bf FIX ME}
-\vspace*{2cm}
+Oznaczmy $p(0|2n)$ jako prawdopodobieństwo znalezienia się w odległości $x=0$ 
+od punktu początkowego po $n$ krokach. Ruch w obu kierunkach jest niezależny,
+a kroki zachodzą z takim samym prawdopodobieństwem, 
+więc $ p(0|2n) = p(0|2n)$. By być w odległości $x=0$ po $n$ krokach,
+trzeba wykonać równą liczbę kroków w kierunku "do przodu" i "do tyłu".
+
+Prawdopodobieństwo takiej konfiguracji to:
+\begin{align*}
+p_{\text{konf}}(0|2n) = \frac{1}{2}^{n} \cdot \frac{1}{2}^{n}
+\end{align*}
+
+Musimy jeszcze uwzględnić liczbę konfiguracji, które spełniają warunek $x=0$.
+Liczba takich konfiguracji to liczba sposobów wyboru $n$ kroków "do przodu" 
+spośród $2n$ kroków, czyli:
+\begin{align*}
+C(2n, n) = \frac{(2n)!}{n! \cdot n!}
+\end{align*}
+
+Ostatecznie prawdopodobieństwo znalezienia się w odległości $x=0$ po $n$ krokach to:
+\begin{align*}
+p(0|2n) = C(2n, n) \cdot p_{\text{konf}}(0|2n) = \frac{(2n)!}{n! \cdot n!} \cdot \frac{1}{2}^{2n}
+\end{align*}
+
+Prawdopodobieństwo ruchu w obu kierunkach są niezależne, 
+i takie same, więc prawdopodobieństwo powrotu do punktu początkowego 
+po $2n$ krokach to:
+\begin{align*}
+p_{\text{powrót}}(2n) = p(0|2n) \cdot p(0|2n) = \left(\frac{(2n)!}{n! \cdot n!} \cdot \frac{1}{2}^{2n}\right)^2
+\end{align*}
+
+Zajmijmy się teraz asymptotycznym zachowaniem tego prawdopodobieństwa dla dużych $n$.
+Korzystamy z przybliżenia Stirlinga dla silni:
+\begin{align*}
+n! \approx \sqrt{2\pi n} \left(\frac{n}{e}\right)^n
+\end{align*}
+
+Zatem:
+\begin{align*}
+\frac{(2n)!}{n! \cdot n!} \approx \frac{\sqrt{4\pi n} \left(\frac{2n}{e}\right)^{2n}}{\left(\sqrt{2\pi n} \left(\frac{n}{e}\right)^n\right)^2} = \frac{\sqrt{4\pi n} \left(\frac{2n}{e}\right)^{2n}}{2\pi n \left(\frac{n}{e}\right)^{2n}} = \\
+\frac{\sqrt{4\pi n} \cdot 2^{2n} \cdot n^{2n} \cdot e^{-2n}}{2\pi n \cdot n^{2n} \cdot e^{-2n}} = \frac{\sqrt{4\pi n} \cdot 2^{2n}}{2\pi n} = 
+\frac{2^{2n}}{\sqrt{\pi n}}
+\end{align*}    
+
+Czyli $p(0|2n)$ można przybliżyć jako:
+\begin{align*}
+p(0|2n) \approx \frac{2^{2n}}{\sqrt{\pi n}} \cdot \frac{1}{2}^{2n} = \frac{1}{\sqrt{\pi n}}
+\end{align*}
+
+Prawdopodobieństwo powrotu do punktu początkowego po $2n$ krokach to:
+\begin{align*}
+p_{\text{powrót}}(2n) \approx \left(\frac{1}{\sqrt{\pi n}}\right)^2 = \frac{1}{\pi n}
+\end{align*}
+
+Prawdopodobieństwo powrotu do punktu początkowego w dowolnej liczbie kroków 
+to suma prawdopodobieństw powrotu po $2n$ krokach dla wszystkich $n$:
+\begin{align*}
+P_{\text{powrót}} = \sum_{n=1}^{\infty} p_{\text{powrót}}(2n) \approx \sum_{n=1}^{\infty} \frac{1}{\pi n}
+\end{align*}
+
+Szereg $\sum_{n=1}^{\infty} \frac{1}{n}$ jest rozbieżny, więc $P_{\text{powrót}}$ 
+jest nieskończone, w szczególności $P_{\text{powrót}} > 1$. Oznacza to, że pijak 
+z wielokrotnie powróci do punktu początkowego, czyli conajmnioej jeden powrót jest 
+niemal pewny. Niemal, bo łatwo wskazać ścieżkę o niezerowym prawdopodobieństwie, 
+która prowadzi do nieskończonej ucieczki od punktu początkowego, 
+ale prawdopodobieństwo tej ścieżki jest bliskie 0.
 
 
-\textbf{Odpowiedź:} Prawdopodobieństwo powrotu do punktu początkowego wynosi $p = 1$.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{2cm}
+
+{\bf Dodatek:} w przypadku ruchu w trzech wymiarach, prawdopodobieństwo 
+powrotu do punktu początkowego ma postać:
+\begin{align*}
+P_{\text{powrót}} =  \frac{1}{\pi^{3/2}} \sum_{n=1}^{\infty} \frac{1}{n^{3/2}}
+\end{align*}
+
+Szereg $1/n^{3/2}$ jest zbieżny, a jego suma to $\zeta(3/2) \approx 2.6124$, 
+więc prawdopodobieństwo powrotu do punktu początkowego to 
+\begin{align*}
+P_{\text{powrót}} \simeq \frac{1}{\pi^{3/2}}{\zeta(3/2)} \approx \frac{2.6124}{\pi^{3/2}} \approx 0.382
+\end{align*}
+
+{\bf Uwaga:} wartość numeryczna jest mocno przybliżona, bo istotny wkład 
+mają prawdopodobieństwa dla małej liczby kroków, a tam przybliżenie Stirlinga 
+jest słabe.
+
 \newpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Przypadkowy pociąg]
 
 W pewnym kraju po torach jeżdżą lokomotywy z numerami $1 \ldots N$. 
@@ -388,9 +476,7 @@ Oszacuj na podstawie tej informacji całkowitą liczbę pociągów w tym kraju.
 Rozważ też drugą wersję tego zadania, w której napotkaliśmy 5 pociągów, 
 z których największy numer to 60.
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
+\begin{solution}
 
 Mamy przed sobą zagadnienie estymacji parametru rozkładu prawdopodobieństwa
 na podstawie danych - tym zajmuje się estymacja parametryczna. 
@@ -453,8 +539,10 @@ E[max|N, n] = \frac{n}{n+1} \cdot N = \frac{5}{6} \cdot N
 \hat{N}_{unbias} = \frac{n+1}{n} \cdot N_{obs} = \frac{6}{5} \cdot 60 = 72
     \end{align*}    
 \end{itemize}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Roztrzepana sekretarka]
 
@@ -462,9 +550,7 @@ Sekretarka przygotowała do wysłania $N$ listów i $N$ zaadresowanych kopert,
 ale włożyła listy do kopert w sposób przypadkowy. Ilu średnio odbiorców
 dostanie swój list?
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
+\begin{solution}
 
 Zagadnienie możemy sformułować następująco: 
 \begin{itemize}
@@ -499,8 +585,10 @@ Przypomnienie skąd się biorą człony w rozkładzie wielomianowym:
 \item $(1-p)^{N-k}$ -- prawdopodobieństwo, że pozostałe N-k kopert jest źle zaadresowanych
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Te same urodziny]
 
@@ -513,10 +601,8 @@ Przy jakiej minimalnej liczbie osób, N, prawdopodobieństwo tego,
 
 wynosi nie mniej niż $1/2$?
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
-
+\begin{solution}
+    
 a) zagadnienie rozwiążemy korzystając z dopełnienia, czyli 
 obliczymy prawdopodobieństwo, że wszyscy mają różne urodziny 
 i odejmiemy je od 1. Mnożymy prawdopodobieństwa, że każda 
@@ -579,8 +665,10 @@ N \geq \frac{\log(1/2)}{\log(1 - 1/365)} = 252.7
 \end{align*}
 
 Czyli potrzebujemy co najmniej 253 osób.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Rozkręcone działo]
 
@@ -588,10 +676,9 @@ Działo obracające się ze stałą prędkością kątową strzela w losowo wybr
 Wyznaczyć rozkład prawdopodobieństwa położenia punktu trafienia na ekranie 
 znajdującym się w odległości $d$ od działa.
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
 
+\begin{solution}
+    
 Zagadnienie sprowadza się do zamiany zmiennych losowych:
 kąta wystrzału $\varphi$ na położenie punktu trafienia $x$ na ekranie.
 Rozkład prawdopodobieństwa kąta wystrzału jest rozkładem 
@@ -622,8 +709,9 @@ P(x) = P(\varphi) \cdot \left|\frac{d\varphi}{dx}\right| =
 
 Uzyskany rozkład prawdopodobieństwa jest nazywany  rozkładem Cauchy'ego. 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Igła Buffona (1733)]
 
@@ -631,10 +719,8 @@ Rzucamy w sposób przypadkowy igłę o długości $2l$ na płaszczyznę,
 na której narysowano proste równoległe odległe o $2a$ ($a > l$). 
 Jakie jest prawdopodobieństwo przecięcia przez igłę którejkolwiek prostej?
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
-
+\begin{solution}
+    
 Wynik rzutu igłą opisujemy dwiema zmiennymi losowymi:
 \begin{itemize}
 \item $x$ -- odległość środka igły od najbliższej prostej
@@ -670,8 +756,10 @@ Komentarze:
           ponieważ kluczową rolę odgrywa rzut długości igły/kluski na oś prostopadłą 
           do prostych, a ten jest taki sam dla każdej igły o tej samej długości.
 \end{enumerate}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Naczynie z gazem]
 
@@ -689,10 +777,8 @@ znajdować się w dowolnym miejscu pojemnika, a zatem prawdopodobieństwo,
     \item Spróbuj przewidzieć, jaką wartość powinna osiągać dyspersja $<(N - <N>)^2>$ kiedy $V \to V_0$. Czy odpowiedź z punktu b) zgadza się z tymi przewidywaniami?
 \end{enumerate}
 
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
 
+\begin{solution}
 
 \begin{enumerate}[a)]
     \item Jaka jest średnia liczba cząstek w $V$? \\
@@ -725,5 +811,7 @@ znajdować się w dowolnym miejscu pojemnika, a zatem prawdopodobieństwo,
     \end{align*}
 \end{enumerate}
 
+\end{solution}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
