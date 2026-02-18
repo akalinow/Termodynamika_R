@@ -223,54 +223,141 @@ Ostatecznie postać rozkładu prawdopodobieństa w granicy ciągłej to:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Równanie dyfuzji]
 
-Na wykładzie wypisaliśmy równanie Master dla jednowymiarowego 
-błądzenia przypadkowego i przeszliśmy do granicy ciągłej, 
-co doprowadziło nas do jednowymiarowego równania dyfuzji:
-\[
+Proszę rozwiązać jednowymiarowe równanie dyfuzji:
+\begin{align*}
     \frac{\partial c}{\partial t} = D \frac{\partial^2 c}{\partial x^2}
-\]
+\end{align*}
 
-Chciałbym, żebyście znaleźli jego rozwiązanie dla warunku początkowego $c(x, 0) = \delta(x)$, otrzymując Gaussa:
-\[
-    p = \frac{1}{\sqrt{4\pi Dt}} e^{-\frac{x^2}{4Dt}}
-\]
+z warunkiem początkowym $c(x, 0) = \delta(x)$ i brzegowym 
+$c(x \to \pm \infty, t) = 0$.
 
-To można robić na kilka sposobów, np. metodą skalowania lub przez transformację Fouriera. Skomentujcie, że finalnie dostajemy to samo co w zadaniu 1.
+{\bf Wskazówki:}
+
+\begin{solution}
+
+Rozwiążemy to równianie w przestrzeni odwrotnej do  
+której przejedziemy korzystając z transformacji Fouriera:
+\begin{align*}
+    \hat{c}(k, t) = \int_{-\infty}^{\infty} c(x, t) e^{-ikx} dx \\
+    c(x, t) =  \int_{-\infty}^{\infty} \hat{c}(k, t) e^{ikx} dk
+\end{align*}
+
+W stawiamy $c(x, t)$ wyrażone przez odwrotną transformację Fouriera do równania:
+\begin{align*}
+    \frac{\partial \hat{c}}{\partial t} \int_{-\infty}^{\infty} \hat{c}(k,t) e^{ikx} dk = 
+     D\frac{\partial^{2}}{\partial x^2}  \int_{-\infty}^{\infty} \hat{c}(k,t) e^{ikx} dk \\
+    \int_{-\infty}^{\infty} \frac{\partial \hat{c}(k,t)}{\partial t} e^{ikx} dk = 
+     D \int_{-\infty}^{\infty} \hat{c}(k,t) \frac{\partial^2}{\partial x^2} e^{ikx}dk \\
+    \int_{-\infty}^{\infty} \frac{\partial \hat{c}(k,t)}{\partial t} e^{ikx} dk = 
+     D \int_{-\infty}^{\infty} \hat{c}(k,t) (-k^2) e^{ikx}dk \\
+\end{align*}
+
+Porównujemy wyrażenia podcałkowe:
+\begin{align*}
+    \frac{\partial \hat{c}(k,t)}{\partial t} = -Dk^2 \hat{c}(k,t)
+\end{align*}
+
+i mamy równanie różniczkowe pierwszego rzędu dla $\hat{c}(k,t)$, 
+którego rozwiązaniem jest:
+\begin{align*}
+    \hat{c}(k,t) = \hat{c}(k,0) e^{-Dk^2 t}
+\end{align*}
+
+Warunek początkowy $c(x, 0) = \delta(x)$ w przestrzeni odwrotnej to $\hat{c}(k,0) = 1$,
+więc ostatecznie:
+\begin{align*}
+    \hat{c}(k,t) = e^{-Dk^2 t}
+\end{align*}
+
+Wracamy do przestrzeni rzeczywistej:
+\begin{align*}
+    c(x,t) = \int_{-\infty}^{\infty} e^{-Dk^2 t} e^{ikx} dk = 
+    \int_{-\infty}^{\infty} e^{-Dk^2 t + ikx} dk = 
+    \frac{1}{\sqrt{4\pi Dt}} e^{-\frac{x^2}{4Dt}}
+\end{align*}
+
+Ostatecznie:
+
+\begin{align*}
+    c(x, t) = \frac{1}{\sqrt{4\pi Dt}} e^{-\frac{x^2}{4Dt}}
+\end{align*}
+
+\newpage
+\end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Samochody i ciężarówki]
 
-Wiadomo, że średnio na cztery ciężarówki jadące po drodze za trzema 
+W gazetach napisano, że średnio na cztery ciężarówki jadące po drodze za trzema 
 jedzie samochód osobowy, podczas gdy wśród pięciu samochodów osobowych 
-jest średnio tylko jeden, za którym jedzie ciężarówka. Jaka część pojazdów 
-na drogach to ciężarówki?
+jest średnio tylko jeden, za którym jedzie ciężarówka. 
+Jaka część pojazdów na drogach to ciężarówki?
 
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-
-Modelowanie problemu za pomocą stanów $C$ (ciężarówka) i $S$ (samochód osobowy). Przejścia między stanami:
-\[
-    p(C \to C) = \frac{1}{4}, \quad p(C \to S) = \frac{3}{4}, \quad p(S \to C) = \frac{1}{5}, \quad p(S \to S) = \frac{4}{5}
-\]
-
-Macierz przejść:
-\[
-    p = \begin{bmatrix}
-        \frac{1}{4} & \frac{3}{4} \\
-        \frac{1}{5} & \frac{4}{5}
+Zagadnienie rozwiążemy korzystając z łańcucha Markowa, czyli modelując 
+problem za pomocą stanów $C$ (ciężarówka) i $S$ (samochód osobowy):
+\begin{align*}
+    P = \begin{bmatrix}
+        P_C \\
+        P_S
     \end{bmatrix}
-\]
+\end{align*}
 
-Rozwiązanie stacjonarne:
-\[
-    P_{C}^{eq} = \frac{4}{19}, \quad P_{S}^{eq} = \frac{15}{19}
-\]
 
-Czas powrotu ciężarówki: $T_C = \frac{1}{P_C^{eq}} = \frac{19}{4}$, czyli średnio trzeba odczekać pięć pojazdów.
+Kolejne samochody jadące za sobą tworzą sekwencję stanów, a 
+prawdopodobieństwa przejścia między stanami można odczytać z treści zadania:
+\begin{align*}
+    p(C \to C) = \frac{1}{4}, \quad p(C \to S) = \frac{3}{4}, \quad p(S \to C) = \frac{1}{5}, \quad p(S \to S) = \frac{4}{5}
+\end{align*}
+
+Przejścia między stanami można zapisać w postaci macierzy:
+\begin{align*}
+    \hat{p} = \begin{bmatrix}
+        p(C \to C) & p(S \to C) \\
+        p(C \to S) & p(S \to S)
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        \frac{1}{4} & \frac{1}{5} \\
+        \frac{3}{4} & \frac{4}{5}
+    \end{bmatrix}
+\end{align*}
+
+Ewolucja rozkładu pojazdów to $P(t) = \hat{p}P(0)$.
+Interesuje nas rozkład stacjonarny, czyli taki, który nie zmienia się w czasie:
+\begin{align*}
+    P^{eq} = \hat{p} P^{eq} = \begin{bmatrix}
+        \frac{1}{4} & \frac{1}{5} \\
+        \frac{3}{4} & \frac{4}{5}
+    \end{bmatrix} \begin{bmatrix}
+        P_C^{eq} \\
+        P_S^{eq}
+    \end{bmatrix} 
+\end{align*}
+
+Do warunku stacjinarności dodajemy warunek normalizacji $P_C^{eq} + P_S^{eq} = 1$.
+Otrzymujemy układ równań:
+\begin{align*}
+    P_C^{eq} = \frac{1}{4} P_C^{eq} + \frac{1}{5} P_S^{eq} \\
+    P_S^{eq} = \frac{3}{4} P_C^{eq} + \frac{4}{5} P_S^{eq} \\
+    P_C^{eq} + P_S^{eq} = 1
+\end{align*}
+
+Wstawiamy warunek normalizacji do pierwszego równania:
+\begin{align*}
+    P_C^{eq} = \frac{1}{4} P_C^{eq} + \frac{1}{5} (1 - P_C^{eq}) \\
+    P_C^{eq} = \frac{1}{4} P_C^{eq} + \frac{1}{5} - \frac{1}{5} P_C^{eq} \\
+    P_C^{eq} = \frac{1}{5} + \frac{1}{20} P_C^{eq} \\
+    \frac{19}{20} P_C^{eq} = \frac{1}{5} \\
+    P_C^{eq} = \frac{1}{5} \cdot \frac{20}{19} = \frac{4}{19}
+\end{align*}
+
+Stacjonarna wartość spotkania ciężarówki to $P_C^{eq} = \frac{4}{19} \simeq 0.2$, 
+Czas powrotu ciężarówki: $T_C = \frac{1}{P_C^{eq}} = \frac{19}{4} \simeq 5$, 
+czyli średnio trzeba odczekać pięć pojazdów.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -285,19 +372,120 @@ Znaleźć rozkład równowagowy i odpowiednie równanie ciągłe.
 {\bf Rozwiązanie:}
 \vspace{1cm}
 
-Rozkład równowagowy:
-\[
-    P^{eq}(n) = \frac{1-2p}{2(1-p)} \left(\frac{p}{1-p}\right)^{n-1}, \quad n \geq 1
-\]
+Poszukujemy rozkładu stacjonarnego, czyli takiego, który nie zmienia się w czasie.
+W stanie stacjonarnym prawdopodobieństwo prawdopodobieństwa przejść "w tę i z powrotem"
+są takie same, czyli:
+\begin{align*}
+    P^{eq}(n) p(n \to m) = P^{eq}(m) p(m \to n)
+\end{align*}
 
-Równanie ciągłe:
-\[
+Dla stanu początkowego i następnych mamy:
+\begin{align*}
+    P^{eq}(0) p(0 \to 1) = P^{eq}(1) p(1 \to 0) \\
+    P^{eq}(i) p(i \to i+1) = P^{eq}(i+1) p(i+1 \to i) 
+\end{align*}
+
+Wyrażamy $P^{eq}(i)$ przez $P^{eq}(0)$ i pamiętamy, że 
+$P(0 \to 1) = 1$, $P(i \to i+1) = p$, $P(i \to i-1) = 1-p$:
+\begin{align*}
+    P^{eq}(1) = P^{eq}(0) \frac{p(0 \to 1)}{p(1 \to 0)} = P^{eq}(0) \frac{1}{1-p} \\
+    P^{eq}(2) = P^{eq}(1) \frac{p(1 \to 2)}{p(2 \to 1)} = P^{eq}(1) \frac{p}{1-p} = 
+    P^{eq}(0) p^{1}\left(\frac{1}{1-p}\right)^2 \\
+    P^{eq}(n) = P^{eq}(0) p^{n-1}\left(\frac{1}{1-p}\right)^n = 
+    P^{eq}(0) \left(\frac{p}{1-p}\right)^{n} \frac{1}{p}
+\end{align*}
+
+Współczynnik $\frac{p}{1-p}$ jest mniejszy od jedności, 
+więc szereg jest zbieżny i możemy znaleźć $P^{eq}(0)$ z warunku normalizacji.
+Sumując szereg trzeba pamiętać, że wyrazy 0 i 1 mają inną postać niż pozostałe
+, więc sumujemy od 2 do nieskończoności, a potem dodajemy $P^{eq}(0)$ i $P^{eq}(1)$:
+
+
+\begin{align*}
+    \sum_{n=1}^{\infty} P^{eq}(n) = 1 \\
+    P^{eq}(0) + \sum_{n=1}^{\infty} P^{eq}(n) = 1 \\
+    P^{eq}(0) + \frac{1}{p}\sum_{n=1}^{\infty} P^{eq}(0) \left(\frac{p}{1-p}\right)^{n} = 1\\
+    P^{eq}(0) + \frac{1}{p} P^{eq}(0) \sum_{n=1}^{\infty} \left(\frac{p}{1-p}\right)^{n} = 1\\
+    P^{eq}(0) \left(1 + \frac{1}{p} \cdot \frac{\frac{p}{1-p}}{1 - \frac{p}{1-p}}\right) = 1 \\
+    P^{eq}(0) \left(1 + \frac{1}{p} \cdot \frac{p}{1-2p}\right) = 1 \\
+    P^{eq}(0) \left(1 + \frac{1}{1-2p}\right) = P^{eq}(0) \frac{1-2p + 1}{1-2p} = P^{eq}(0) \frac{2(1-p)}{1-2p} = 1 \\
+    P^{eq}(0) = \frac{1-2p}{2(1-p)}
+\end{align*}
+
+Stąd $P^{eq}(n)$:
+\begin{align*}
+    P^{eq}(n) = P^{eq}(0) \left(\frac{p}{1-p}\right)^{n} \frac{1}{p} = 
+    \frac{1-2p}{2(1-p)} \left(\frac{p}{1-p}\right)^{n-1} = \\
+    = \frac{1-2p}{2} \left(\frac{p}{1-p}\right)^{n},~ n \geq 1
+\end{align*}
+
+WAriant ciągły. Zaczynamy od równania master ewolucji rozkładu prawdopodobieństwa:
+\begin{align*}
+    P(i, t + \delta t) =  P(i-1, t) p(i-1 \to i) + P(i+1, t) p(i+1 \to i) = \\
+    = P(i-1, t) p + P(i+1, t) (1-p)
+\end{align*}
+
+
+Stany $i$ identyfikujemy z punktami na osi $x$, czyli $i \to x$, a odległość między 
+punktami to $\delta x$. Zakładamy, że prawdopodobieństwo przejścia maleje liniowo z 
+odległością między punktami: 
+\begin{align*}
+    p(i \to i+1) = p = \frac{1}{2} - \alpha \delta x 
+\end{align*}
+
+Wstawiamy do równania ewolucji:
+\begin{align*}
+    P(x, t + \delta t) =  P(x - \delta x, t) \left(\frac{1}{2} - \alpha \delta x\right) + P(x + \delta x, t) \left(\frac{1}{2} + \alpha \delta x\right)
+\end{align*}
+
+Dązymy do uzyskania pochodnej po czasie, więc odejmujemy $P(x, t)$ 
+i dzielimy przez $\delta t$:
+\begin{align*}
+    \frac{P(x, t + \delta t) - P(x, t)}{\delta t} =  \\
+    = \frac{1}{2} \left[ \frac{P(x - \delta x, t) - 2P(x, t) + P(x + \delta x, t)}{\delta t} \right] + 
+    \alpha \delta x \left[ \frac{P(x + \delta x, t) - P(x - \delta x, t)}{\delta t} \right]
+\end{align*}
+
+Wiążemy $\delta t$ i $\delta x$ wprowadzając skończone  współczynniki 
+dyfuzji $D = \frac{(\delta x)^2}{2\delta t}$ 
+i  dryfu $U = \alpha (\delta x)^2 / \delta t$:
+\begin{align*}
+    \frac{P(x, t + \delta t) - P(x, t)}{\delta t} =  \\
+    = D \frac{P(x - \delta x, t) - 2P(x, t) + P(x + \delta x, t)}{(\delta x)^2} +
+    U \frac{P(x + \delta x, t) - P(x - \delta x, t)}{\delta x}
+\end{align*}
+
+W granicy $\delta t \to 0$ i  $\delta x \to 0$ otrzymujemy równianie adwekcji-dyfuzji:
+\begin{align*}
     \frac{\partial P}{\partial t} = D \frac{\partial^2 P}{\partial x^2} + U \frac{\partial P}{\partial x}
-\]
+\end{align*}
 
-Rozwiązanie równowagowe:
-\[
-    P^{eq} = e^{-\frac{Ux}{D}}
-\]
+Poszukujemy rozwiązania równowagowego, czyli takiego, które nie zmienia się w czasie:
+\begin{align*}
+    0 = D \frac{\partial^2 P^{eq}}{\partial x^2} + U \frac{\partial P^{eq}}{\partial x} = \\
+    \frac{\partial }{\partial x}\left(D \frac{\partial P^{eq}}{\partial x} + U P^{eq}\right) = 0 \rightarrow \\
+    D \frac{\partial P^{eq}}{\partial x} + U P^{eq} = C \\
+    \frac{\partial P^{eq}}{\partial x} = -\frac{U}{D} P^{eq} + \frac{C}{D}
+\end{align*}
+
+Mamy równianie niejednorodne, którego rozwiązaniem jest suma rozwiązania jednorodnego i
+szczególnego. Rozwiązanie jednorodne to $P^{eq}_{h} = e^{-\frac{Ux}{D}}$, 
+a rozwiązanie szczególne to $P^{eq}_{p} = \frac{C}{U}$, czyli jakaś stała. 
+Ostatecznie dostajemy:
+\begin{align*}
+    P^{eq}(x) = A e^{-\frac{Ux}{D}} + B
+\end{align*}
+
+Stałe $A$ i $B$ można znaleźć z warunków brzegowych:
+\begin{align*}
+    P^{eq}(x \to 0) = 1 \rightarrow A + B = 1 \\
+    P^{eq}(x \to \infty) = 0 \rightarrow B = 0 \to A = 1
+\end{align*}
+
+Finalnie:
+\begin{align*}
+    P^{eq}(x) = e^{-\frac{Ux}{D}}
+\end{align*}
+
 
 \end{document}
