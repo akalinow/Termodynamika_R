@@ -1,31 +1,252 @@
-\documentclass[T1]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\documentclass[11pt,a4paper]{article}
+
 \usepackage[polish]{babel}
-\usepackage{amsmath}
-\usepackage[table,xcdraw]{xcolor}
-\usepackage{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
 \usepackage{hyperref}
-\geometry{a4paper, margin=1in}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
 
-\title{TIFS R - Ćwiczenia Tydzień 3}
-\author{}
-\date{}
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
 
-\begin{document}
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
 
-\maketitle
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
 
-\section*{Model Dyfuzji Bernoulliego-Laplace'a}
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
 
-Model dyfuzji Bernoulliego-Laplace'a, znany też jako model urnowy Bernoulliego, jest całkiem nieźle opisany pod linkiem:
-\begin{center}
-\url{https://www.randomservices.org/random/markov/BernoulliLaplace.html#rev1}
-\end{center}
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\  {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\  {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
-\subsection*{Model}
-Załóżmy, że mamy dwie urny: $0$ i $1$. Urna $0$ zawiera $j$ kul, a urna $1$ zawiera $k$ kul. Spośród tych $j + k$ kul $r$ jest czerwonych. W każdej chwili czasu wybieramy po jednej kuli z każdej urny i zamieniamy je miejscami. Możemy o tym myśleć jako o modelu mieszania dwóch nieściśliwych płynów.
+%dynamic solutions hiding
+\usepackage{comment}
 
-\textbf{Intuicje:} Czego się spodziewamy? Po długim czasie ułamki czerwonych kul po obu stronach wyrównają się. Jeśli początkowo np. $\frac{x}{k} \gg \frac{r - x}{j}$ (gdzie $x$ to liczba czerwonych kul w urnie $1$), to ułamek kul czerwonych w urnie $1$ będzie szybko malał, a w urnie $0$ - rósł. Po osiągnięciu stanu równowagi zaczną one fluktuować względem $\frac{r}{j + k}$, przy czym fluktuacje te będą tym wyraźniejsze, im mniej jest kul. Załóżmy, że $r \ll j, k$ (mało czerwonych kul - to pozwoli uniknąć różnych przypadków specjalnych).
+\newif\ifshowsolutions
 
+%\showsolutionstrue   % ← show solutions
+% \showsolutionsfalse % ← hide solutions
+
+\def\showsolutions{}
+
+\newif\ifshowsolutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
+
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R 
+  Zestaw III: Rachunek prawdopodobieństwa - kontynuacja
+  }} \\  
+\end{centering}
+
+\vspace{1cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\zadanie[Model dyfuzji Bernoulliego-Laplace'a]
+
+Rozważmy model mieszania dwu, nieściśliwych, płynów. 
+Płyny są reprezentowane przez dwie urny:  A, B, w których znajduje się
+$_A$ i n$_B$ kul. Kule mają dwa kolory: czerwony i czarny.
+Kul czerwonych jest n$_{r}$, a kul czarnych n$_{c}$ = n$_{A}$ + n$_{B}$ - n$_{r}$.
+W kolejnych chwilach czasu wybieramy po jednej kuli z każdej urny i zamieniamy je miejscami.
+Proszę:
+\begin{enumerate}
+  \item oszacować równowagową wartość oczekiwaną ułamka 
+        kul czerwonych w urnach A i B: $\langle n_{r}/n_A \rangle_{eq}$,
+        $\langle n_{r}/n_B \rangle_{eq}$
+  \item znaleźć stacjonarny rozkład prawdopodobieństwa 
+        liczby kul czerwonych w urnie A: $P^{eq}(n_{r})$,
+   \item znaleźć czas powrotu do pewnego stanu historycznego
+\end{enumerate}
+
+\begin{solution}
+
+\newpage  
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[Psy Ehrenfestów]
+
+
+W modelu psów Ehrenfestów rozważa się dwa psy, A i B, na których łącznie 
+siedzi N pcheł. W kolejnych chwilach czasu losowo wybrana pchła przeskakuje 
+z psa na psa. Model ten miał w założeniu opisywać dynamikę
+mieszania dwóch gazów w pojemnikach A i B o równej objętości.
+Proszę:
+\vspace{0.5cm}
+\begin{enumerate}
+  \item wypisać warunkowe prawdopodobieństwa przejść z jednego stanu do drugiego:
+  \begin{align*}
+    p_{i,j} = P(n_{A}(t+1) = i | n_{A}(t) = j)
+  \end{align*}
+  \item Rozważ modyfikację tego modelu, w której w pojemniku A znajduje się demon, 
+  który - z prawdopodobieństwem $\lambda$ - próbuje powstrzymać cząstkę przed 
+  przeskoczeniem do pojemnika B. Demon nie zmienia prawdopodobieństw skoków z B do A. 
+  W rezultacie
+$p^{\lambda}_{k-1,k} = (1 - \lambda) p^0_{k-1,k}$;
+$p^{\lambda}_{k,k} = \lambda p^0_{k-1,k}$;
+$p^{\lambda}_{j,k} = p^0_{j,k}$ dla $j \neq k, k-1$
+gdzie $p^0_{j,k}$ są standardowymi prawdopodobieństwami przejścia 
+(bez demona, dla $\lambda = 0$). Zauważmy, że w
+wyniku działania demona pojawia się niezerowa wartość $p^{\lambda}_{k,k}$.
+
+Dla modelu z demonem wypisz równanie na ewolucję rozkładu $P_i(t)$, oblicz 
+rozkład równowagowy $P_i^{eq}$ oraz $\langle N_A \rangle^{eq}$ - średnią 
+liczbę cząstek w pojemniku A w stanie równowagi. Zinterpretuj otrzymane wyniki.
+
+{\bf Wskazówka:} Możesz (ale nie musisz) skorzystać z warunku równowagi szczegółowej
+
+
+  \item znajdź ciągłą wersję równania na ewolucję rozkładu prawdopodobieństwa, 
+  interpretując nadmiarową liczbę cząstek w pojemniku A: $k = N_A - N/2$
+  jako położenie (x) pewnej efektywnej cząstki Browna: $x = k\delta x$ oraz 
+  przyjmując, że skoki następują co odstęp czasu $\delta t$ a następnie 
+  przechodząc do granicy $\delta x \to 0$, $ \delta t \to 0$, $N \to \infty$ 
+  w taki sposób, że: 
+  $\frac{\delta x^2}{\delta t} = D$ i 
+  $\frac{\delta x}{\delta t} = \Gamma$, gdzie D i $\Gamma$ są pewnymi stałymi.
+
+\end{enumerate}
+
+\begin{solution}
+
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[Prawo wzrostu entropii]
+
+Rozważny układ o n stanach, między którymi zachodzą przejścia 
+z prawdopodobieństwami $p_{ij}$ na jednostkę czasu. W stanie 
+równowagi wszystkie stany są równoprawdopodobne. 
+W stanie początkowym układ znajduje się w stanie nierównowagowym,
+w którym prawdopodobieństwa obsadzeń poszczególnych stanów dane są przez $P_i$.
+Pokaż, że w takim przypadku z warunku mikroskopowej odwracalności 
+(równowagi szczegółowej) dla (jednorodnego) rozkładu równowagowego:
+\begin{align*}
+  p_{ij} = p_{ji}
+\end{align*}
+i entropii zdefiniowanej jako:
+\begin{align*}
+  S = -\sum_i P_i \ln P_i
+\end{align*}
+wynika, że entropia rośnie z czasem, aż osiągnie wartość maksymalną w stanie równowagi.
+
+\begin{solution}
+  
+Obliczmy pochodną entropii względem czasu:
+\begin{align*}
+  \frac{dS}{dt} &= -\sum_i \frac{dP_i}{dt} \ln P_i - \sum_i P_i \frac{1}{P_i} \frac{dP_i}{dt} \\
+  &= -\sum_i \frac{dP_i}{dt} \ln P_i - \sum_i \frac{dP_i}{dt}
+\end{align*}
+
+Drugi człon sumy jest równy zero, 
+ponieważ suma zmian obsadzeń wszystkich stanów musi być równa zero -
+liczba cząstek jest stała, więc:
+\begin{align*}
+  \frac{dS}{dt} &= -\sum_i \frac{dP_i}{dt} \ln P_i
+\end{align*}
+
+Prawdopodobieństwo obsadzeń, $P_i$ możemy traktować jako 
+liczbę obsadzeń dla układu o stałej liczbie cząstek.
+Zmiana liczby obsadzeń jest dana równaniem Master:
+\begin{align*}
+  \frac{dP_i}{dt} &= \sum_j (p_{ji} P_j - p_{ij} P_i)
+\end{align*}
+
+Podstawiając to do wyrażenia na pochodną entropii, otrzymujemy:
+\begin{align*}
+  \frac{dS}{dt} &= -\sum_i \left( \sum_j (p_{ji} P_j - p_{ij} P_i) \right) \ln P_i \\
+  &= -\sum_{i,j} p_{ji} P_j \ln P_i + \sum_{i,j} p_{ij} P_i \ln P_i
+\end{align*}
+
+Korzystamy z warunku mikroskopowej odwracalności: $p_{ij} = p_{ji}$
+\begin{align*}
+  \frac{dS}{dt} &= \sum_{i,j} p_{ij} (P_i - P_j) \ln P_i
+\end{align*}
+
+By uprościć to wyrażenie, możemy dodać drugi taki sam człon, 
+ale z zamienionymi indeksami i oraz j:
+\begin{align*}
+  \frac{dS}{dt} &= \frac{1}{2} \sum_{i,j} p_{ij} (P_i - P_j) \ln P_i + \frac{1}{2} \sum_{i,j} p_{ij} (P_j - P_i) \ln P_j \\
+  &= \frac{1}{2} \sum_{i,j} p_{ij} (P_i - P_j) (\ln P_i - \ln P_j) = \\
+  &= \frac{1}{2} \sum_{i,j} p_{ij} (P_i - P_j) \ln \frac{P_i}{P_j}
+\end{align*}
+
+Zbadajmy człony sumy:
+\begin{align*}
+  (x-y)\ln(x/y) &= (x-y)(\ln x - \ln y) \\
+\end{align*}
+
+Możemy rozważyć trzy przypadki:
+\begin{itemize}
+  \item $x > y$: w tym przypadku $\ln(x/y) > 0$ i $x-y > 0$, więc cały człon jest dodatni
+  \item $x < y$: w tym przypadku $\ln(x/y) < 0$ i $x-y < 0$, więc cały człon jest dodatni
+  \item $x = y$: w tym przypadku $\ln(x/y) = 0$ i $x-y = 0$, więc cały człon jest równy zero
+\end{itemize}
+
+Ostatecznie, dla każdego członu sumy mamy:
+\begin{align*}
+  (P_i - P_j) \ln \frac{P_i}{P_j} \geq 0 \rightarrow \frac{dS}{dt} \geq 0
+\end{align*}
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
