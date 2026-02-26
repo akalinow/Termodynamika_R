@@ -65,10 +65,7 @@
 
 \newif\ifshowsolutions
 
-%\showsolutionstrue   % ← show solutions
-% \showsolutionsfalse % ← hide solutions
-
-\def\showsolutions{}
+\def\showsolutions{}  %← show solutions. Comment out to hide solutions
 
 \newif\ifshowsolutions
 \ifdefined\showsolutions
@@ -88,7 +85,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{centering}
   {\bf {\Large
-  Termodynamika i Fizyka Statystyczna R 
+  Termodynamika i Fizyka Statystyczna R \\
   Zestaw I: Rachunek prawdopodobieństwa
   }} \\  
 \end{centering}
@@ -109,10 +106,6 @@ Jakie jest prawdopodobieństwo:
 
 
 \begin{solution}
-
-Poszczególne próby są niezależne, więc prawdopodobieństwo 
-pozostania przy życiu po $N$ rundach to iloczyn prawdopodobieństw, $p_{0}$
-pozostania przy życiu w każdej z rund:
 
 Prawdopodobieństwo pozostania przy życiu w każdej rundzie, $p_{0}$, to:
 \begin{align*}
@@ -142,6 +135,11 @@ Wyobraźmy sobie jednorodny cylinder  (bębenek) z dodatkowym obciążeniem (nab
 które łamie jego symetrię obrotową. Jaka orientacja bębenka minimalizuje
 energię układu?
 
+W grze zwykle bierze udział więcej niż jeden zawodnik. W tej sytuacji trzeba 
+uwzględnić, prawdopodobieństwo zakończenia gry w każdej rundzie, przez 
+pozostałych graczy.
+
+
 \newpage
 \end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -169,7 +167,7 @@ w każdym z powyższych przypadków?
                 \item Samica - Samiec
             \end{itemize}
           Kombinacji jest 3, z czego tylko jedna spełnia warunek,           
-          że obie papugi to samce prawdopodobieństwo wynosi $\frac{1}{3}$.
+          że obie papugi to samce, więc prawdopodobieństwo wynosi $\frac{1}{3}$.
           Istotnym faktem jest że nie wiemy która z papug jest samcem, 
           więc musimy uwzględnić obie możliwości, że samiec jest pierwszą 
           lub drugą papugą.\\
@@ -190,7 +188,7 @@ w każdym z powyższych przypadków?
 \zadanie[Ława przysięgłych]
 
 Rozważ dwie ławy przysięgłych:
-\begin{enumerate}[(a)]
+\begin{enumerate}[A:]
     \item trzysobowa ława przysięgłych składa się z dwóch ``porządnych ludzi'', 
     każdy z których (niezależnie) wydaje sprawiedliwy wyrok z prawdopodobieństwem 
     $p$ oraz osobnika który po prostu rzuca monetą przed wydaniem wyroku. 
@@ -203,13 +201,13 @@ Która z tych ław przysięgłych wyda sprawiedliwy wyrok z większym prawdopodo
 
 \begin{solution}
     
-Prawdopodobieństwo, sprawiedliwego wyroku dla ławy A.
+Prawdopodobieństwo, sprawiedliwego wyroku dla ławy A:\\
 Sprawiedliwy wyrok będzie wydany jeśli dwu ławników wyda sprawiedliwy wyrok.
-Możemy to obliczyć na dwa sposoby:
+Prawdopodobieństwo takiej konfiguracji możemy to obliczyć na dwa sposoby:
 \begin{itemize}
     \item bezpośrednio, wypisując wszystkie możliwe kombinacje:
     \begin{itemize}
-        \item obu sprawiedliwych "trafiło", nie ma znaczenia wyrok trzeciego $p^{2}$
+        \item obu sprawiedliwych "trafiło", nie ma znaczenia wyrok trzeciego: $p^{2}$
         \item jeden sprawiedliwy trafił, drugi nie, a losowy wyrok jest sprawiedliwy.
                W tym wypadku musimy uwzględnić, że sprawiedliwych jest dwu:
                $2 p\cdot(1-p) \cdot \frac{1}{2}$
@@ -221,7 +219,7 @@ Możemy to obliczyć na dwa sposoby:
 
     \item obliczając prawdopodobieństwo, błędnego wyroku i biorąc jego dopełnienie:
     \begin{itemize}
-        \item obu sprawiedliwych "spudłowało", nie ma znaczenia wyrok trzeciego $(1-p)^{2}$
+        \item obu sprawiedliwych "spudłowało", nie ma znaczenia wyrok trzeciego: $(1-p)^{2}$
         \item jeden sprawiedliwy trafił, drugi nie, a losowy wyrok jest błędny.
                W tym wypadku musimy uwzględnić, że sprawiedliwych jest dwu:
                $2 p\cdot(1-p) \cdot \frac{1}{2}$
@@ -257,7 +255,7 @@ Gra składa się z dwóch etapów:
     \item prowadzący pyta gracza: ``Pozostajesz przy swoim wyborze czy go zmieniasz?''.
 \end{enumerate}
  
-Co ma zrobić gracz by zmaksymalizować prawdopodobieństwo wygranej, $p$?
+Co ma zrobić gracz by zmaksymalizować prawdopodobieństwo wygranej, $p$?\\
 Ile wynosi $p$ w przypadku pozostania przy swoim wyborze, 
 a ile w przypadku zmiany wyboru?
 
@@ -288,6 +286,49 @@ z prawdopodobieństwem $p_{0} = \frac{1}{3}$, albo w kierunku przeciwnym.
 Jakie jest prawdopodobieństwo uniknięcia upadku w granicy $t \to \infty$?
 
 \begin{solution}
+
+
+Niech $p^{+}$ oznacza prawdopodobieństwo, że będąc na pozycji $n+1$ 
+pijak, {\bf kiedykolwiek}, znajdzie się na pozycji $n$ (=bliżej przepaści).
+Rozważmy co się stanie, gdy pijak wykona pierwszy krok:
+
+\begin{itemize}
+    \item krok w kierunku przepaści (z prawdopodobieństwem $p_0$): od razu 
+    znajduje się na $n$ 
+    \item krok w kierunku przeciwnym (z prawdopodobieństwem $1-p_0$): znajduje 
+          się teraz na $n+2$. Aby znaleźć się na $n$ musi najpierw przesunąć
+          się na $n+1$ - to zachodzi z prawdopodobieństwem $p^{+}$ 
+          - a potem z $n+1$ na $n$ - to także z prawdopodobieństwem $p^{+}$.
+          Zatem prawdopodobieństwo przejścia 
+          z $n+2$ do $n$ to przejście $2 \to 1$ - z prawdopodobieństwem $p^{+}$,  
+          i potem $1 \to 0$ - z prawdopodobieństwem $p^{+}$,
+          co daje łącznie ${p^{+}}^2$
+\end{itemize}
+
+Zatem możemy zapisać:
+\begin{align*}
+    p^{+} = p_0 \cdot 1 + (1-p_0) \cdot (p^{+})^2
+\end{align*}
+
+Rozwiązaniem tego równania są:
+\begin{align*}
+    p^{+} = 1 \quad \text{or} \quad p^{+} = \frac{p_0}{1-p_0}
+\end{align*} 
+
+Rozwiązanie $p^{+} = 1$ jest odrzucamy jako niefizyczne, 
+ponieważ nie zależy od $p_{0}$, więc np. dla $p_{0} = 0$
+jest błędne.
+
+Wstawiając $p_0 = \frac{1}{3}$ otrzymujemy:
+\begin{align*}
+ \quad p^{+} = \frac{1/3}{1-1/3} = \frac{1}{2}
+\end{align*}
+
+Więc prawdopodobieństwo uniknięcia upadku to $1 - p^{+} = \frac{1}{2}$.
+
+\vspace{2cm}
+Inaczej z wykorzystaniem równania typu Master:
+
 
 Niech $p(n)$ oznacza prawdopodobieństwo uniknięcia upadku, 
 zaczynając z pozycji $n$ kroków od przepaści. 
@@ -357,7 +398,7 @@ Ostatecznie:
 \begin{align*}
 p(n) = \frac{1-2p_0}{1-p_0} \frac{1 - \left(\frac{p_0}{1-p_0}\right)^n}{1 - \frac{p_0}{1-p_0}} = \\
 \frac{1-2p_0}{1-p_0} \cdot \frac{1-p_0}{1-2p_0} \cdot \left[1 - \left(\frac{p_0}{1-p_0}\right)^n\right] = \\
-1 - \left(\frac{p_0}{1-p_0}\right)^n
+1 - \left(\frac{p_0}{1-p_0}\right)^n = 1 - (p^{+})^n
 \end{align*}
 
 Dla $p_0 = \frac{1}{3}$ i $n=1$ otrzymujemy:
@@ -380,9 +421,9 @@ Oblicz prawdopodobieństwo powrotu do punktu początkowego.
 \begin{solution}
 
 Oznaczmy $p(0|2n)$ jako prawdopodobieństwo znalezienia się w odległości $x=0$ 
-od punktu początkowego po $n$ krokach. Ruch w obu kierunkach jest niezależny,
+od punktu początkowego po $2n$ krokach. Ruch w obu kierunkach jest niezależny,
 a kroki zachodzą z takim samym prawdopodobieństwem, 
-więc $ p(0|2n) = p(0|2n)$. By być w odległości $x=0$ po $n$ krokach,
+więc $ p_{x}(0|2n) = p_{y}(0|2n)$. By być w odległości $x=0$ po $2n$ krokach,
 trzeba wykonać równą liczbę kroków w kierunku "do przodu" i "do tyłu".
 
 Prawdopodobieństwo takiej konfiguracji to:
@@ -406,7 +447,7 @@ Prawdopodobieństwo ruchu w obu kierunkach są niezależne,
 i takie same, więc prawdopodobieństwo powrotu do punktu początkowego 
 po $2n$ krokach to:
 \begin{align*}
-p_{\text{powrót}}(2n) = p(0|2n) \cdot p(0|2n) = \left(\frac{(2n)!}{n! \cdot n!} \cdot \frac{1}{2}^{2n}\right)^2
+p_{\text{2D}}(2n) = p(0|2n) \cdot p(0|2n) = \left(\frac{(2n)!}{n! \cdot n!} \cdot \frac{1}{2}^{2n}\right)^2
 \end{align*}
 
 Zajmijmy się teraz asymptotycznym zachowaniem tego prawdopodobieństwa dla dużych $n$.
@@ -429,18 +470,18 @@ p(0|2n) \approx \frac{2^{2n}}{\sqrt{\pi n}} \cdot \frac{1}{2}^{2n} = \frac{1}{\s
 
 Prawdopodobieństwo powrotu do punktu początkowego po $2n$ krokach to:
 \begin{align*}
-p_{\text{powrót}}(2n) \approx \left(\frac{1}{\sqrt{\pi n}}\right)^2 = \frac{1}{\pi n}
+p_{\text{2D}}(2n) \approx \left(\frac{1}{\sqrt{\pi n}}\right)^2 = \frac{1}{\pi n}
 \end{align*}
 
 Prawdopodobieństwo powrotu do punktu początkowego w dowolnej liczbie kroków 
 to suma prawdopodobieństw powrotu po $2n$ krokach dla wszystkich $n$:
 \begin{align*}
-P_{\text{powrót}} = \sum_{n=1}^{\infty} p_{\text{powrót}}(2n) \approx \sum_{n=1}^{\infty} \frac{1}{\pi n}
+P_{\text{powrót}} = \sum_{n=1}^{\infty} p_{\text{2D}}(2n) \approx \sum_{n=1}^{\infty} \frac{1}{\pi n}
 \end{align*}
 
 Szereg $\sum_{n=1}^{\infty} \frac{1}{n}$ jest rozbieżny, więc $P_{\text{powrót}}$ 
 jest nieskończone, w szczególności $P_{\text{powrót}} > 1$. Oznacza to, że pijak 
-z wielokrotnie powróci do punktu początkowego, czyli conajmnioej jeden powrót jest 
+z wielokrotnie powróci do punktu początkowego, czyli co najmniej jeden powrót jest 
 niemal pewny. Niemal, bo łatwo wskazać ścieżkę o niezerowym prawdopodobieństwie, 
 która prowadzi do nieskończonej ucieczki od punktu początkowego, 
 ale prawdopodobieństwo tej ścieżki jest bliskie 0.
@@ -481,7 +522,7 @@ z których największy numer to 60.
 Mamy przed sobą zagadnienie estymacji parametru rozkładu prawdopodobieństwa
 na podstawie danych - tym zajmuje się estymacja parametryczna. 
 Podstawowym narzędziem estymacji parametrycznej jest metoda największej wiarygodności,
-która polega na znalezieniu parametrów rozkładu, $\mu$ które maksymalizują funkcję 
+która polega na znalezieniu parametrów rozkładu, $\mu$, które maksymalizują funkcję 
 wiarygodności, czyli prawdopodobieństwo zaobserwowanych danych dla danego parametru 
 rozkładu:
 \begin{align*}
@@ -498,7 +539,7 @@ P(\text{numer pociągu} = n | N) = \frac{1}{N} \text{ dla } n = 1, 2, \ldots, N
 
 Rozważmy przypadki:
 \begin{itemize}
-    \item pojedynczy pomiar: $n = 60$
+    \item pojedynczy pomiar: $n = 60$.
     W naszym przypadku funkcja wiarygodności nie zależy danych, ale dane nakładają 
     ograniczenie na możliwe wartości parametru rozkładu: $N \geq 60$.
     Wartością minimalizującą funkcję wiarygodności jest więc $N = 60$.
@@ -531,7 +572,7 @@ E[\hat{N}] = \sum_{n=1}^N n \cdot P(n|N) = \sum_{n=1}^N n \cdot
     rozkładem prawdopodobieństwa maksimum z $n$ prób z rozkładu płaskiego $[0,N]$:
     Wartość oczekiwana tego rozkładu to:
     \begin{align*}
-E[max|N, n] = \frac{n}{n+1} \cdot N = \frac{5}{6} \cdot N
+E[max|N, n] \simeq \frac{n}{n+1} \cdot N = \frac{5}{6} \cdot N
     \end{align*}
 
     Korygujemy więc estymator, by był nieobciążony:
@@ -647,7 +688,7 @@ b) zagadnienie możemy sformułować następująco:
 
 \begin{itemize}
 \item N osób $\to$ N prób
-\item k osób urodziny tego samego dnia co my $\to$ k sukcesów
+\item k osób ma urodziny tego samego dnia co my $\to$ k sukcesów
 \end{itemize}   
  Rozkład prawdopodobieństwa liczby osób urodziny tego samego dnia co my 
 jest rozkładem wielomianowym, a jego parametrami są $N$, 
@@ -707,7 +748,8 @@ P(x) = P(\varphi) \cdot \left|\frac{d\varphi}{dx}\right| =
 \frac{1}{\pi} \cdot \frac{d}{d^2 + x^2}
 \end{align*}
 
-Uzyskany rozkład prawdopodobieństwa jest nazywany  rozkładem Cauchy'ego. 
+Uzyskany rozkład prawdopodobieństwa jest nazywany  rozkładem Cauchy'ego
+i ma taką ciekawą właściwość, że jego wariancja jest nieskończona.
 
 \newpage
 \end{solution}
@@ -733,7 +775,7 @@ prostokącie $[0, a] \times [0, \pi)$:
 P(x, \varphi) = \frac{1}{a} \cdot \frac{2}{\pi} = \frac{1}{\pi a}
 \end{align*}
 
-Igła przetnie prostą jeśli odległość $x$ środka igły od najbliższej 
+Igła przetnie prostą jeśli odległość środka igły od najbliższej 
 prostej będzie mniejsza niż rzut jej długości na oś prostopadłą do prostych, 
 czyli $l \cdot |\cos(\varphi)|$. Musimy więc scałkować rozkład prawdopodobieństwa 
 $P(x, \varphi)$ po obszarze $x < l \cdot |\cos(\varphi)|$. Efekt modułu uwzględniamy 
@@ -746,10 +788,54 @@ P = 2\int_{0}^{\pi/2} \int_{0}^{l \cdot \cos(\varphi)} P(x, \varphi) dx d\varphi
 \frac{2l}{\pi a} \sin(\varphi) \Big|_{0}^{\pi/2} = \frac{2l}{\pi a}
 \end{align*}
 
+Mamy tu eksperymentalną procedurę do wyznaczenia liczby $\pi$.
+Oszacujmy więc jej niepewność korzystając z procedury propagacji niepewności:
+\begin{align*}
+\pi = \frac{2l}{P a} \rightarrow
+\Delta \pi = \sqrt{\left(\frac{\partial \pi}{\partial l} \Delta l\right)^2 + \left(\frac{\partial \pi}{\partial a} \Delta a\right)^2 + \left(\frac{\partial \pi}{\
+partial P} \Delta P\right)^2} = \\
+\sqrt{\left(\frac{2}{P a} \Delta l\right)^2 + \left(-\frac{2l}{P a^2} \Delta a\right)^2 + \left(-\frac{2l}{P^2 a} \Delta P\right)^2} = 
+\frac{2l}{P a} \sqrt{\left(\frac{\Delta l}{l}\right)^2 + \left(\frac{\Delta a}{a}\right)^2 + \left(\frac{\Delta P}{P}\right)^2} = \\
+\pi_{exp} \sqrt{\left(\frac{\Delta l}{l}\right)^2 + \left(\frac{\Delta a}{a}\right)^2 + \left(\frac{\Delta P}{P}\right)^2}
+\end{align*}
+
+Niepewności pomiaru długości igły i odległości między prostymi 
+szacujemy jako najmniejszą podziałkę linijki podzieloną 
+przez $\sqrt{12}$ - zakładamy płaski rozkład położenia końca
+igły w przedziale najmniejszej podziałki. Mamy więc 
+ $\Delta l = \Delta a = \frac{1}{\sqrt{12}} \text{mm}$. 
+ Zmierzone rawdopodobieństwo $P$ to stosunek liczby trafień, $k$,
+do liczby rzutów, $N$. Zakładamy, że liczba rzutów jest ustalona.
+W tej sytuacji liczba trafień podlega rozkładowi dwumianowemu, 
+a jego wariancja to $N \cdot P \cdot (1-P)$, więc niepewność pomiaru 
+prawdopodobieństwa to:
+\begin{align*}
+\Delta P = \sqrt{\frac{P \cdot (1-P)}{N}} = 
+\sqrt{\frac{k}{N} \cdot \left(1-\frac{k}{N}\right) \cdot \frac{1}{N}} =
+\sqrt{\frac{k \cdot (N-k)}{N^3}}
+\end{align*}
+
+a niepewność względna pomiaru prawdopodobieństwa to:
+\begin{align*}
+\frac{\Delta P}{P} = \sqrt{\frac{1-P}{P \cdot N}} = \sqrt{\frac{N-k}{k \cdot N}} =
+\sqrt{\frac{N-k}{k \cdot N}} = \sqrt{\frac{N-k}{k \cdot N}} = \sqrt{\frac{N-k}{k \cdot N}} = \sqrt{\frac{N-k}{k \cdot N}}
+\end{align*}
+
+Wartość $P$ fluktuje wokół wartości oczekiwanej $\frac{2l}{\pi a}$, więc
+wkład do niepewności pomiaru $\pi$ związany z liczba rzutów maleja 
+jak $1/\sqrt{N}$.
+
 Komentarze:
 \begin{enumerate}[a)]
     \item możliwość doświadczalnego wyznaczenia liczby $\pi$.
-    \item wyniki doświadczeń: Wolf (1850) -- 5000 rzutów, $\pi = 3.1596$, Shmit (1855) -- 3204 rzuty, $\pi = 3.1553$.
+    \item wyniki doświadczeń:
+    \begin{itemize}
+        \item Wolf (1850) -- 5000 rzutów, $\pi = 3.1596$, 
+        \item Shmit (1855) -- 3204 rzuty, $\pi = 3.1553$.
+    \end{itemize}
+    \item ile rzutów potrzeba, by oszacować $\pi$ z dokładnością do 
+          $n$ miejsc po przecinku, czyli by wariancja estymatora $P$ była 
+          mniejsza niż $10^{-2n}$?
     \item istnieje modyfikacja tego zadania: "kluska Buffona" -- rzut igłą, 
           która niekoniecznie jest prosta, lecz może mieć dowolny kształt 
           (ale taką samą długość $2l$). Co ciekawe, jest oczywiście identyczny,
@@ -803,7 +889,7 @@ znajdować się w dowolnym miejscu pojemnika, a zatem prawdopodobieństwo,
     \end{align*}
 
     \item Szacujemy dyspersję dla  $V \to V_0$. 
-    W sytuacji gdy $V$ zbliża się do $V_0$, prawdopodobieństwo, 
+    W sytuacji gdy $V$ zbliża się do $V_0$ wszystkie 
     cząstki powinny znajdować się w $V$ i nie ma żadnych fluktuacji, 
     więc dyspersja będzie dążyć do 0. Odpowiedź z punktu b) zgadza się z tym przewidywaniem, ponieważ
     \begin{align*}
