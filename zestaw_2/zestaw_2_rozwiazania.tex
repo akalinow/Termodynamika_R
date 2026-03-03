@@ -65,10 +65,7 @@
 
 \newif\ifshowsolutions
 
-%\showsolutionstrue   % ← show solutions
-% \showsolutionsfalse % ← hide solutions
-
-\def\showsolutions{}
+\def\showsolutions{} % comment this line to hide solutions, uncomment to show
 
 \newif\ifshowsolutions
 \ifdefined\showsolutions
@@ -89,7 +86,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{centering}
   {\bf {\Large
-  Termodynamika i Fizyka Statystyczna R 
+  Termodynamika i Fizyka Statystyczna R \\
   Zestaw II: Rachunek prawdopodobieństwa - kontynuacja
   }} \\  
 \end{centering}
@@ -160,18 +157,36 @@ Wyrażenia typu $\log(\frac{N}{2} + z)$ można przybliżyć dla $N \gg z$ jako:
 
 Używając tego przybliżenia, dostajemy:
 \begin{align*}
-p \approx -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N \\
+\log p \approx -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N \\
          - \frac{N+1}{2} \left[ 2\log(\frac{N}{2}) + \frac{2z}{N} - \frac{2z}{N} \right] \\
          - z \left[\frac{2z}{N} + \frac{2z}{N} \right] \\
-         - N \log 2 = \\ \\
-          -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N \\
-          - (N+1) \left[ \log(N) - \log(2) \right] \\
+         - N \log 2
+\end{align*}
+
+Powyższe rozwinięcie zawieraj jednak subtelny błąd: 
+drugi człon jest rozwinięty do rzędu $z$, a trzeci do rzędu $z^2$.
+Rozwijając sumę wyrażeń musimy zadbać o to, żeby oba 
+były rozwinięte do tego samego rzędu, czyli do $z^2$.
+Rozwijając $\log(\frac{N}{2} + z)$ do rzędu $z^2$:
+\begin{align*}
+    \log(\frac{N}{2} \pm z) = \log \frac{N}{2} + \log(1 \pm \frac{2z}{N}) \approx 
+    \log \frac{N}{2} \pm \frac{2z}{N} - \frac{2z^2}{N^2}
+\end{align*}
+
+Uwzględniamy to w rozwinięciu:
+
+\begin{align*}
+          \log p \simeq -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N \\
+          - (N+1) \left[ \log(N) - \log(2) - \frac{2z^2}{N^2} \right] \\
           - \frac{4z^2}{N} \\
           - N \log 2 = \\
-          -\frac{1}{2} \log 2\pi - \frac{1}{2} \log N + \log 2 - \frac{2z^2}{N} = \\
-          -\frac{1}{2} \log 2\pi - \frac{1}{2} \log N + \frac{1}{2} \log 2^{2} - \frac{2z^2}{N} = \\
-          -\frac{1}{2} \log \left( \frac{4}{\pi N} \right) - \frac{2z^2}{N}
+          -\frac{1}{2} \log 2\pi - \frac{1}{2} \log N + \log 2 - \frac{2z^2}{N} + \frac{2z^{2}}{N^2}= \\
+          -\frac{1}{2} \log 2\pi - \frac{1}{2} \log N + \frac{1}{2} \log 2^{2} - \frac{2z^2}{N} + \frac{2z^{2}}{N^2} = \\
+          -\frac{1}{2} \log \left( \frac{4}{2\pi N} \right) - \frac{2z^2}{N} + \frac{2z^{2}}{N^2}
 \end{align*}
+
+Wyraz $\frac{2z^2}{N^2}$ jest rzędu $1/N$ względem $\frac{2z^2}{N}$, więc możemy 
+go pominąć.
 
 Powracając do $p$:
 \begin{align*}
@@ -194,15 +209,27 @@ Musimy uwzględnić nie tylko zmianę zmiennej, ale też fakt,
     ~ \mu = 0, ~ \sigma^2 = Na^2
 \end{align*}
 
-To samo z użyciem centralnego twierdzenia granicznego (CTG).
-Położenie to suma $N$ niezależnych zmiennych losowych o 
-wartościach $\pm a$ z prawdopodobieństwami $1/2$. 
+\vspace{0.5cm}
+To samo z użyciem centralnego twierdzenia granicznego (CTG):\\
+Położenie to suma $N$ niezależnych zmiennych losowych $x_{i}$, $i \in \{1,2,\ldots,N\}$ 
+o wartościach $\pm a$ przyjmowanych z prawdopodobieństwami $1/2$.
+Średnia wartość jednego kroku:
+\begin{align*}
+    <x_{i}> = \frac{1/2a - 1/2a}{1/2 + 1/2} = 0
+\end{align*}
+
+Wariancja jednego kroku to:
+\begin{align*}
+    V(x_{i}) =  \frac{1}{2} (a - 0)^2 + \frac{1}{2} (-a - 0)^2 = a^2
+\end{align*}
+
+
 Z CTG wynika, że rozkład sumy tych zmiennych losowych zmierza do rozkładu 
 normalnego dla $N \to \infty$. W przypadku gdy składniki sumy są losowane 
 z tego samego rozkładu - dwumianiowego, parametry granicznego rozkładu to:
 \begin{align*}
-    \mu = N \langle x \rangle = N(2<k> - N)a  = N ( 2\frac{1}{2}N - \frac{1}{2})a = 0 \\
-    \sigma^2 = N \sigma_{x}^{2} = N4a \sigma_{k} = Na^2
+    \mu = N \langle x_{i} \rangle = N \cdot 0 = 0 \\
+    \sigma^2 = N \sigma_{x_{i}}^{2} = N a^2
 \end{align*}
 
 Ostatni krok: zamiana z liczby kroków $N$ na czas $t$. 
@@ -294,6 +321,8 @@ jedzie samochód osobowy, podczas gdy wśród pięciu samochodów osobowych
 jest średnio tylko jeden, za którym jedzie ciężarówka. 
 Jaka część pojazdów na drogach to ciężarówki?
 
+\begin{solution}
+    
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
@@ -338,7 +367,7 @@ Interesuje nas rozkład stacjonarny, czyli taki, który nie zmienia się w czasi
     \end{bmatrix} 
 \end{align*}
 
-Do warunku stacjinarności dodajemy warunek normalizacji $P_C^{eq} + P_S^{eq} = 1$.
+Do warunku stacjonarności dodajemy warunek normalizacji $P_C^{eq} + P_S^{eq} = 1$.
 Otrzymujemy układ równań:
 \begin{align*}
     P_C^{eq} = \frac{1}{4} P_C^{eq} + \frac{1}{5} P_S^{eq} \\
@@ -359,8 +388,8 @@ Stacjonarna wartość spotkania ciężarówki to $P_C^{eq} = \frac{4}{19} \simeq
 Czas powrotu ciężarówki: $T_C = \frac{1}{P_C^{eq}} = \frac{19}{4} \simeq 5$, 
 czyli średnio trzeba odczekać pięć pojazdów.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+\end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Błądzenie przypadkowe z dryfem i ścianką]
 
@@ -368,6 +397,8 @@ Rozważmy błądzenie przypadkowe z prawdopodobieństwem przejścia
 $p(0 \to 1) = 1$, $p(i \to i+1) = p < 0.5$, $p(i \to i-1) = 1-p > 0.5$. 
 Znaleźć rozkład równowagowy i odpowiednie równanie ciągłe.
 
+\begin{solution}
+    
 \vspace{1cm}
 {\bf Rozwiązanie:}
 \vspace{1cm}
@@ -386,7 +417,7 @@ Dla stanu początkowego i następnych mamy:
 \end{align*}
 
 Wyrażamy $P^{eq}(i)$ przez $P^{eq}(0)$ i pamiętamy, że 
-$P(0 \to 1) = 1$, $P(i \to i+1) = p$, $P(i \to i-1) = 1-p$:
+$p(0 \to 1) = 1$, $p(i \to i+1) = p$, $p(i \to i-1) = 1-p$:
 \begin{align*}
     P^{eq}(1) = P^{eq}(0) \frac{p(0 \to 1)}{p(1 \to 0)} = P^{eq}(0) \frac{1}{1-p} \\
     P^{eq}(2) = P^{eq}(1) \frac{p(1 \to 2)}{p(2 \to 1)} = P^{eq}(1) \frac{p}{1-p} = 
@@ -397,8 +428,8 @@ $P(0 \to 1) = 1$, $P(i \to i+1) = p$, $P(i \to i-1) = 1-p$:
 
 Współczynnik $\frac{p}{1-p}$ jest mniejszy od jedności, 
 więc szereg jest zbieżny i możemy znaleźć $P^{eq}(0)$ z warunku normalizacji.
-Sumując szereg trzeba pamiętać, że wyrazy 0 i 1 mają inną postać niż pozostałe
-, więc sumujemy od 2 do nieskończoności, a potem dodajemy $P^{eq}(0)$ i $P^{eq}(1)$:
+Sumując szereg trzeba pamiętać, że wyraz 0 ma inną postać niż pozostałe,
+więc sumujemy od 1 do nieskończoności i potem dodajemy $P^{eq}(0)$:
 
 
 \begin{align*}
@@ -419,7 +450,7 @@ Stąd $P^{eq}(n)$:
     = \frac{1-2p}{2} \left(\frac{p}{1-p}\right)^{n},~ n \geq 1
 \end{align*}
 
-WAriant ciągły. Zaczynamy od równania master ewolucji rozkładu prawdopodobieństwa:
+Wariant ciągły. Zaczynamy od równania master ewolucji rozkładu prawdopodobieństwa:
 \begin{align*}
     P(i, t + \delta t) =  P(i-1, t) p(i-1 \to i) + P(i+1, t) p(i+1 \to i) = \\
     = P(i-1, t) p + P(i+1, t) (1-p)
@@ -438,8 +469,31 @@ Wstawiamy do równania ewolucji:
     P(x, t + \delta t) =  P(x - \delta x, t) \left(\frac{1}{2} - \alpha \delta x\right) + P(x + \delta x, t) \left(\frac{1}{2} + \alpha \delta x\right)
 \end{align*}
 
-Dązymy do uzyskania pochodnej po czasie, więc odejmujemy $P(x, t)$ 
-i dzielimy przez $\delta t$:
+Dążymy do uzyskania pochodnych, więc przypomnijmy sobie numeryczne przybliżenia pochodnych, które
+otrzymujemy z rozwinięcia Taylora:
+
+\begin{align*}
+    P(x - \delta x, t) = P(x, t) - \frac{\partial P}{\partial x} \delta x + \frac{1}{2} \frac{\partial^2 P}{\partial x^2} (\delta x)^2 + \ldots \\
+    P(x + \delta x, t) = P(x, t) + \frac{\partial P}{\partial x} \delta x + \frac{1}{2} \frac{\partial^2 P}{\partial x^2} (\delta x)^2 + \ldots \\
+\end{align*}
+
+Dodajemy stronami:
+\begin{align*}
+    P(x - \delta x, t) + P(x + \delta x, t) = 2P(x, t) + \frac{\partial^2 P}{\partial x^2} (\delta x)^2 + \ldots \\
+    P(x- \delta x, t) - P(x + \delta x, t) - 2P(x,t) = \frac{\partial^2 P}{\partial x^2} (\delta x)^2 + \ldots \\
+    \frac{\partial^2 P}{\partial x^2} = \frac{P(x- \delta x, t) - 2P(x,t) + P(x + \delta x, t)}{(\delta x)^2} + {\cal O}(\delta x) \\
+\end{align*}
+
+Odejmujemy stronami:
+\begin{align*}
+    P(x + \delta x, t) - P(x - \delta x, t) = 2 \frac{\partial P}{\partial x} \delta x + {\cal O}(\delta x^2) \\
+    \frac{\partial P}{\partial x} = \frac{P(x + \delta x, t) - P(x - \delta x, t)}{2 \delta x} + {\cal O}(\delta x)
+\end{align*}
+
+
+
+Brakuje nam $P(x, t)$ i malej w mianowniku, więc odejmujemy od obu stron $P(x, t)$ i dzielimy 
+przez $\delta t$:
 \begin{align*}
     \frac{P(x, t + \delta t) - P(x, t)}{\delta t} =  \\
     = \frac{1}{2} \left[ \frac{P(x - \delta x, t) - 2P(x, t) + P(x + \delta x, t)}{\delta t} \right] + 
@@ -448,7 +502,7 @@ i dzielimy przez $\delta t$:
 
 Wiążemy $\delta t$ i $\delta x$ wprowadzając skończone  współczynniki 
 dyfuzji $D = \frac{(\delta x)^2}{2\delta t}$ 
-i  dryfu $U = \alpha (\delta x)^2 / \delta t$:
+i  dryfu $U = 2\alpha (\delta x)^2 / \delta t$:
 \begin{align*}
     \frac{P(x, t + \delta t) - P(x, t)}{\delta t} =  \\
     = D \frac{P(x - \delta x, t) - 2P(x, t) + P(x + \delta x, t)}{(\delta x)^2} +
@@ -487,5 +541,7 @@ Finalnie:
     P^{eq}(x) = e^{-\frac{Ux}{D}}
 \end{align*}
 
-
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
