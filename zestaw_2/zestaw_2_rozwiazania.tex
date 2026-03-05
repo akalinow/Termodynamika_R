@@ -533,7 +533,7 @@ przez $\delta t$:
 
 Wiążemy $\delta t$ i $\delta x$ wprowadzając skończone  współczynniki 
 dyfuzji $D = \frac{(\delta x)^2}{2\delta t}$ 
-i  dryfu $U = 2\alpha (\delta x)^2 / \delta t$:
+i  dryfu $U = \alpha (\delta x)^2 / \delta t$:
 \begin{align*}
     \frac{P(x, t + \delta t) - P(x, t)}{\delta t} =  \\
     = D \frac{P(x - \delta x, t) - 2P(x, t) + P(x + \delta x, t)}{(\delta x)^2} +
@@ -581,6 +581,18 @@ Ostatecznie rozkład równowagowy to:
 \begin{align*}
     P^{eq}(x) = \frac{U}{D} e^{-\frac{Ux}{D}}
 \end{align*}
+
+Sprawdźmy jednostki:
+\begin{align*}
+    [\alpha] = \frac{1}{m} \\
+    [D] = \frac{m^{2}}{s} \\
+    [U] = \frac{[\alpha] m^{2}}{s} = \frac{m}{s} \\
+    [P] = [\frac{U}{D}] = \frac{1}{m}
+\end{align*}
+
+Rozkład prawdopodobieństwa, $P^{eq}$ ma jednostkę ponieważ to jest 
+gęstość prawdopodobieństwa.
+
 
 \end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
