@@ -147,7 +147,9 @@ Aplikujemy do wzoru na $p(z)$:
 Zbierając:
 
 \begin{align*}
-    \log p = -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N - \left(N + \frac{1}{2}\right) \log \left[\left(\frac{N}{2} + z\right) \left(\frac{N}{2} - z\right) \right] - z \log \frac{N/2 + z}{N/2 - z} - N \log 2
+    \log p = -\frac{1}{2} \log 2\pi + \left(N + \frac{1}{2}\right) \log N - 
+    \frac{1}{2}\left(N + 1\right) \log \left[\left(\frac{N}{2} + z\right) 
+    \left(\frac{N}{2} - z\right) \right] - z \log \frac{N/2 + z}{N/2 - z} - N \log 2
 \end{align*}
 
 Wyrażenia typu $\log(\frac{N}{2} + z)$ można przybliżyć dla $N \gg z$ jako:
@@ -267,10 +269,13 @@ Rozwiążemy to równianie w przestrzeni odwrotnej do
 której przejedziemy korzystając z transformacji Fouriera:
 \begin{align*}
     \hat{c}(k, t) = \int_{-\infty}^{\infty} c(x, t) e^{-ikx} dx \\
-    c(x, t) =  \int_{-\infty}^{\infty} \hat{c}(k, t) e^{ikx} dk
+    c(x, t) =  \frac{1}{2\pi}\int_{-\infty}^{\infty} \hat{c}(k, t) e^{ikx} dk
 \end{align*}
 
 W stawiamy $c(x, t)$ wyrażone przez odwrotną transformację Fouriera do równania:
+(czynnik $\frac{1}{2\pi}$ można pominąć, bo i tak będzie po obu stronach równania 
+i się skróci)
+
 \begin{align*}
     \frac{\partial \hat{c}}{\partial t} \int_{-\infty}^{\infty} \hat{c}(k,t) e^{ikx} dk = 
      D\frac{\partial^{2}}{\partial x^2}  \int_{-\infty}^{\infty} \hat{c}(k,t) e^{ikx} dk \\
@@ -324,12 +329,11 @@ Jaka część pojazdów na drogach to ciężarówki?
 
 \begin{solution}
     
-\vspace{1cm}
-{\bf Rozwiązanie:}
-\vspace{1cm}
-
 Zagadnienie rozwiążemy korzystając z łańcucha Markowa, czyli modelując 
-problem za pomocą stanów $C$ (ciężarówka) i $S$ (samochód osobowy):
+problem za pomocą stanów $C$ (ciężarówka) i $S$ (samochód osobowy).
+Oznaczmy ułamek pojazdów, które są ciężarówkami jako $P_C$, a 
+ułamek samochodów osobowych jako $P_S$, inaczej ułamek cząstek 
+w stanie $C$ i $S$:
 \begin{align*}
     P = \begin{bmatrix}
         P_C \\
@@ -356,8 +360,10 @@ Przejścia między stanami można zapisać w postaci macierzy:
     \end{bmatrix}
 \end{align*}
 
-Ewolucja rozkładu pojazdów to $P(t) = \hat{p}P(0)$.
-Interesuje nas rozkład stacjonarny, czyli taki, który nie zmienia się w czasie:
+Ewolucja rozkładu pojazdów to $P(n+1) = \hat{p}P(n)$, gdzie $n$ to kolejne
+kroki czasowe.
+Interesuje nas rozkład stacjonarny, czyli taki, który nie zmienia się w czasie,
+więc jest wektorem własnym macierzy $\hat{p}$ z wartością własną 1, czyli:
 \begin{align*}
     P^{eq} = \hat{p} P^{eq} = \begin{bmatrix}
         \frac{1}{4} & \frac{1}{5} \\
@@ -368,6 +374,21 @@ Interesuje nas rozkład stacjonarny, czyli taki, który nie zmienia się w czasi
     \end{bmatrix} 
 \end{align*}
 
+Zanim zaczniemy poszukiwać rozwiązania, sprawdźmy czy macierz $\hat{p}$ 
+ma wartość własną równą 1, czyli czy istnieje rozkład stacjonarny:
+\begin{align*}
+    \det(\hat{p} - \lambda I) = 0 \\
+    \det\begin{bmatrix}
+        \frac{1}{4} - \lambda & \frac{1}{5} \\
+        \frac{3}{4} & \frac{4}{5} - \lambda
+    \end{bmatrix} = 0 \\
+    (\frac{1}{4} - \lambda)(\frac{4}{5} - \lambda) - \frac{3}{20} = 0 \\
+    \lambda^2 - \frac{21}{20} \lambda + \frac{1}{20} = 0 \\
+    (\lambda - 1)(\lambda - \frac{1}{20}) = 0
+\end{align*}
+
+Macierz $\hat{p}$ ma wartość własną równą 1, więc istnieje rozkład stacjonarny.
+Poszukujemy wektora własnego odpowiadającego tej wartości własnej.
 Do warunku stacjonarności dodajemy warunek normalizacji $P_C^{eq} + P_S^{eq} = 1$.
 Otrzymujemy układ równań:
 \begin{align*}
@@ -406,12 +427,13 @@ Znaleźć rozkład równowagowy i odpowiednie równanie ciągłe.
 
 Poszukujemy rozkładu stacjonarnego, czyli takiego, który nie zmienia się w czasie.
 W stanie stacjonarnym prawdopodobieństwo prawdopodobieństwa przejść "w tę i z powrotem"
-są takie same, czyli:
+są takie same. Oznaczmy $P(n)^{eq}$ jako prawdopodobieństwo znalezienia cząstki 
+w stanie $n$ w stanie stacjonarnym. Mamy więc:
 \begin{align*}
     P^{eq}(n) p(n \to m) = P^{eq}(m) p(m \to n)
 \end{align*}
 
-Dla stanu początkowego i następnych mamy:
+Dla stanu brzegowego i następnych mamy:
 \begin{align*}
     P^{eq}(0) p(0 \to 1) = P^{eq}(1) p(1 \to 0) \\
     P^{eq}(i) p(i \to i+1) = P^{eq}(i+1) p(i+1 \to i) 
@@ -450,6 +472,14 @@ Stąd $P^{eq}(n)$:
     \frac{1-2p}{2(1-p)} \left(\frac{p}{1-p}\right)^{n-1} = \\
     = \frac{1-2p}{2} \left(\frac{p}{1-p}\right)^{n},~ n \geq 1
 \end{align*}
+
+Otrzymaliśmy rozkład typu $p^{n}$, $p<1$, więc jest to rozkład wykładniczy:
+\begin{align*}
+    P^{eq}(n) = \frac{1-2p}{2} e^{n \log \frac{p}{1-p}}
+\end{align*}
+
+
+\vspace{1cm}
 
 Wariant ciągły. Zaczynamy od równania master ewolucji rozkładu prawdopodobieństwa:
 \begin{align*}
@@ -533,13 +563,23 @@ Ostatecznie dostajemy:
 
 Stałe $A$ i $B$ można znaleźć z warunków brzegowych:
 \begin{align*}
-    P^{eq}(x \to 0) = 1 \rightarrow A + B = 1 \\
-    P^{eq}(x \to \infty) = 0 \rightarrow B = 0 \to A = 1
+    P^{eq}(x \to 0) = P_{0} \rightarrow A + B = P_{0} \\
+    P^{eq}(x \to \infty) = 0 \rightarrow B = 0 \to A = P_{0}
 \end{align*}
 
 Finalnie:
 \begin{align*}
-    P^{eq}(x) = e^{-\frac{Ux}{D}}
+    P^{eq}(x) = P_{0} e^{-\frac{Ux}{D}}
+\end{align*}
+
+Sprawdźmy czy rozkład jest normalizowalny:
+\begin{align*}
+    \int_{0}^{\infty} P^{eq}(x) dx = \int_{0}^{\infty} P_{0} e^{-\frac{Ux}{D}} dx = \frac{P_{0} D}{U} \\
+    P_{0} = \frac{U}{D}
+\end{align*}
+Ostatecznie rozkład równowagowy to:
+\begin{align*}
+    P^{eq}(x) = \frac{U}{D} e^{-\frac{Ux}{D}}
 \end{align*}
 
 \end{solution}
