@@ -65,9 +65,6 @@
 
 \newif\ifshowsolutions
 
-%\showsolutionstrue   % ← show solutions
-% \showsolutionsfalse % ← hide solutions
-
 \def\showsolutions{}
 
 \newif\ifshowsolutions
@@ -98,22 +95,227 @@
 
 \zadanie[Model dyfuzji Bernoulliego-Laplace'a]
 
-Rozważmy model mieszania dwu, nieściśliwych, płynów. 
-Płyny są reprezentowane przez dwie urny:  A, B, w których znajduje się
-$_A$ i n$_B$ kul. Kule mają dwa kolory: czerwony i czarny.
+Rozważmy dwie urny:  A, B, w których znajduje się
+$n_A$ i $n_B$ kul. Kule mają dwa kolory: czerwony i czarny.
 Kul czerwonych jest n$_{r}$, a kul czarnych n$_{c}$ = n$_{A}$ + n$_{B}$ - n$_{r}$.
+Zakładamy, że kul czerwonych jest mało: $n_{r} \ll n_{c}$
+
 W kolejnych chwilach czasu wybieramy po jednej kuli z każdej urny i zamieniamy je miejscami.
 Proszę:
 \begin{enumerate}
   \item oszacować równowagową wartość oczekiwaną ułamka 
-        kul czerwonych w urnach A i B: $\langle n_{r}/n_A \rangle_{eq}$,
-        $\langle n_{r}/n_B \rangle_{eq}$
-  \item znaleźć stacjonarny rozkład prawdopodobieństwa 
-        liczby kul czerwonych w urnie A: $P^{eq}(n_{r})$,
-   \item znaleźć czas powrotu do pewnego stanu historycznego
+        kul czerwonych w urnach A i B: $\langle n_{rA}/n_A \rangle_{eq}$,
+        $\langle n_{rB}/n_B \rangle_{eq}$
+  \item znaleźć ewolucję średniej liczby kul czerwonych w urnie A: 
+        $\langle n_{rA}(t) \rangle$,
+  \item pokazać, że rozkład
+  \begin{align*}
+    P^{eq}(n_{rA}) = \frac{\binom{n_r}{n_{rA}}\binom{n_c}{n_A - n_{rA}}}{\binom{n_A + n_B}{n_A}}
+  \end{align*}
+   jest rozkładem równowagowym układu,
+   \item znaleźć czas powrotu do dowolnego stanu historycznego
 \end{enumerate}
 
 \begin{solution}
+
+Oszacujmy wartość równowagową ułamka kul czerwonych w urnach:
+\begin{itemize}
+  \item jeśli w urnie A {\bf ułamek} kul czerwonych:  $n_{rA}/n_A$
+        jest większy niż ten ułamek w urnie B to jest też większe prawdopodobieństwo,
+        że wylosujemy kulę czerwoną z urny A i czarną z B
+  \item jeśli wylosujemy czerwoną z A i czarną z B i je zamienimy to zwiększyli 
+        ułamek kul czerwonych w B i zmniejszymy w A
+  \item sytuacja się będzie powtarzała do czasu gdy $n_{rA}/n_A = n_{rB}/n_B$. 
+        Od tego momentu ułamki kul w urnach będą oscylowały wokół wspólnej wartości:
+        $f = \frac{n_{r}}{n_A + n_B}$
+\end{itemize}
+        
+\vspace{0.5cm}
+
+{\bf Uwaga:} mówiąc rozkład kul w urnie A mamy na myśli:
+\begin{itemize}
+  \item podejście Bayesowskie - stawiam, że w urnie A jest n kul
+  \item podejście częstotliwościowe - wyobrażam sobie zbiór urn, a $P(n,t)$
+        oznacza ułamek urn z $n$ czerwonymi kulami
+\end{itemize}  
+
+\vspace{0.5cm}
+
+Prawdopodobieństwa przejść z jednego stanu do drugiego są dane przez:
+\begin{align*}
+  p(n \to n-1) &= p(\text{wylosowanie czerwonej z A}) \cdot
+                  p(\text{wylosowanie czarnej z B}) = \\
+                &= \frac{n}{n_A} \cdot \frac{n_B - n_r + n}{n_B} \\
+  p(n \to n+1) &= p(\text{wylosowanie czarnej z A}) \cdot
+                  p(\text{wylosowanie czerwonej z B}) = \\
+                &= \frac{n_A - n}{n_A} \cdot \frac{n_r - n}{n_B} \\
+  p(n \to n) &= 1 - p(n \to n-1) - p(n \to n+1) 
+\end{align*}
+
+\newpage
+{\bf Ewolucja liczby kul czerwonych w urnie A}\\
+
+Znajdzmy oczekiwaną wartość zmiany liczby kul czerwonych w urnie A,
+gdy w urnie A jest $n$ kul czerwonych:
+\begin{align*}
+  \langle \Delta n \rangle_n &=  E[n(t+1) - n(t) | n(t) = n] = \\
+  &= 1\cdot p(n \to n+1) + (-1) \cdot p(n \to n-1) = \\
+  &= \frac{(n_A - n)(n_r - n)}{n_A n_B} - \frac{n(n_B - n_r + n)}{n_A n_B} = \\
+  &= \frac{n_An_r - n_An - nn_r + n^2 - nn_B + nn_r - n^2}{n_A n_B} = \\
+  &= \frac{n_An_r - n_An - nn_B}{n_A n_B} = 
+  \frac{n_A n_r - n(n_A + n_B)}{n_A n_B} = \\
+  &= \frac{n_r - n}{n_B}  - \frac{n}{n_A}
+\end{align*}
+
+Wnioski:
+\begin{itemize}
+  \item w stanie równowagi $\langle \Delta n \rangle_n = 0$ co daje $n = n_A \cdot \frac{n_r}{n_A + n_B}$,
+        w szczególności dla równych liczb kul w obu urnach: $n_A = n_B$ otrzymujemy 
+        $n = n_r/2$,
+  \item kierunek zmian - znak $\langle \Delta n \rangle_n$ - jest taki, że układ dąży do stanu równowagi: 
+        jeśli $n < n_A \cdot \frac{n_r}{n_A + n_B}$ to $\langle \Delta n \rangle_n > 0$ i liczba kul czerwonych w urnie A będzie rosła, 
+        jeśli $n > n_A \cdot \frac{n_r}{n_A + n_B}$ to $\langle \Delta n \rangle_n < 0$ i liczba kul czerwonych w urnie A będzie malała
+\end{itemize}
+
+\vspace{0.5cm}
+
+Kontynuujemy analizę zmiany rozkładu kul w urnie A.
+Korzystając z liniowości wartości oczekiwanej, możemy rozłożyć ją na dwie części:
+\begin{align*}
+  \langle \Delta n \rangle_n &=  E[n(t+1) - n(t) | n(t) = n] = 
+  E[n(t+1) | n] - E[n(t) | n(t) = n]
+\end{align*}
+
+Pozbywamy się warunkowego prawdopodobieństwa uśredniając po rozkładzie $P(n,t)$:
+\begin{align*}
+  \langle \Delta n \rangle  
+  &= \sum_n P(n,t) E[n(t+1) | n(t) = n] - \sum_n P(n,t) n = \\
+  &= \sum_n P(n,t) n(t+1) - \sum_n P(n,t) n = 
+  \langle n(t+1) \rangle - \langle n(t) \rangle
+\end{align*}
+
+To samo dla prawej strony:
+\begin{align*}
+  \langle \Delta n \rangle &= \sum_n P(n,t) \left( \frac{n_r - n}{n_B}  - \frac{n}{n_A} \right) = 
+  \frac{n_r - \langle n(t) \rangle}{n_B}  - \frac{\langle n(t) \rangle}{n_A}
+\end{align*}
+
+Otrzymujemy więc równane różnicowe dla średniej liczby kul czerwonych w urnie A:
+\begin{align*}
+  \langle n(t+1) \rangle - \langle n(t) \rangle = 
+  \frac{n_r - \langle n(t) \rangle}{n_B}  - \frac{\langle n(t) \rangle}{n_A} = \\
+  = \frac{n_r}{n_B} - \langle n(t) \rangle \left( \frac{1}{n_B} + \frac{1}{n_A} \right) =
+  \frac{n_r}{n_B} - \langle n(t) \rangle \frac{n_A + n_B}{n_A n_B}
+\end{align*}
+
+{\bf Dla uproszczenia w dalszej części opuszczamy symbole średniej.}
+Mamy niejednorodne równanie różnicowe, które rozwiązujemy podobnie do
+równania różcznikowego: znajdujemy rozwiązanie szczególne, ogólne
+i je sumujemy.
+Postulujemy rozwiązanie szczególne w postaci stałej: $n(t) = n_{eq}$, co daje:
+\begin{align*}
+  n_{eq} = n_A \cdot \frac{n_r}{n_A + n_B}
+\end{align*}
+
+Zmieniamy zmienną by pozbyć się części niejednorodnej: 
+$n(t) = n_{eq} + \delta n(t)$, co daje:
+\begin{align*}
+  \delta n(t+1) - \delta n(t) = -\delta n(t) \frac{n_A + n_B}{n_A n_B} \rightarrow
+  \delta n(t+1) = \left( 1 - \frac{n_A + n_B}{n_A n_B} \right) \delta n(t)
+\end{align*}
+
+Otrzymujemy więc rozwiązanie ogólne:
+\begin{align*}
+  \delta n(t) = \left( 1 - \frac{n_A + n_B}{n_A n_B} \right)^t \delta n(0)
+\end{align*}
+
+Wracając do pierwotnej zmiennej:
+\begin{align*}
+  n(t) = n_A \cdot \frac{n_r}{n_A + n_B} + \left( 1 - \frac{n_A + n_B}{n_A n_B} \right)^t (n(0) - n_A \cdot \frac{{n_r}}{n_A + n_B})
+\end{align*}
+
+\vspace{0.5cm}
+
+Rozważmy przypadki graniczne:
+\begin{itemize}
+  \item $t \to \infty$: $n(t) \to n_A \cdot \frac{n_r}{n_A + n_B}$, czyli układ 
+  dąży do stanu równowagi z równomiernym rozkładem kul czerwonych w obu urnach
+  \item $n(0) = n_{r}$, $n_{B} \to \infty$:
+  \begin{align*}
+    n(t) \to n_{r}(1 - 1/n_A)^t \\
+    \log(n/n_{r}) = t\log(1-1/n_A) \simeq -t/n_A \to \\
+    n(t) \simeq n_{r} e^{-t/n_A}
+  \end{align*}
+\end{itemize}
+
+Interpretacja: urna A to zbiornik z gazem, którym są kule czerwone,
+urna B to otoczenie. Proces przenoszenia kul czerwonych z A do B to
+proces dyfuzji.
+
+%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%
+{\bf  Rozkład równowagowy}\\
+
+
+Pokażmy, że  $P^{eq}(n)$ spełnia  warunek równowagi 
+szczegółowej (ang. detailed balance):
+\begin{align*}
+  P^{eq}(n) p(n \to n+1) = P^{eq}(n+1) p(n+1 \to n)
+\end{align*}
+
+Daje nam to rekurencyjną relację:
+\begin{align*}
+  \frac{P^{eq}(n+1)}{P^{eq}(n)} = \frac{p(n \to n+1)}{p(n+1 \to n)}
+                                  = \frac{(n_A - n)(n_r - n)}{(n+1)(n_B - n_r + n + 1)}
+\end{align*}
+
+\begin{align*}
+\frac{P^{eq}(n+1)}{P^{eq}(n)} =
+ \frac{\binom{n_r}{n+1}\binom{n_c}{n_A - n-1}}{\binom{n_A + n_B}{n_A}}
+ \frac{\binom{n_A + n_B}{n_A}}{\binom{n_r}{n}\binom{n_c}{n_A - n}} = \\
+  \frac{\binom{n_r}{n+1}}{\binom{n_r}{n}} \cdot
+  \frac{\binom{n_c}{n_A - n-1}}{\binom{n_c}{n_A - n}} 
+\end{align*}
+
+Obliczmy pomoczniczo:
+
+\begin{align*}
+ \frac{\binom{n}{k+1}}{\binom{n}{k}} = 
+ \frac{\frac{n!}{(k+1)!(n-k-1)!}}{\frac{n!}{k!(n-k)!}} =
+ \frac{k!(n-k)!}{(k+1)!(n-k-1)!} =
+ \frac{(n-k)}{(k+1)}
+\end{align*}
+
+Stąd:
+\begin{align*}
+  \frac{P^{eq}(n+1)}{P^{eq}(n)} =
+  \frac{(n_r - n)}{(n+1)} \cdot
+  \frac{(n_A - n)}{(n_B - n_r + n + 1)}
+\end{align*}
+
+
+\vspace{0.5cm}
+
+{\bf Czas powrotu do stanu historycznego}\\
+
+Twierdzenie Kac'a mówi, że średni liczba kroków potrzebna do powrotu do 
+stanu $n$ jest odwrotnie proporcjonalna prawdopodobieństwa tego stanu w 
+rozkładzie równowagowym:
+\begin{align*}
+  \tau_n = \frac{1}{P^{eq}(n)}
+\end{align*}
+
+W naszym przypadku mamy więc:
+
+\begin{align*}
+  \tau_n = \frac{1}{P^{eq}(n)} = \frac{\binom{n_A + n_B}{n_A}}{\binom{n_r}{n}\binom{n_B - n_r}{n_A - n}}
+\end{align*}
+
+Dla stanów skrajnych (np. $n=0$ lub $n=n_r$, czyli wszystkie kule czerwone 
+w jednej urnie), prawdopodobieństwo jest bardzo małe, a czas powrotu bardzo długi - 
+w granicach thermodynamicznych (system nieskończony), takie stany mogą nie być 
+nigdy osiągnięte ponownie w skończonym czasie.
 
 \newpage  
 \end{solution}
@@ -123,59 +325,156 @@ Proszę:
 
 
 W modelu psów Ehrenfestów rozważa się dwa psy, A i B, na których łącznie 
-siedzi N pcheł. W kolejnych chwilach czasu losowo wybrana pchła przeskakuje 
-z psa na psa. Model ten miał w założeniu opisywać dynamikę
+siedzi N pcheł, a na psie A jest $n$ pcheł. W kolejnych chwilach czasu losowo 
+wybrana pchła przeskakuje z psa na psa.  
+Model ten miał w założeniu opisywać dynamikę 
 mieszania dwóch gazów w pojemnikach A i B o równej objętości.
 Proszę:
 \vspace{0.5cm}
 \begin{enumerate}
   \item wypisać warunkowe prawdopodobieństwa przejść z jednego stanu do drugiego:
   \begin{align*}
-    p_{i,j} = P(n_{A}(t+1) = i | n_{A}(t) = j)
+    p_{i,j} = P(n(t+1) = i | n(t) = j)
   \end{align*}
-  \item Rozważ modyfikację tego modelu, w której w pojemniku A znajduje się demon, 
-  który - z prawdopodobieństwem $\lambda$ - próbuje powstrzymać cząstkę przed 
-  przeskoczeniem do pojemnika B. Demon nie zmienia prawdopodobieństw skoków z B do A. 
-  W rezultacie
-$p^{\lambda}_{k-1,k} = (1 - \lambda) p^0_{k-1,k}$;
-$p^{\lambda}_{k,k} = \lambda p^0_{k-1,k}$;
-$p^{\lambda}_{j,k} = p^0_{j,k}$ dla $j \neq k, k-1$
-gdzie $p^0_{j,k}$ są standardowymi prawdopodobieństwami przejścia 
-(bez demona, dla $\lambda = 0$). Zauważmy, że w
-wyniku działania demona pojawia się niezerowa wartość $p^{\lambda}_{k,k}$.
-
-Dla modelu z demonem wypisz równanie na ewolucję rozkładu $P_i(t)$, oblicz 
-rozkład równowagowy $P_i^{eq}$ oraz $\langle N_A \rangle^{eq}$ - średnią 
-liczbę cząstek w pojemniku A w stanie równowagi. Zinterpretuj otrzymane wyniki.
-
-{\bf Wskazówka:} Możesz (ale nie musisz) skorzystać z warunku równowagi szczegółowej
-
-
-  \item znajdź ciągłą wersję równania na ewolucję rozkładu prawdopodobieństwa, 
-  interpretując nadmiarową liczbę cząstek w pojemniku A: $k = N_A - N/2$
-  jako położenie (x) pewnej efektywnej cząstki Browna: $x = k\delta x$ oraz 
-  przyjmując, że skoki następują co odstęp czasu $\delta t$ a następnie 
-  przechodząc do granicy $\delta x \to 0$, $ \delta t \to 0$, $N \to \infty$ 
+  \item dodać do modelu demona, który siedzi na psie A i z prawdopodobieństwem $\lambda$ 
+  próbuje powstrzymać pchłę przed przeskoczeniem z A do B. Demon nie wpływa na skoki z B do A. 
+  \item w modelu z demonem wypisać równanie na ewolucję rozkładu $P_i(t)$
+  \item obliczyć rozkład równowagowy oraz średnią liczbę cząstek w pojemniku A w stanie równowagi:
+  $P_i^{eq}$ oraz $\langle n \rangle^{eq}$ 
+  \item porzucić demona i znaleźć ciągłą wersję równania na ewolucję 
+  rozkładu prawdopodobieństwa, interpretując nadmiarową liczbę pcheł na psie A $k = n - N/2$
+  jako położenie (x) pewnej efektywnej cząstki: $x = k\delta x$ oraz 
+  przyjmując, że skoki następują co $\delta t$ a następnie 
+  przejść do granicy $\delta x \to 0$, $ \delta t \to 0$, $N \to \infty$ 
   w taki sposób, że: 
   $\frac{\delta x^2}{\delta t} = D$ i 
-  $\frac{\delta x}{\delta t} = \Gamma$, gdzie D i $\Gamma$ są pewnymi stałymi.
+  $\frac{2}{N\delta t} = \Gamma$, gdzie D i $\Gamma$ są pewnymi stałymi.
 
 \end{enumerate}
 
+\vspace{0.5cm}
+
+{\bf Wskazówka:} Można skorzystać z warunku równowagi szczegółowej
+
 \begin{solution}
+
+Ponieważ pchły przeskakują pojedynczo, to jedynie niezerowe prawdopodobieństwa przejść to:
+\begin{align*}
+  p_{n-1,n} = \frac{n}{N} & & \text{pchła przeskakuje z psa A na B} \\
+  p_{n+1,n} = 1 - p_{n,n} = 1 - \frac{n}{N} & &\text{pchła przeskakuje z psa B na A}
+\end{align*}
+
+Model z modyfikacją przez demona:
+\begin{align*}
+p^{\lambda}_{n-1,n} = (1 - \lambda) p^0_{n-1,n}&~& 
+p^{\lambda}_{n+1,n} =  p^0_{n+1,n}&~&
+p^{\lambda}_{n,n} = \lambda p^0_{n-1,n}
+\end{align*}
+
+Poszukujemy rozkładu równowagowego korzystając z warunku równowagi szczegółowej:
+\begin{align*}
+  P^{eq}(n) p^{\lambda}_{n+1,n} = P^{eq}(n+1) p^{\lambda}_{n,n+1} \\
+  P^{eq}(n)  p^0_{n+1,n} = P^{eq}(n+1) (1-\lambda) p^0_{n,n+1} \\
+  P^{eq}(n+1) = \frac{1}{1-\lambda} \frac{p^0_{n+1,n}}{p^0_{n,n+1}} P^{eq}(n) =
+  \frac{1}{1-\lambda} \frac{N-n}{n+1} P^{eq}(n) 
+\end{align*}
+
+Oznaczmy $P^{eq}(0) = C$, gdzie C to stała normalizacyjna, a następnie
+wykonajmy $n$ kroków rekurencji, by znaleźć rozkład równowagowy:
+\begin{align*}
+  P^{eq}(n) = \frac{1}{(1-\lambda)^{n}} \left[ \frac{N}{1}\frac{N-1}{2}\frac{N-2}{3} \ldots  \frac{N-n+1}{n} \right] P^{eq}(0) = \\
+  = \frac{1}{(1-\lambda)^{n}} \frac{N!}{n!(N-n)!} C =
+  \frac{1}{(1-\lambda)^{n}} \binom{N}{n} C
+\end{align*}
+
+Wartość stałej C znajdujemy z warunku normalizacji:
+\begin{align*}
+  \sum_{n=0}^N P^{eq}(n) = 1 \\
+  \sum_{n=0}^N \frac{1}{(1-\lambda)^{n}} \binom{N}{n} = 
+  \left( 1 + \frac{1}{(1-\lambda)} \right)^N = 1/C
+\end{align*}
+
+Średnia liczba pcheł na psie A w stanie równowagi:
+\begin{align*}
+  \langle n \rangle^{eq} = \sum_{n=0}^N n P^{eq}(n) = 
+  \sum_{n=0}^N n (1-\lambda)^{-n} \binom{N}{n} C = 
+  -C (1-\lambda) \sum_{n=0}^N \frac{\partial}{\partial{\lambda}}\frac{1}{(1-\lambda)^{n}} \binom{N}{n} = \\
+  -C (1-\lambda) \frac{\partial}{\partial{\lambda}} \sum_{n=0}^N \frac{1}{(1-\lambda)^{n}} \binom{N}{n} = 
+  -C (1-\lambda) \frac{\partial}{\partial{\lambda}} C^{-1} = 
+  \frac{N}{2-\lambda}
+\end{align*}
+
+Dla kompletności równanie Mastera:
+\begin{align*}
+  P(n, t+1) = P(n-1, t)p^{\lambda}_{n-1,n} + P(n,t)p^{\lambda}_{n,n} + P(n+1, t)p^{\lambda}_{n+1,n}
+\end{align*}
+
+
+\vspace{2cm}
+
+Wracamy do wersji bez demona i przechodzimy do granicy ciągłej.
+\begin{align*}
+  P(n, t+1) = P(n-1, t)p^0_{n-1,n} + P(n+1, t)p^0_{n+1,n} \\
+  P(n, t+1) - P(n,t) = P(n-1, t)p^0_{n-1,n} + P(n+1, t)p^0_{n+1,n} - P(n,t)
+\end{align*}
+
+wyrażamy równianie przez $k = n - N/2$ i $x = k \delta x$:
+\begin{align*}
+  P(x, t+1) - P(x,t) = P(x-\delta x, t)p^0_{x-\delta x,x} + P(x+\delta x, t)p^0_{x+\delta x,x} - P(x,t) = \\
+  = P(x-\delta x, t) \frac{N/2 - k + 1}{N} + P(x+\delta x, t) \frac{N/2 + k + 1}{N} - P(x, t)
+\end{align*}
+
+Uciąglamy czas i przestrzeń: to $t \to t + \delta t$, $k =  x/ \delta x$, i dzielmy przez $\delta t$:
+\begin{align*}
+  \frac{P(x, t+\delta t) - P(x,t)}{\delta t} = 
+  P(x-\delta x, t) \frac{N/2 - x/\delta x + 1}{N\delta t} + 
+  P(x+\delta x, t) \frac{N/2 + x/\delta x + 1}{N\delta t} - \frac{P(x,t)}{\delta t}
+\end{align*}
+
+Reorganizujemy by uzyskać pochodne:
+\begin{align*}
+  \frac{P(x, t+\delta t) - P(x,t)}{\delta t} = \\
+  \frac{1}{2\delta t} \left[ P(x-\delta x, t) + P(x+\delta x, t) - 2P(x,t) \right] + \\ 
+  \frac{1}{2\delta t} \left[ P(x+\delta x, t) - P(x-\delta x, t) \right] \frac{2x}{N\delta x} + \\
+  \frac{1}{2\delta t} \left[ P(x-\delta x, t) + P(x+\delta x, t) \right] \frac{1}{N}
+\end{align*}
+
+Wprowadzamy stałe $D = \frac{\delta x^2}{2\delta t}$ i 
+$\Gamma = \frac{2}{N\delta t}$ oraz przechodzimy do 
+granicy $\delta x \to 0$, $ \delta t \to 0$, $N \to \infty$:
+\begin{align*}
+  \frac{\partial P(x,t)}{\partial t} = \\
+  D \frac{\partial^2 P(x,t)}{\partial x^2} + 
+  \Gamma x\frac{\partial P(x,t)}{\partial x} +
+  \frac{\Gamma}{2} (P(x,t) + P(x,t)) = \\
+  D \frac{\partial^2 P(x,t)}{\partial x^2} + 
+  \Gamma x\frac{\partial P(x,t)}{\partial x} +
+  \Gamma P(x,t) = \\
+  - \frac{\partial}{\partial x} \left( -D \frac{\partial}{\partial x}P(x,t) -x\Gamma P(x,t)   \right)
+\end{align*}
+
+Rozwiążmy to równanie w stanie stacjonarnym, czyli $\frac{\partial P(x,t)}{\partial t} = 0$:
+\begin{align*}
+  -D \frac{\partial}{\partial x}P(x) -x\Gamma P(x) = 0 \\
+  \frac{\partial}{\partial x}P(x) = -\frac{\Gamma}{D} x P(x) \\
+  \int \frac{1}{P(x)} \frac{\partial}{\partial x}P(x) dx = -\frac{\Gamma}{D} \int x dx \\
+  \ln P(x) = -\frac{\Gamma}{2D} x^2 + C \\
+  P(x) = e^C e^{-\frac{\Gamma}{2D} x^2} 
+\end{align*}
 
 
 \newpage
 \end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[Prawo wzrostu entropii]
 
-Rozważny układ o n stanach, między którymi zachodzą przejścia 
-z prawdopodobieństwami $p_{ij}$ na jednostkę czasu. W stanie 
-równowagi wszystkie stany są równoprawdopodobne. 
+Rozważny układ o n stanach, między którymi z prawdopodobieństwami $p_{ij}$ 
+na jednostkę czasu zachodzą przejścia. W stanie równowagi wszystkie stany 
+są równoprawdopodobne. 
 W stanie początkowym układ znajduje się w stanie nierównowagowym,
-w którym prawdopodobieństwa obsadzeń poszczególnych stanów dane są przez $P_i$.
+w którym prawdopodobieństwa obsadzeń poszczególnych stanów dane są przez $P(i)$.
 Pokaż, że w takim przypadku z warunku mikroskopowej odwracalności 
 (równowagi szczegółowej) dla (jednorodnego) rozkładu równowagowego:
 \begin{align*}
@@ -183,49 +482,49 @@ Pokaż, że w takim przypadku z warunku mikroskopowej odwracalności
 \end{align*}
 i entropii zdefiniowanej jako:
 \begin{align*}
-  S = -\sum_i P_i \ln P_i
+  S = -\sum_i P(i) \ln P(i)
 \end{align*}
-wynika, że entropia rośnie z czasem, aż osiągnie wartość maksymalną w stanie równowagi.
+wynika, że entropia rośnie z czasem aż, w stanie równowagi, osiągnie wartość maksymalną.
 
 \begin{solution}
   
 Obliczmy pochodną entropii względem czasu:
 \begin{align*}
-  \frac{dS}{dt} &= -\sum_i \frac{dP_i}{dt} \ln P_i - \sum_i P_i \frac{1}{P_i} \frac{dP_i}{dt} \\
-  &= -\sum_i \frac{dP_i}{dt} \ln P_i - \sum_i \frac{dP_i}{dt}
+  \frac{dS}{dt} &= -\sum_i \frac{dP(i)}{dt} \ln P(i) - \sum_i P(i) \frac{1}{P(i)} \frac{dP(i)}{dt} \\
+  &= -\sum_i \frac{dP(i)}{dt} \ln P(i) - \sum_i \frac{dP(i)}{dt}
 \end{align*}
 
 Drugi człon sumy jest równy zero, 
 ponieważ suma zmian obsadzeń wszystkich stanów musi być równa zero -
 liczba cząstek jest stała, więc:
 \begin{align*}
-  \frac{dS}{dt} &= -\sum_i \frac{dP_i}{dt} \ln P_i
+  \frac{dS}{dt} &= -\sum_i \frac{dP(i)}{dt} \ln P(i)
 \end{align*}
 
-Prawdopodobieństwo obsadzeń, $P_i$ możemy traktować jako 
+Rozkład obsadzeń, $P(i)$ możemy traktować jako 
 liczbę obsadzeń dla układu o stałej liczbie cząstek.
 Zmiana liczby obsadzeń jest dana równaniem Master:
 \begin{align*}
-  \frac{dP_i}{dt} &= \sum_j (p_{ji} P_j - p_{ij} P_i)
+  \frac{dP(i)}{dt} &= \sum_j (p_{ji} P(j) - p_{ij} P(i))
 \end{align*}
 
 Podstawiając to do wyrażenia na pochodną entropii, otrzymujemy:
 \begin{align*}
-  \frac{dS}{dt} &= -\sum_i \left( \sum_j (p_{ji} P_j - p_{ij} P_i) \right) \ln P_i \\
-  &= -\sum_{i,j} p_{ji} P_j \ln P_i + \sum_{i,j} p_{ij} P_i \ln P_i
+  \frac{dS}{dt} &= -\sum_i \left( \sum_j (p_{ji} P(j) - p_{ij} P(i)) \right) \ln P(i) \\
+  &= -\sum_{i,j} p_{ji} P(j) \ln P(i) + \sum_{i,j} p_{ij} P(i) \ln P(i)
 \end{align*}
 
 Korzystamy z warunku mikroskopowej odwracalności: $p_{ij} = p_{ji}$
 \begin{align*}
-  \frac{dS}{dt} &= \sum_{i,j} p_{ij} (P_i - P_j) \ln P_i
+  \frac{dS}{dt} &= \sum_{i,j} p_{ij} (P(i) - P(j)) \ln P(i)
 \end{align*}
 
-By uprościć to wyrażenie, możemy dodać drugi taki sam człon, 
+Upraszczamy wyrażenie, dodając drugi, taki sam człon, 
 ale z zamienionymi indeksami i oraz j:
 \begin{align*}
-  \frac{dS}{dt} &= \frac{1}{2} \sum_{i,j} p_{ij} (P_i - P_j) \ln P_i + \frac{1}{2} \sum_{i,j} p_{ij} (P_j - P_i) \ln P_j \\
-  &= \frac{1}{2} \sum_{i,j} p_{ij} (P_i - P_j) (\ln P_i - \ln P_j) = \\
-  &= \frac{1}{2} \sum_{i,j} p_{ij} (P_i - P_j) \ln \frac{P_i}{P_j}
+  \frac{dS}{dt} &= \frac{1}{2} \sum_{i,j} p_{ij} (P(i) - P(j)) \ln P(i) + \frac{1}{2} \sum_{i,j} p_{ij} (P(j) - P(i)) \ln P(j) \\
+  &= \frac{1}{2} \sum_{i,j} p_{ij} (P(i) - P(j)) (\ln P(i) - \ln P(j)) = \\
+  &= \frac{1}{2} \sum_{i,j} p_{ij} (P(i) - P(j)) \ln \frac{P(i)}{P(j)}
 \end{align*}
 
 Zbadajmy człony sumy:
@@ -242,7 +541,7 @@ Możemy rozważyć trzy przypadki:
 
 Ostatecznie, dla każdego członu sumy mamy:
 \begin{align*}
-  (P_i - P_j) \ln \frac{P_i}{P_j} \geq 0 \rightarrow \frac{dS}{dt} \geq 0
+  (P(i) - P(j)) \ln \frac{P(i)}{P(j)} \geq 0 \rightarrow \frac{dS}{dt} \geq 0
 \end{align*}
 
 \newpage
