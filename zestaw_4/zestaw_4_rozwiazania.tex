@@ -1,92 +1,320 @@
-\documentclass[a4paper,12pt]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[11pt,a4paper]{article}
+
 \usepackage[polish]{babel}
-\usepackage{amsmath,amssymb}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
 \usepackage[T1]{fontenc}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
 
-\title{TIFS R - Ćwiczenia Tydzień 4}
-\author{}
-\date{11 lutego 2026}
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
 
-\begin{document}
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
 
-\maketitle
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
 
-\section*{I. Piekarz, Liouville, Boltzmann}
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
 
-\subsection*{Zadanie 1}
-Rozpatrzmy przekształcenie piekarskie (na wykładzie było podobne przekształcenie kota Arnolda) - najpierw jednostkowy kwadrat jest rozciągany w kierunku $x$ o czynnik $2$ przy jednoczesnym kurczeniu wzdłuż kierunku $y$ o taki sam czynnik. Następnie układ taki jest rozcinany na pół i prawa część kładziona jest na górę lewej. Kroki te w zamyśle mają naśladować zagniatanie ciasta przez piekarza, stąd nazwa. Matematycznie, przekształcenie to możemy zapisać jako:
-\begin{equation}
-(x', y') = B(x, y) = \begin{cases} (2x, y/2), & x < 1/2 \\ (2x - 1, (y+1)/2), & x \geq 1/2 \end{cases}
-\end{equation}
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\  {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\  {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
-Czy przekształcenie to jest odwracalne? Jeśli tak, to znajdź przekształcenie odwrotne.
+%dynamic solutions hiding
+\usepackage{comment}
 
-\textbf{Rozwiązanie:}
+\newif\ifshowsolutions
 
-Jest odwracalne, a przekształcenie odwrotne to:
-\begin{equation}
-(x', y') = B^{-1}(x, y) = \begin{cases} (x/2, 2y), & y < 1/2 \\ ((x+1)/2, 2y - 1), & y \geq 1/2 \end{cases}
-\end{equation}
+\def\showsolutions{}
 
-\subsection*{Zadanie 2}
-Czy przekształcenie piekarskie zachowuje pole w przestrzeni fazowej?
+\newif\ifshowsolutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
 
-\textbf{Rozwiązanie:}
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
 
-Tak, wystarczy rozpatrzyć jakobian i pokazać, że jest równy $1$.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R \\
+  Zestaw IV: Rozkład Maxwella-Boltzmanna
+  }} \\  
+\end{centering}
 
-\subsection*{Zadanie 3}
-Niech $\rho(x, y)$ opisuje gęstość prawdopodobieństwa znalezienia układu w danym punkcie $(x, y)$ przestrzeni fazowej. Znaleźć równanie Liouville'a rządzące ewolucją $\rho$.
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
 
-\textbf{Rozwiązanie:}
+Proszę znaleźć parametry rozkładu Maxwella-Boltzmanna dla gazu doskonałego:
+\begin{itemize}
+  \item modę
+  \item średnią wartość prędkości $\langle v \rangle$,
+\end{itemize}
 
-Równanie Liouville'a dostaniemy wychodząc z:
-\begin{equation}
-\rho_n(\Gamma) = \int d\Gamma' \rho_{n-1}(\Gamma')\delta(\Gamma - B(\Gamma'))
-\end{equation}
+Następnie obliczyć wartości  tych prędkości dla cząsteczki tlenu 
+w temperaturze pokojowej $T = 300 K$.
+$m_{O_2} = 32 u$, $k_B = 1.38 \cdot 10^{-23} J/K$.
 
-Co daje:
-\begin{equation}
-\rho_n(x, y) = \rho_{n-1}(B^{-1}(x), B^{-1}(y))
-\end{equation}
 
-\subsection*{Zadanie 4}
-Zdefiniujmy też zredukowaną funkcję rozkładu, która mierzy gęstość prawdopodobieństwa znalezienia układu w punkcie przestrzeni fazowej o danej wartości współrzędnej $x$ (bez względu na wartość $y$):
-\begin{equation}
-W(x) = \int_0^1 \rho(x, y)dy
-\end{equation}
+\begin{solution}
 
-Pokaż, że $W_n(x, y)$ spełnia następujące dyskretne równanie Boltzmanna:
-\begin{equation}
-W_n(x) = \frac{1}{2}\left[W_{n-1}\left(\frac{x}{2}\right) + W_{n-1}\left(\frac{x+1}{2}\right)\right]
-\end{equation}
+Rozkład Maxwella-Boltzmanna, czyli rozkłąd prędkości cząstek gazu doskonałego 
+o temperaturze $T$ i masie cząstki $m$ jest dany wzorem:
+\begin{align*}
+  f(\vec{v}) = \left( \frac{m}{2\pi k_B T} \right)^{3/2} 
+                   \exp\left( -\frac{m \vec{v}^2}{2 k_B T} \right)
+\end{align*}
 
-Jaki jest rozkład równowagowy $W_{\text{eq}}(x)$? Pokaż następnie, że entropia Gibbsa związana z rozkładem $W(x)$, $S_G = -k\int_0^1 W(x)\log W(x)dx$ nie maleje podczas kolejnych iteracji przekształcenia piekarskiego.
+Obliczając modę musimy użyć rozkładu dla długości prędkości, as nie wektora prędkości:
+\begin{align*}
+  f(v) = \int f(\vec{v}) \delta(v - |\vec{v}|) d^3v = 4\pi v^2 \left( \frac{m}{2\pi k_B T} \right)^{3/2} 
+                   \exp\left( -\frac{m v^2}{2 k_B T} \right)
+\end{align*}
 
-\textbf{Rozwiązanie:} Rozwiązanie - u Dorfmana, strony 85-86. Warto pokazać też rozwiązanie równania na $W_n$ (7.8-7.10).
 
-\section*{III. Ergodyczność}
+Moda, czyli wartość najbardziej prawdopodobna:
+\begin{align*}
+  \frac{\partial f}{\partial v} = \left( \frac{m}{2\pi k_B T} \right)^{3/2} 
+                   v^{2}\exp\left( -\frac{m v^2}{2 k_B T} \right) = \\
+  = \left( \frac{m}{2\pi k_B T} \right)^{3/2} 
+     \exp\left( -\frac{m v^2}{2 k_B T} \right) \left(2v - \frac{m v^3}{k_B T} \right) = 0  \\
+  \to v_{mode} = \sqrt{\frac{2 k_B T}{m}}
+\end{align*}
 
-Przećwiczmy też trochę pojęcie ergodyczności. Na wykładzie pojawiło się ono w formie równości pomiędzy średnimi czasowymi:
-\begin{equation}
-\langle f(\Gamma_0)\rangle_t = \lim_{T \to \infty} \frac{1}{T}\int_0^T f(\Gamma(\Gamma_0, t))dt
-\end{equation}
-oraz średnimi po przestrzeni fazowej:
-\begin{equation}
-\langle f \rangle_V = \frac{1}{\mu(\Omega)}\int_\Omega f(\Gamma)d\Gamma
-\end{equation}
-gdzie $f$ jest dowolną funkcją całkowalną względem miary $d\Gamma$, a $\Omega$ to cała przestrzeń, w której zachodzi ruch. Dla układu ergodycznego te średnie są równe:
-\begin{equation}
-\langle f(\Gamma_0)\rangle_t = \langle f \rangle_V
-\end{equation}
-dla prawie wszystkich punktów $\Gamma_0$. W szczególności, jeśli za $f$ weźmiemy funkcję charakterystyczną jakiegoś regionu przestrzeni fazowej $\Omega$, to dostaniemy popularne sformułowanie, że trajektoria spędza równe czasy w obszarach o równej objętości w przestrzeni fazowej.
+Wartość średnia:
+\begin{align*}
+  \langle v \rangle = \int_0^\infty v f(v) dv = 4\pi \left( \frac{m}{2\pi k_B T} \right)^{3/2} 
+                   \int_0^\infty v^3 \exp\left( -\frac{m v^2}{2 k_B T} \right) dv = \\
+  = 4\pi \left( \frac{m}{2\pi k_B T} \right)^{3/2} 
+     \cdot \frac{1}{2} \cdot \left( \frac{2 k_B T}{m} \right)^2 = 
+     4\pi \left( \frac{m}{2\pi k_B T} \right)^{3/2} 
+     \cdot 2 \cdot \left( \frac{k_B T}{m} \right)^2 = \\ 
+    \sqrt{\frac{8 k_B T}{\pi m}}
+  = \frac{2}{\sqrt{\pi}} v_{mode}
+\end{align*}
 
-\subsection*{Zadanie 5}
-Na rozruszanie: pokaż, że ruch pojedynczej cząstki w bilardzie kołowym nie jest ergodyczny.
 
-\textbf{Rozwiązanie:} Patrz poniższy rysunek: kąt padania równy kątowi odbicia, wszystkie kąty centralne ($\alpha$) takie same.
+Wartości dla cząsteczki tlenu w temperaturze $T = 300 K$:
+\begin{align*}
+  v_{mode} = \sqrt{\frac{2 k_B T}{m}} = \sqrt{\frac{2 \cdot 1.38 \cdot 10^{-23} J/K \cdot 300 K}{32 u}} = \\
+  = \sqrt{\frac{2 \cdot 1.38 \cdot 10^{-23} J/K \cdot 300 K}{32 \cdot 1.66 \cdot 10^{-27} kg}} = 394~{\text m/s} \\
+  \langle v \rangle = \sqrt{\frac{8 k_B T}{\pi m}} = \sqrt{\frac{8 \cdot 1.38 \cdot 10^{-23} J/K \cdot 300 K}{\pi \cdot 32 \cdot 1.66 \cdot 10^{-27} kg}} = 450~{\text m/s}
+\end{align*}
 
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ pojemnik z gazem doskonałym, którego cząstki poruszają się z prędkościami zgodnymi z 
+rozkładem Maxwella-Boltzmanna. Proszę wyrazić ciśnienie gazu w funkcji temperatury, $T$
+koncentracji, $n$ cząstek i stałej Bolztmanna.
+
+\begin{solution}
+
+Rozważmy dowolną powierzchnię $S$ w pojemniku. Ciśnienie jest definiowane jako 
+strumień pędu przez tę powierzchnię na jednostkę powierzchni i jednostkę czasu:
+\begin{align*}
+  p = \frac{\Delta \vec{p} \cdot \Delta \vec{s}}{\Delta s \cdot \Delta t},
+\end{align*}
+
+Możemy zorientować układ współrzędnych tak, że oś $x$ będzie prostopadła do tej powierzchni,
+wtedy:
+\begin{align*}
+    \Delta \vec{p} \cdot \Delta \vec{s} = \Delta p_x \Delta s
+\end{align*}
+
+Strumień pędu jest związany z cząstkami przechodzącymi, 
+{\bf w obie strony} przez powierzchnię $S$ w czasie $\Delta t$.
+Przez powierzchnię $S$ przechodzą jedynie cząstki z prędkościami 
+skierowanymi w kierunku tej powierzchni, czyli z $v_x > 0$
+na lewo, oraz z $v_x < 0$ na prawo.
+
+\begin{align*}
+  \Delta \vec{p} = n\Delta S \int_{0}^\infty \Delta z m v_x f(\mathbf{v}) d^3v
+    - n\Delta S\int_{-\infty}^0 \Delta z m v_x f(\mathbf{v}) d^3v = \\
+  = 2n\Delta S \int_{0}^\infty \Delta z m v_x f(\mathbf{v}) d^3v 
+\end{align*}
+
+Czynnik $\Delta z$ występuje pod całką, ponieważ rozważamy cząstki, które 
+przechodzą przez powierzchnię $S$ w ustalonym oknie czasowym $\Delta t$. 
+Grubość warstwy z której pochodzą zależy więc od prędkości $v_x$ tych cząstek:
+\begin{align*}
+  \Delta z = v_x \Delta t.
+\end{align*}
+
+Wstawiamy to do całki i otrzymujemy:
+\begin{align*}
+  \Delta \vec{p} = 2n\Delta S \Delta t \int_{0}^\infty m v_x^2 f(\mathbf{v}) d^3v = \\
+  = 2n\Delta S \Delta t m \int_{0}^\infty  v_x^2 f(\mathbf{v}) dv_x dv_y dv_z = \\
+  = 2n\Delta S \Delta t m \frac{1}{2} \int_{-\infty}^\infty  v_x^2 f(\mathbf{v}) dv_x dv_y dv_z = \\
+  = n\Delta S \Delta t m \int_{-\infty}^\infty  v_x^2 f(\mathbf{v}) dv_x dv_y dv_z = \\
+  = n\Delta S \Delta t m \langle v_x^2 \rangle
+\end{align*}
+
+Wracamy do ciśnienia:
+\begin{align*}
+  p = \frac{\Delta \vec{p} \cdot \Delta \vec{s}}{\Delta s \cdot \Delta t} = \frac{n\Delta S \Delta t m \langle v_x^2 \rangle}{\Delta S \Delta t} = n m \langle v_x^2 \rangle
+\end{align*}
+
+Gaz jest izotropowy, więc $\langle v_x^2 \rangle = \langle v_y^2 \rangle = \langle v_z^2 \rangle$ i możemy napisać:
+\begin{align*}
+  p = \frac{1}{3} n m \langle v^2 \rangle.
+\end{align*}
+
+Pozostaje obliczenie średniej wartości kwadratu prędkości $\langle v^2 \rangle$.
+Przypomnijmy postać rozkładu Maxwella-Boltzmanna dla prędkości cząstek gazu doskonałego:
+\begin{align*}
+  f(\mathbf{v}) = \left( \frac{m}{2\pi k_B T} \right)^{3/2} 
+                   \exp\left( -\frac{m v^2}{2 k_B T} \right)
+\end{align*}
+gdzie $m$ to masa cząstki, $k_B$ to stała Boltzmanna, $T$ to temperatura, 
+a $\mathbf{v}$ to wektor prędkości. Wartość średnią obliczymy korzystając 
+z triku z różniczkowaniem po parametrze:
+\begin{align*}
+  \langle v^2 \rangle = \int v^2 f(\mathbf{v}) d^3v = \\
+ - 2 k_BT \left( \frac{m}{2\pi k_B T} \right)^{3/2} \frac{\partial}{\partial m} \int \exp\left( -\frac{m v^2}{2 k_B T} \right) d^3v = \\
+  = -2 k_BT \left( \frac{m}{2\pi k_B T} \right)^{3/2} \frac{\partial}{\partial m} \left( \frac{m}{2\pi k_B T} \right)^{-3/2} = \\
+  = -2 k_BT \left( \frac{m}{2\pi k_B T} \right)^{3/2} \left( -\frac{3}{2} \right) \left( \frac{1}{2\pi k_B T}\right)^{-3/2}  \left( m \right)^{-5/2} = \\
+  = 3 \frac{k_B T}{m}
+\end{align*}
+
+Skorzystaliśmy z faktu, że czynnik przez funkcją wykładniczą jest normalizacją 
+rozkładu, więc całka z tej funkcji jest równa jego odwrotności.
+Ostatecznie:  
+\begin{align*}
+  p = \frac{1}{3} n m \langle v^2 \rangle = \frac{1}{3} n m \cdot 3 \frac{k_B T}{m} = n k_B T.
+\end{align*}
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozrzedzony gaz złożony z $N$ cząstek, pod ciśnieniem $p$ i temperaturze $T$
+znajduje się w naczyniu o objętości $V$ z otworem o powierzchni $S$ 
+w ściance naczynia. Korzystając z rozkładu Maxwella-Boltzmanna, 
+proszę znaleźć tempo ubywania gazu: $\nu = -\frac{dN}{dt}$.
+
+\begin{solution}
+
+Poszukujemy liczby cząstek przelatujących przez otwór o powierzchni $S$ 
+w jednostce czasu. Układ współrzędnych ustawiamy tak, że oś $x$ jest 
+prostopadła do powierzchni otworu.
+\begin{align*}
+   dN = n S f(\mathbf{v}) d^3v  v_{x} dt \to \\ 
+   \frac{dN}{dt} =  \frac{NS}{V} \int_0^\infty v_x f(\mathbf{v}) d^{3}v 
+\end{align*}
+
+Obliczamy całkę po $v_x$:
+\begin{align*}
+  \int_0^\infty v_x \exp\left( -\frac{m v^2}{2 k_B T} \right) dv_x = || z = v_{x}^2 || = \\
+  = \int_0^\infty \frac{1}{2} \exp\left( -\frac{m z}{2 k_B T} \right) dz = 
+   \frac{1}{2} \cdot \frac{2 k_B T}{m} = \frac{k_B T}{m}
+\end{align*}
+
+Ostatecznie:
+\begin{align*}
+ \int_0^\infty v_x f(\mathbf{v}) d^{3}v = \left( \frac{m}{2\pi k_B T} \right)^{3/2} \cdot \frac{k_B T}{m} \int_{-\infty}^\infty \exp\left( -\frac{m v_y^2}{2 k_B T} \right) dv_y \int_{-\infty}^\infty \exp\left( -\frac{m v_z^2}{2 k_B T} \right) dv_z = \\
+  = \left( \frac{m}{2\pi k_B T} \right)^{3/2} \cdot \frac{k_B T}{m} \cdot 
+  \left( \frac{m}{2\pi k_B T} \right)^{-2/2} = \left( \frac{k_B T}{2\pi m} \right)^{1/2} = \\
+  = \frac{1}{4} \sqrt{\frac{8 k_B T}{\pi m}} = \frac{1}{4} \langle v \rangle
+\end{align*}
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+
+Rozważmy metal, z którego elektrony mogą być emitowane na zewnątrz.
+Przyjmij, że energia potencjalna elektronu wewnątrz metalu jest mniejsza niż jego 
+energia na zewnątrz o pracę wyjścia: $W = e\phi$. Proszę 
+obliczyć gęstość prądu emisji elektronowej:  $j_x$. Koncentracja elektronów wynosi 
+$n_0$, masa elektronu - $m$, zaś jako rozkład ich prędkości przyjąć rozkład Maxwella.
+
+
+\begin{solution}
+
+Elektrony, które mogą być emitowane maję energię kinetyczną większą niż praca wyjścia $W$. 
+Musimy więc znaleźć liczbę elektronów, które mają prędkość większą niż $v_0 = \sqrt{2W/m}$ i 
+są skierowane w stronę powierzchni metalu, czyli "do góry". Układ współrzędnych orientujemy
+tak, że oś $x$ jest prostopadła do powierzchni metalu.
+Całkujemy po prędkościach skierowanych "do góry", czyli z $v_x > 0$:
+\begin{align*}
+  j_x = e \cdot n_{0} \int_{v_0}^\infty v_x f(\mathbf{v}) d^3v
+\end{align*}
+
+Rozkład $f(\mathbf{v})$ jest znormalizowany, więc całki po składowych $v_y$ i $v_z$ wynoszą 1, 
+Pozostaje nam całka po $v_x$:
+\begin{align*}
+  \int_{v_0}^\infty v_x \exp\left( -\frac{m v_x^2}{2 k_B T} \right) dv_x = || z = v_{x}^2 || = \\
+  = \int_{v_0^2}^\infty \frac{1}{2} \exp\left( -\frac{m z}{2 k_B T} \right) dz = 
+   \frac{1}{2} \cdot \frac{2 k_B T}{m} \exp\left( -\frac{m v_0^2}{2 k_B T} \right) = \frac{k_B T}{m} \exp\left( -\frac{W}{k_B T} \right)
+\end{align*}
+
+Razem z czynnikiem normalizującym składową $x$ mamy:
+\begin{align*}
+  j_x = e \cdot n_{0} \left( \frac{m}{2\pi k_B T} \right)^{1/2} \cdot \frac{k_B T}{m} \exp\left( -\frac{W}{k_B T} \right) = e n_0 \sqrt{\frac{k_B T}{2\pi m}} \exp\left( -\frac{W}{k_B T} \right)
+\end{align*}
+
+Z drugiej strony średnia wartość prędkości w temperaturze $T$ wynosi 
+$\langle v \rangle = \sqrt{\frac{8 k_B T}{\pi m}}$, więc możemy napisać:
+\begin{align*}
+  j_x = \frac{1}{4} e n_0 \langle v \rangle \exp\left( -\frac{W}{k_B T} \right)
+\end{align*}
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}

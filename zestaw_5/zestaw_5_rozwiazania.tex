@@ -1,46 +1,522 @@
-\documentclass[a4paper,12pt]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[11pt,a4paper]{article}
+
 \usepackage[polish]{babel}
-\usepackage{amsmath,amssymb}
-\usepackage{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
 \usepackage[T1]{fontenc}
-\geometry{a4paper, margin=1in}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
 
-\title{TIFS R - Ćwiczenia Tydzień 5 i 6}
-\author{}
-\date{11 lutego 2026}
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
 
-\begin{document}
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
 
-\maketitle
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
 
-\section*{Zespół mikrokanoniczny i kanoniczny}
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
 
-Na wykładzie była mowa o zespole mikrokanonicznym i kanonicznym, statystycznej definicji temperatury, ciśnienia i potencjału chemicznego. Najpierw zadania z mikrokanonicznego (zad. 1-4), a potem z kanonicznego.
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\  {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\  {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
-\subsection*{Zadanie 1: Klasyczne oscylatory harmoniczne (Dalvit 3.4)}
-Dla układu $N$ trójwymiarowych klasycznych oscylatorów harmonicznych o częstotliwości $\omega$ i ustalonej całkowitej energii $E$ oblicz entropię $S$ i temperaturę $T$ (wykorzystując rozkład mikrokanoniczny).
+%dynamic solutions hiding
+\usepackage{comment}
 
-\subsection*{Zadanie 2: Kwantowe oscylatory harmoniczne (Dalvit 3.5)}
-To samo dla kwantowych oscylatorów harmonicznych. Uwaga - oni będą mieli oscylator w tym tygodniu na kwantach: Zapytajcie się ich, czy mieli, a jak nie, to przenieście to zadanie na przyszły tydzień.
+\newif\ifshowsolutions
 
-\subsection*{Zadanie 3: Układ dwupoziomowy z degeneracją (Dalvit 3.7)}
-Rozważ układ $N$ rozróżnialnych cząstek, każda z których może przebywać na dwóch poziomach energetycznych: $0$ i $\epsilon > 0$. Wyższy poziom energetyczny jest $g$-krotnie zdegenerowany, a poziom podstawowy jest niezdegenerowany. Używając rozkładu mikrokanonicznego, znajdź entropię układu. Jak zależą obsadzenia poszczególnych poziomów energetycznych od temperatury?
+\def\showsolutions{}
 
-Następnie rozważ przypadek $g=2$. Jeżeli układ ma energię $E = 0.75N\epsilon$ i będzie w kontakcie z dużym układem o stałej temperaturze $T = 500\,\mathrm{K}$, to w którym kierunku nastąpi przepływ ciepła?
+\newif\ifshowsolutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
 
-\subsection*{Zadanie 4: Rozciąganie biopolimerów}
-Współczesne techniki eksperymentalne pozwalają na rozciąganie pojedynczych łańcuchów biopolimerów (białka, DNA) przez precyzyjne przyłożenie siły do końców łańcucha. Wyobraźmy sobie taki eksperyment, w którym jeden z końców łańcucha polimeru jest umocowany na stałe, a drugi - rozciągnięty stałą siłą $F$. Dla uproszczenia przyjmij, że łańcuch polimera składa się z $N$ połączonych ogniw, każde długości $a$. Kąty między poszczególnymi ogniwami wynoszą $0^\circ$ lub $180^\circ$ (a więc cały łańcuch jest tworem jednowymiarowym). Wiedząc, że energia takiego układu jest dana przez:
-\begin{equation}
-E = -F|X|
-\end{equation}
-gdzie $X$ jest odległością między końcami, oblicz entropię polimeru o danej energii $E$. Następnie pokaż, że dla dużych $N$ entropia przyjmuje postać:
-\begin{equation}
-S = -Nk\left(\frac{1+x}{2}\log\frac{1+x}{2} + \frac{1-x}{2}\log\frac{1-x}{2}\right)
-\end{equation}
-gdzie $x = \frac{|X|}{Na}$. Znajdź temperaturę statystyczną tego układu $T^{-1} = \left(\frac{\partial S}{\partial E}\right)_N$ w funkcji $x$, a następnie pokaż, że (wciąż w granicy dużych $N$) rozciągnięcie $X$ związane jest z siłą relacją:
-\begin{equation}
-X = Na\tanh\left(\frac{NaF}{kT}\right)
-\end{equation}
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R \\
+  Zestaw V: Rozkład mikrokanoniczny
+  }} \\  
+\end{centering}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ pojedynczą cząstkę, o energii $E$ poruszającę się w obszarze o objętości $V$.
+Znajdź liczbę stanów mikrostanów tej cząstki.
+
+\begin{solution}
+
+Stan cząstki jest opisany przez  pęd $\vec{p} = (p_x, p_y, p_z)$,
+i położenie $\vec{q} = (q_x, q_y, q_z)$.
+Wektor pędu ograniczony przez warunek energii: 
+\begin{align*}
+\frac{p_x^2}{2m} + \frac{p_y^2}{2m} + \frac{p_z^2}{2m} = E
+\end{align*}
+
+położenie jest ograniczone do objętości $V$ w przestrzeni, więc liczba
+mikrostanów związana z położeniem to $V/h^3$. Warunek energetyczny sprowadza 
+się do ograniczenia wektora pędu do powierzchni sfery o promieniu $\sqrt{2mE}$. 
+Liczba stanów pędowych jest proporcjonalna do powierzchni tej sfery.
+{\bf Uwaga:} zliczamy stany w powłoce o grubości $\delta E$,
+ a nie $\delta p$, więc musimy uwzględnić pochodną $dp/dE$.
+\begin{align*}
+\omega_{p}(E) = \frac{4\pi (2mE)}{h^3}\delta p = \frac{8\pi mE}{h^3} \frac{dp}{dE} \delta E = \\
+\frac{8\pi mE}{h^3} \frac{m}{\sqrt{2mE}} \delta E = 
+\frac{4\sqrt{2}\pi m^{3/2}E^{1/2}}{h^{3}}   \delta E
+\end{align*}
+
+n-1 wymiarową powierzchnię n-wymiarowej bryły możemy też uzyskać 
+jako pochodną n-wymiarowej objętości:
+\begin{align*}
+\omega_{p}(E) = \frac{1}{h^3} \frac{\partial}{\partial E} \left( \frac{4\pi (2mE)^{3/2}}{3} \right) =
+\frac{1}{h^3} \frac{4\pi (2m)^{3/2}}{3} \frac{3}{2} E^{1/2} \delta E = 
+\frac{4 \sqrt{2}\pi m^{3/2} E^{1/2}}{h^3} \delta E.
+\end{align*}
+
+Całkowita liczba mikrostanów to iloczyn liczby stanów związanych z położeniem i pędem:
+\begin{align*}
+\omega(E) = \omega_{p}(E) \cdot \frac{V}{h^3} 
+\end{align*}
+
+\newpage
+\end{solution} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ układ $N$ trójwymiarowych klasycznych oscylatorów harmonicznych o
+częstości $\omega$ i ustalonej całkowitej energii $E$. 
+Korzystając z rozkładu mikrokanonicznego, oblicz entropię $S$ i temperaturę $T$ 
+tego układu.
+
+{\bf Wskazówka:} Objętość d-wymiarowej kuli o promieniu $R$ jest dana wzorem:
+\begin{align*}
+V_d(R) = \frac{\pi^{d/2}R^{d}}{\Gamma(d/2+1)},
+\end{align*}
+gdzie $\Gamma$ jest funkcją Gamma, która dla całkowitych argumentów jest równa silni pomniejszonej o jeden:
+\begin{align*}\Gamma(n) = (n-1)!
+\end{align*}
+
+\begin{solution}
+
+Obliczymy entropię korzystając ze sformułowania Boltzmanna:
+\begin{align*}
+S(E,N) = k_B \ln \Omega(E),
+\end{align*}
+gdzie $\Omega(E)$ jest liczbą stanów mikrokanonicznych dla energii $E$ i $N$ 
+oscylatorów. Temperaturę statystyczną obliczymy z definicji:
+\begin{align*}
+\frac{1}{T} = \left( \frac{\partial S}{\partial E} \right)_N.
+\end{align*}
+
+Zadanie więc sprowadza się do obliczenia liczby  stanów 
+$\omega(E)$ dla układu $N$ trójwymiarowych 
+klasycznych, czyli {\bf rozróżnialnych} oscylatorów harmonicznych 
+o częstości $\omega$. Krotność stanów  szacujemy jako 
+objętość powłoki o grubości $\delta E$ wokół energii $E$ w przestrzeni fazowej:
+
+\begin{align*}
+\omega(E) = \left.\frac{\partial \Omega}{\partial E}\right|_{E} \delta_E
+\end{align*}
+
+gdzie $h$ to stała konwersji jednostek przestrzeni fazowej na liczbę 
+mikrostanów. 
+
+Hamiltonian układu ma postać
+\begin{align*}
+H = \sum_{i=1}^{N}\sum_{\alpha=x,y,z}\left(\frac{p_{i\alpha}^2}{2m}+\frac{1}{2}m\omega^2 q_{i\alpha}^2\right),
+\end{align*}
+czyli jest sumą $3N$ niezależnych oscylatorów jednowymiarowych.
+Objętość przestrzeni fazowej dla energii  $H<E$:
+\begin{align*}
+\Omega(E, N) = \frac{1}{h^{3N}} \int_{H<E} \prod_{i=1}^{N}\prod_{\alpha=x,y,z} dp_{i\alpha} dq_{i\alpha}
+ \, 
+\end{align*}
+
+Przechodzimy do zmiennych, które normalizują Hamiltonian do postaci sumy kwadratów:
+\begin{align*}
+p_{i} = \sqrt{2m}x_{i}, \quad
+q_{i} = \sqrt{\frac{2}{m\omega^2}}x_{3N+i} \to 
+H = \sum_{i=1}^{6N} x_{i}^2.
+\end{align*}
+
+W tych zmiennych objętość przestrzeni fazowej ma postać:
+\begin{align*}
+\Omega(E, N) =  \frac{1}{h^{3N}} \left( \frac{2}{\omega} \right)^{3N} \
+\int_{H<E} \prod_{i=1}^{3N} dx_{i} \,
+\end{align*}
+Całka jest objętością kuli o promieniu 
+$\sqrt{E}$ w $6N$-wymiarowej przestrzeni, która jest dana wzorem:
+\begin{align*}
+S_{6N}(\sqrt{E}) = \frac{\pi^{3N}}{\Gamma(3N + 1)} E^{3N} =
+\frac{\pi^{3N}}{(3N)!} E^{3N}
+\end{align*}
+
+Stąd krotność stanów mikrokanonicznych ma postać:
+\begin{align*}
+\omega(E) = \frac{1}{h^{3N}} 
+\left( \frac{2}{\omega} \right)^{3N} \frac{\pi^{3N}}{(3N)!} 
+\frac{\partial E^{3N}}{\partial E} \delta E =
+\frac{1}{h^{3N}} 
+\left( \frac{2\pi}{\omega} \right)^{3N} \frac{3NE^{3N-1}}{(3N)!} \delta E = \\
+\frac{1}{h^{3N}} 
+\left( \frac{2\pi}{\omega} \right)^{3N} \frac{E^{3N}}{(3N-1)!} \frac{\delta E}{E} = 
+\left( \frac{2\pi E}{h\omega} \right)^{3N} \frac{1}{(3N-1)!} \frac{\delta E}{E}
+\end{align*}
+
+W entropii występuje logarytm tej krotności, który przybliżymy 
+korzystając z przybliżenia Stirlinga dla silni, oraz
+przybliżając $3N-1$ przez $3N$:
+
+\begin{align*}
+ \log \Omega(E) = 3N \log\left( \frac{2\pi E}{h \omega} \right) - \log((3N-1)!) + \log\left( \frac{\delta E}{E} \right) \approx \\
+  3N \log\left( \frac{2\pi E}{h \omega} \right) - 3N \log(3N) + 3N + \log\left( \frac{\delta E}{E} \right) = \\
+  3N \log\left( \frac{2\pi E}{3N h \omega} \right) + 3N + \log\left( \frac{\delta E}{E} \right) \simeq \\
+  3N \log \left[ \left( \frac{E}{3N h \omega} \right) + 1 \right]
+\end{align*}
+
+Ostatecznie entropia układu ma postać:
+\begin{align*}
+S(E,N) \simeq k_B \log \Omega(E) \approx 3N k_B \log \left[ \left( \frac{2\pi E}{3N h \omega}\right) + 1 \right].
+\end{align*}
+
+Temperatura statystyczna:
+\begin{align*}
+\frac{1}{T}=\left(\frac{\partial S}{\partial E}\right)_N
+3Nk_B \frac{1}{\left( \frac{2\pi E}{3N h \omega} \right)} \frac{2\pi}{3N h \omega}
+=\frac{3Nk_B}{E}
+\quad\Longrightarrow\quad
+T=\frac{E}{3Nk_B}.
+\end{align*}
+
+Energia wyrażona przez temperaturę:
+
+\begin{align*}
+E=3Nk_B T.
+\end{align*}
+
+Co daje średnią energię na jeden oscylator równą $3k_B T$, co jest zgodne 
+z przewidywaniami zasady ekwipartycji energii.
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ układ $N$ trójwymiarowych kwantowych oscylatorów harmonicznych o
+częstości $\omega$ i ustalonej całkowitej energii $E$. 
+Korzystając z rozkładu mikrokanonicznego, oblicz entropię $S$ i temperaturę $T$ 
+tego układu.
+
+{\bf Wskazówka:} Energia pojedynczego oscylatora harmonicznego jest dana wzorem:
+\begin{align*}
+E_n = \hbar \omega \left( n + \frac{1}{2} \right),
+\end{align*}
+gdzie $n$ jest liczbą kwantową.
+
+\begin{solution}
+
+Znajdziemy krotność mikrostanów, $\Omega$ w sposób kombinatoryczny. 
+Energia pojedynczego oscylatora harmonicznego w jednym wymiarze jest dana wzorem:
+\begin{align*}
+E_n = \hbar \omega \left( n + \frac{1}{2} \right),
+\end{align*}
+gdzie $n$ jest liczbą kwantową. 
+
+Dla $N$ oscylatorów w trzech wymiarach, całkowita energia układu jest 
+sumą energii poszczególnych oscylatorów w każdym z wymiarów:
+\begin{align*}
+E = \sum_{i=1}^{3N} E_{n_i} = \hbar \omega \sum_{i=1}^{3N} \left( n_i + \frac{1}{2} \right) = \hbar \omega \left( \sum_{i=1}^{3N} n_i + \frac{3N}{2} \right).
+\end{align*}
+
+Przekształcamy to równanie na warunek na liczby kwantowe:
+\begin{align*}
+  \sum_{i=1}^{3N} n_i = \frac{E}{\hbar \omega} - \frac{3N}{2} = M,
+\end{align*}
+gdzie $M$ jest jakąś liczbą całkowitą. 
+Krotność mikrostanów to liczba rozwiązań tego równania.
+Inne sformułowanie zagadnienia: mamy $M$ punktów do rozłożenia 
+między $N$ pudełek. Na ile sposobów można to zrobić? 
+Zapiszmy konfiguracje w postaci zdań złożonych z 
+gwiazdek - punkty i kresek - granice pudełek.
+Gwiazdek jest $M$, ruchomych kresek jest $N-1$ - 
+kreski na początku i końcu nie są ruchome, wszystkich pozycji 
+jest $M+N-1$. Przykład zapisu:
+\begin{align*}
+|\star\star\,|\,\star\,|\,\,|\,\star\star\star\,|\,\cdots|
+\end{align*}
+
+Liczba konfiguracji to liczba permutacji położeń $N$ punktów 
+na $M+N-1$ pozycjach:
+\[
+\binom{M+N-1}{N-1}
+\]
+
+W naszym przypadku mamy $3N$ wymiarów, więc liczba 
+konfiguracji to liczba permutacji położeń $3N$ punktów
+\begin{align*}
+\Omega = \binom{M+3N-1}{3N-1} = \frac{(M+3N-1)!}{M!(3N-1)!}.
+\end{align*}
+Entropia układu jest więc dana wzorem:
+\begin{align*}
+S(E,N) = k_B \ln \Omega = k_B \ln \left(\frac{(M+3N-1)!}{M!(3N-1)!}\right) = \\
+k_B \ln \left(\frac{\left(\frac{E}{\hbar \omega} + \frac{3N}{2} - 1\right)!}{\left(\frac{E}{\hbar \omega} - \frac{3N}{2}\right)!\,(3N-1)!}\right)
+\end{align*}
+
+Przybliżamy: $3N-1 \approx 3N$, $E/N \to const$ oraz korzystamy z 
+przybliżenia Stirlinga:
+
+\begin{align*}
+S(E,N) \approx  k_B \ln \left(\frac{\left(\frac{E}{\hbar \omega} + \frac{3N}{2}\right)!}{\left(\frac{E}{\hbar \omega} - \frac{3N}{2}\right)!\,(3N)!}\right) \simeq \\
+k_B \left[
+(\frac{E}{\hbar \omega} + \frac{3N}{2})[\ln (\frac{E}{\hbar \omega} + \frac{3N}{2})] 
+- (\frac{E}{\hbar \omega} - \frac{3N}{2})[\ln (\frac{E}{\hbar \omega} - \frac{3N}{2})] 
+- 3N[\ln(3) + \log(N)] \right] = \\
+N k_B \left[
+(\frac{E}{N\hbar \omega} + \frac{3}{2})[\ln (\frac{E}{N\hbar \omega} + \frac{3}{2}) + \log(N)] 
+- (\frac{E}{N\hbar \omega} - \frac{3}{2})[\ln (\frac{E}{N\hbar \omega} - \frac{3}{2}) + \log(N)] 
+- 3[\ln(3) + \log(N)] \right] = \\
+N k_B \left[
+(\frac{E}{N\hbar \omega} + \frac{3}{2})\ln (\frac{E}{N\hbar \omega} + \frac{3}{2})
+- (\frac{E}{N\hbar \omega} - \frac{3}{2})\ln (\frac{E}{N\hbar \omega} - \frac{3}{2}) - 3\ln(3) \right] \simeq \\
+N k_B \left[
+(\frac{E}{N\hbar \omega} + \frac{3}{2})\ln (\frac{E}{N\hbar \omega} + \frac{3}{2})
+- (\frac{E}{N\hbar \omega} - \frac{3}{2})\ln (\frac{E}{N\hbar \omega} - \frac{3}{2}) \right] 
+\end{align*}
+
+Temperatura statystyczna:
+\begin{align*}
+\frac{1}{T} = \left( \frac{\partial S}{\partial E} \right)_N 
+\end{align*}
+
+Obliczmy pochodną pomocniczą:
+\begin{align*}
+\frac{\partial }{\partial x}[(ax+b)\log(ax+b)] = 
+a\log(ax+b) + a\frac{ax+b}{ax+b} = a\log(ax+b) + a
+\end{align*}
+
+W naszym przypadku: $a = \frac{1}{N\hbar \omega}$, $b = \pm \frac{3}{2}$ oraz 
+$x = E$, więc:
+\begin{align*}
+a\log(ax+b) + a = \frac{1}{N\hbar \omega} \log\left( \frac{E}{N\hbar \omega} \pm \frac{3}{2} \right) + \frac{1}{N\hbar \omega} \simeq \\
+\frac{1}{N\hbar \omega} \log\left( \frac{E}{N\hbar \omega} \pm \frac{3}{2}\right)
+\end{align*}
+
+Ostatecznie: 
+\begin{align*}
+\frac{1}{T} = \left( \frac{\partial S}{\partial E} \right)_N = 
+\frac{k_B}{\hbar \omega} \ln \left( \frac{\frac{E}{N\hbar \omega} + \frac{3}{2}}{\frac{E}{N\hbar \omega} - \frac{3}{2}} \right) 
+\end{align*}
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ układ $N$ rozróżnialnych cząstek, każda z których może przebywać na dwóch poziomach 
+energetycznych: $0$ i $\varepsilon > 0$. Poziom podstawowy jest niezdegenerowany, a poziom
+wzbudzony jest $g$-krotnie zdegenerowany. Całkowita energia układu jest wynosi $E = k\varepsilon$,
+gdzie $k$ jest liczbą całkowitą. Proszę:
+\begin{itemize}
+  \item korzystając z rozkładu mikrokanonicznego znaleźć entropię układu: $S(N,E)$
+  \item rozkład obsadzeń w funkcji temperatury: $P_{i}(T)$, gdzie $i \in {0,1}$
+  \item przyjąć $g=2$, $E = 0.75N\varepsilon$ znaleźć kierunek przepływu ciepła, 
+        gdy układ będzie w kontakcie z dużym układem o stałej temperaturze $T = 500\,\mathrm{K}$.
+\end{itemize}
+
+{\bf Wskazówka:} Temperatura zależy od energii układu, więc liczby cząstek na poziomie wzbudzonym.
+Wystarczy odwrócić $T(k)$ by uzyskać $k(T)$.
+
+\begin{solution}
+
+Znajdźmy liczbę mikrostanów $\Omega$. Spośród $N$ cząstek, wybieramy $k$ cząstek, 
+które będą na poziomie wzbudzonym. Operację tę możemy wykonać na:
+\begin{align*}
+\binom{N}{k}
+\end{align*}
+sposobów. Każda z $k$ cząstek na poziomie wzbudzonym może być w jednym z $g$ stanów, więc 
+liczba mikrostanów dla tej konfiguracji wynosi:
+\begin{align*}
+\Omega = \binom{N}{k} g^k
+\end{align*}
+{\bf Uwaga:} czynnik $g^k$ występuje w przypadku rozróżnialnych cząstek, dla cząstek nierozróżnialnych 
+mielibyśmy czynnik $g^k/k!$.
+
+\vspace{1cm}
+
+Entropia układu jest więc dana wzorem:
+\begin{align*}
+S(N,E) = k_B \ln \Omega = k_B \ln \left[\binom{N}{k} g^k \right] = k_B \left[\ln \binom{N}{k} + k \ln g \right] = \
+k_B \left[ \ln \frac{N!}{k!(N-k)!} + k \ln g \right]
+\end{align*}
+
+Korzystamy z przybliżenia Stirlinga:
+\begin{align*}
+S(N,E) \approx \\
+k_B \left[ N\ln N - k\ln k - (N-k)\ln(N-k) + k \ln g \right] = \\
+k_B N \left[ \ln N - \frac{k}{N}\ln k - \left(1-\frac{k}{N}\right)\ln(N-k) + \frac{k}{N} \ln g \right] = \\
+k_B N \left[ \ln N - \frac{k}{N}\ln k - \left(1-\frac{k}{N}\right)\left[\ln \left(1-\frac{k}{N}\right) + \ln N \right] + \frac{k}{N} \ln g \right] = \\
+k_B N \left[ - \frac{k}{N}\ln k + \frac{k}{N}\ln N - \left(1-\frac{k}{N}\right)\left[\ln \left(1-\frac{k}{N}\right) \right] + \frac{k}{N} \ln g \right] = \\
+k_B N \left[ - \frac{k}{N}\ln \frac{k}{N} - \left(1-\frac{k}{N}\right)\left[\ln \left(1-\frac{k}{N}\right) \right] + \frac{k}{N} \ln g \right] = \\
+|| x = \frac{k}{N} = \frac{E}{N\varepsilon} || = -k_B N \left[x\ln x + (1-x)\ln(1-x) - x \ln g \right] 
+\end{align*}
+
+Poszukujemy teraz temperatury statystycznej układu:
+\begin{align*}
+\frac{1}{T} = \left( \frac{\partial S}{\partial E} \right)_N = \left( \frac{\partial S}{\partial x} \right)_N \left( \frac{\partial x}{\partial E} \right)_N = \\
+\frac{1}{N\varepsilon} \left( \frac{\partial S}{\partial x} \right)_N = 
+-\frac{1}{N\varepsilon} N k_B \left[\ln x - \ln (1-x) - \ln g \right] = \\  
+\frac{k_B}{\varepsilon} \ln \left[ g \frac{1-x}{x} \right]
+\end{align*}
+
+Odwracamy zależność $T(x)$ by uzyskać $x(T)$:
+\begin{align*}
+x(T) = \frac{ge^{-\varepsilon/(k_B T)}}{1+ ge^{-\varepsilon/(k_B T)}} \to \\
+k(T) = N x(T) = \frac{N g e^{-\varepsilon/(k_B T)}}{1+ g e^{-\varepsilon/(k_B T)}} = \\
+\frac{N g}{g + e^{\varepsilon/(k_B T)}}
+\end{align*}
+
+Obliczmy temperaturę układu z $k = 0.75N$ i $g=2$:
+\begin{align*}
+  T = \frac{\varepsilon}{k_B \ln \left[ g \frac{1-x}{x} \right]} = 
+  \frac{\varepsilon}{k_B \ln \left[ 2 \frac{1-0.75}{0.75} \right]} = 
+  \frac{\varepsilon}{k_B \ln \left[ \frac{2}{3} \right]} = -2.47k_B <0
+\end{align*}
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Białka są długimi łańcuchami zbudowanymi z aminokwasów. Takie układy nazywamy biopolimerami - 
+ciągami powtarzających się jednostek - `merów'. 
+Wyobraźmy sobie eksperyment, w którym jeden z końców łańcucha polimeru jest umocowany na stałe, 
+a drugi - rozciągnięty stałą siłą $F$ do postaci jednowymiarowej, w której 
+kąty między poszczególnymi ogniwami wynoszą $0$ lub $\pi$. Energia takiego układu jest dana wzorem:
+\begin{align*}
+  E = -F|X|,
+\end{align*}
+gdzie $X$ jest odległością między końcami łańcucha. Długość jednego ogniwa wynosi $a$.
+Proszę:
+\begin{itemize}
+  \item obliczyć entropię polimeru o danej energii $E$,
+  \item pokazać, że dla dużych $N$ entropia przyjmuje postać
+        \begin{align*}
+        S = -Nk\left( \frac{1+x}{2}\log\frac{1+x}{2} + \frac{1-x}{2}\log\frac{1-x}{2} \right),
+        \end{align*}
+        gdzie $x = \frac{|X|}{Na}$,
+  \item znaleźć temperaturę statystyczną tego układu
+  \item pokazać, że (wciąż w granicy dużych $N$) związek rozciągnięcia $X$ z siłą ma postać:
+        \begin{align*}
+        X = Na\,\tanh\left(\frac{Fa}{kT}\right).
+        \end{align*}
+\end{itemize}
+
+
+\begin{solution}
+
+Oznaczmy liczbę ogniw rozciągniętych w prawo jako $N_+$, 
+a liczbę ogniw rozciągniętych w lewo jako $N_-$. 
+Liczba konfiguracji to liczba wszystkich możliwych konfiguracji ogniw:
+$N!$ podzielona przez liczbę tożsamych konfiguracji, czyli 
+takich, które jedynie różnią się permutacjami ogniw rozciągniętych w prawo 
+i permutacjami ogniw rozciągniętych w lewo:
+
+\begin{align*}
+\Omega = \frac{N!}{N_+! N_-!}
+\end{align*}
+Oraz:
+\begin{align*}
+  X = a(N_+ - N_-), \quad
+  N = N_+ + N_- \to
+  N_+ = \frac{N}{2} + \frac{X}{2a}, \quad
+  N_- = \frac{N}{2} - \frac{X}{2a}
+\end{align*}
+
+Entropia układu jest więc dana wzorem:
+\begin{align*}
+S(N,E) = k_B \ln \Omega = k_B \ln \left[\frac{N!}{N_+! N_-!}\right] \simeq \\
+k_B \left[ N\ln N - N_+\ln N_+ - N_-\ln N_- \right] = \\
+k_B  \left[ \ln N - \frac{N}{2}\left(1 + \frac{X}{Na}\right)\ln \left( \frac{N}{2}\left(1 + \frac{X}{Na}\right) \right) - \frac{N}{2}\left(1 - \frac{X}{Na}\right)\ln \left( \frac{N}{2}\left(1 - \frac{X}{Na}\right) \right) \right] = \\
+k_B \left[ \ln N - \frac{N}{2}\left(1 + \frac{X}{Na}\right)\ln \left(1 + \frac{X}{Na} \right) - \frac{N}{2}\left(1 - \frac{X}{Na}\right)\ln \left(1 - \frac{X}{Na}\right) \right. \\
+\left. -\frac{N}{2}\left(1 + \frac{X}{Na}\right)\ln\frac{N}{2} - \frac{N}{2}\left(1 - \frac{X}{Na}\right)\ln\frac{N}{2} \right]= \\
+k_B N \left[- \frac{1}{2}\left(1 + \frac{X}{Na}\right)\ln \left(1 + \frac{X}{Na} \right) - \frac{1}{2}\left(1 - \frac{X}{Na}\right)\ln \left(1 - \frac{X}{Na}\right)
+ - \ln2 \right] \simeq \\
+= || x = \frac{X}{Na} || =
+-k_B N \left[ \frac{1+x}{2}\log\frac{1+x}{2} + \frac{1-x}{2}\log\frac{1-x}{2} \right]
+\end{align*}
+
+Temperatura statystyczna:
+\begin{align*}
+\frac{1}{T} = \left( \frac{\partial S}{\partial E} \right)_N = 
+\left( \frac{\partial S}{\partial x} \right)_N \left( \frac{\partial x}{\partial E} \right)_N = \\
+\frac{1}{FNa} \left( \frac{\partial S}{\partial x} \right)_N = 
+\frac{1}{FNa} k_B N \left[ \frac{1}{2}\ln\frac{1+x}{2} - \frac{1}{2}\ln\frac{1-x}{2} \right] =
+\frac{k_B}{2Fa} \ln \left( \frac{1+x}{1-x} \right)
+\end{align*}
+
+Związek rozciągnięcia $X$ z temperaturą:
+\begin{align*}
+\frac{1+x}{1-x} = e^{2Fa/(k_B T)} \to
+x = \frac{e^{2Fa/(k_B T)} - 1}{e^{2Fa/(k_B T)} + 1} = \tanh\left(\frac{Fa}{k_B T}\right) \to
+X = Na\,\tanh\left(\frac{Fa}{k_B T}\right)
+\end{align*}
+
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
