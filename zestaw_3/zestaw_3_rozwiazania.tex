@@ -424,7 +424,9 @@ wyrażamy równianie przez $k = n - N/2$ i $x = k \delta x$:
   = P(x-\delta x, t) \frac{N/2 - k + 1}{N} + P(x+\delta x, t) \frac{N/2 + k + 1}{N} - P(x, t)
 \end{align*}
 
-Uciąglamy czas i przestrzeń: to $t \to t + \delta t$, $k =  x/ \delta x$, i dzielmy przez $\delta t$:
+Uciąglamy czas i przestrzeń: 
+$t \pm 1 \to t \pm \delta t$, $k =  x/ \delta x$, $n \pm 1 \to x \pm \delta x$,
+ i dzielmy przez $\delta t$:
 \begin{align*}
   \frac{P(x, t+\delta t) - P(x,t)}{\delta t} = 
   P(x-\delta x, t) \frac{N/2 - x/\delta x + 1}{N\delta t} + 
@@ -439,6 +441,12 @@ Reorganizujemy by uzyskać pochodne:
   \frac{1}{2\delta t} \left[ P(x-\delta x, t) + P(x+\delta x, t) \right] \frac{1}{N}
 \end{align*}
 
+Zwróćmy uwagę na ostatni człon:
+\begin{align*}
+   P(x-\delta x, t) + P(x+\delta x, t) \to 2P(x,t)
+\end{align*}
+
+
 Wprowadzamy stałe $D = \frac{\delta x^2}{2\delta t}$ i 
 $\Gamma = \frac{2}{N\delta t}$ oraz przechodzimy do 
 granicy $\delta x \to 0$, $ \delta t \to 0$, $N \to \infty$:
@@ -450,12 +458,12 @@ granicy $\delta x \to 0$, $ \delta t \to 0$, $N \to \infty$:
   D \frac{\partial^2 P(x,t)}{\partial x^2} + 
   \Gamma x\frac{\partial P(x,t)}{\partial x} +
   \Gamma P(x,t) = \\
-  - \frac{\partial}{\partial x} \left( -D \frac{\partial}{\partial x}P(x,t) -x\Gamma P(x,t)   \right)
+  \frac{\partial}{\partial x} \left(D \frac{\partial}{\partial x}P(x,t) + x\Gamma P(x,t)   \right)
 \end{align*}
 
 Rozwiążmy to równanie w stanie stacjonarnym, czyli $\frac{\partial P(x,t)}{\partial t} = 0$:
 \begin{align*}
-  -D \frac{\partial}{\partial x}P(x) -x\Gamma P(x) = 0 \\
+  D \frac{\partial}{\partial x}P(x) +x\Gamma P(x) = 0 \\
   \frac{\partial}{\partial x}P(x) = -\frac{\Gamma}{D} x P(x) \\
   \int \frac{1}{P(x)} \frac{\partial}{\partial x}P(x) dx = -\frac{\Gamma}{D} \int x dx \\
   \ln P(x) = -\frac{\Gamma}{2D} x^2 + C \\
