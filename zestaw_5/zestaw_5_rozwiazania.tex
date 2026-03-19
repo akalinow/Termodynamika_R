@@ -192,9 +192,11 @@ q_{i} = \sqrt{\frac{2}{m\omega^2}}x_{3N+i} \to
 H = \sum_{i=1}^{6N} x_{i}^2.
 \end{align*}
 
-W tych zmiennych objętość przestrzeni fazowej ma postać:
+W tych zmiennych objętość przestrzeni fazowej ma postać 
+(uwaga na jakobian zamiany zmiennych):
 \begin{align*}
-\Omega(E, N) =  \frac{1}{h^{3N}} \left( \frac{2}{\omega} \right)^{3N} \
+\Omega(E, N) = \frac{1}{h^{3N}}  \int_{H<E} \prod_{i=1}^{6N} dx_{i} \frac{\partial x_{i}}{\partial q_{i}/\partial p_{i}}   = \\
+\frac{1}{h^{3N}} \left( \frac{2}{\omega} \right)^{3N} \
 \int_{H<E} \prod_{i=1}^{3N} dx_{i} \,
 \end{align*}
 Całka jest objętością kuli o promieniu 
