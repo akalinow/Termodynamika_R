@@ -65,7 +65,7 @@
 
 \newif\ifshowsolutions
 
-\def\showsolutions{}
+\def\showsolutions{} %comment this line to hide solutions
 
 \newif\ifshowsolutions
 \ifdefined\showsolutions
@@ -112,22 +112,23 @@ Liczba stanów pędowych jest proporcjonalna do powierzchni tej sfery.
 {\bf Uwaga:} zliczamy stany w powłoce o grubości $\delta E$,
  a nie $\delta p$, więc musimy uwzględnić pochodną $dp/dE$.
 \begin{align*}
-\omega_{p}(E) = \frac{4\pi (2mE)}{h^3}\delta p = \frac{8\pi mE}{h^3} \frac{dp}{dE} \delta E = \\
-\frac{8\pi mE}{h^3} \frac{m}{\sqrt{2mE}} \delta E = 
-\frac{4\sqrt{2}\pi m^{3/2}E^{1/2}}{h^{3}}   \delta E
+\Omega_{p}(E) = \frac{4\pi (2mE)}{h^{3/2}}\delta p = 
+\frac{8\pi mE}{h^{3/2}} \frac{dp}{dE} \delta E = \\
+\frac{8\pi mE}{h^{3/2}} \frac{m}{\sqrt{2mE}} \delta E = 
+\frac{4\sqrt{2}\pi m^{3/2}E^{1/2}}{h^{3/2}}   \delta E
 \end{align*}
 
 n-1 wymiarową powierzchnię n-wymiarowej bryły możemy też uzyskać 
 jako pochodną n-wymiarowej objętości:
 \begin{align*}
-\omega_{p}(E) = \frac{1}{h^3} \frac{\partial}{\partial E} \left( \frac{4\pi (2mE)^{3/2}}{3} \right) =
-\frac{1}{h^3} \frac{4\pi (2m)^{3/2}}{3} \frac{3}{2} E^{1/2} \delta E = 
-\frac{4 \sqrt{2}\pi m^{3/2} E^{1/2}}{h^3} \delta E.
+\Omega_{p}(E) = \frac{1}{h^{3/2}} \frac{\partial}{\partial E} \left( \frac{4\pi (2mE)^{3/2}}{3} \right) =
+\frac{1}{h^{3/2}} \frac{4\pi (2m)^{3/2}}{3} \frac{3}{2} E^{1/2} \delta E = 
+\frac{4 \sqrt{2}\pi m^{3/2} E^{1/2}}{h^{3/2}} \delta E.
 \end{align*}
 
 Całkowita liczba mikrostanów to iloczyn liczby stanów związanych z położeniem i pędem:
 \begin{align*}
-\omega(E) = \omega_{p}(E) \cdot \frac{V}{h^3} \delta E
+\Omega(E) = \omega_{p}(E) \cdot \frac{V}{h^{3/2}} \delta E
 \end{align*}
 
 \newpage
@@ -475,7 +476,7 @@ takich, które jedynie różnią się permutacjami ogniw rozciągniętych w praw
 i permutacjami ogniw rozciągniętych w lewo:
 
 \begin{align*}
-\Omega = \frac{N!}{N_+! N_-!}
+\Omega(X) = \frac{N!}{N_+! N_-!}
 \end{align*}
 Oraz:
 \begin{align*}
@@ -485,15 +486,22 @@ Oraz:
   N_- = \frac{N}{2} - \frac{X}{2a}
 \end{align*}
 
+Do obliczenia entropii potrzebujemy liczby konfiguracji $\Omega$ 
+dla ustalonej energii $E$, czyli dla $X$ i -$X$:
+\begin{align*}
+\Omega(E) = \Omega(X) + \Omega(-X) = 2\frac{N!}{N_+! N_-!}
+\end{align*}
+
+
 Entropia układu jest więc dana wzorem:
 \begin{align*}
-S(N,E) = k_B \ln \Omega = k_B \ln \left[\frac{N!}{N_+! N_-!}\right] \simeq \\
-k_B \left[ N\ln N - N_+\ln N_+ - N_-\ln N_- \right] = \\
-k_B  \left[ \ln N - \frac{N}{2}\left(1 + \frac{X}{Na}\right)\ln \left( \frac{N}{2}\left(1 + \frac{X}{Na}\right) \right) - \frac{N}{2}\left(1 - \frac{X}{Na}\right)\ln \left( \frac{N}{2}\left(1 - \frac{X}{Na}\right) \right) \right] = \\
+S(N,E) = k_B \ln \Omega = k_B \ln \left[\frac{2N!}{N_+! N_-!}\right] \simeq \\
+k_B \left[ N\ln N - N_+\ln N_+ - N_-\ln N_-  + \ln2\right] = \\
+k_B  \left[ \ln N - \frac{N}{2}\left(1 + \frac{X}{Na}\right)\ln \left( \frac{N}{2}\left(1 + \frac{X}{Na}\right) \right) - \frac{N}{2}\left(1 - \frac{X}{Na}\right)\ln \left( \frac{N}{2}\left(1 - \frac{X}{Na}\right) \right) + \ln2  \right] = \\
 k_B \left[ \ln N - \frac{N}{2}\left(1 + \frac{X}{Na}\right)\ln \left(1 + \frac{X}{Na} \right) - \frac{N}{2}\left(1 - \frac{X}{Na}\right)\ln \left(1 - \frac{X}{Na}\right) \right. \\
-\left. -\frac{N}{2}\left(1 + \frac{X}{Na}\right)\ln\frac{N}{2} - \frac{N}{2}\left(1 - \frac{X}{Na}\right)\ln\frac{N}{2} \right]= \\
+\left. -\frac{N}{2}\left(1 + \frac{X}{Na}\right)\ln\frac{N}{2} - \frac{N}{2}\left(1 - \frac{X}{Na}\right)\ln\frac{N}{2} +\ln2 \right]= \\
 k_B N \left[- \frac{1}{2}\left(1 + \frac{X}{Na}\right)\ln \left(1 + \frac{X}{Na} \right) - \frac{1}{2}\left(1 - \frac{X}{Na}\right)\ln \left(1 - \frac{X}{Na}\right)
- - \ln2 \right] \simeq \\
+ - \ln2 + \ln2 \right] \simeq \\
 = || x = \frac{X}{Na} || =
 -k_B N \left[ \frac{1+x}{2}\log\frac{1+x}{2} + \frac{1-x}{2}\log\frac{1-x}{2} \right]
 \end{align*}
