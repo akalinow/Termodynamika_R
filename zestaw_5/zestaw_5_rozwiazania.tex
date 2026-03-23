@@ -109,10 +109,18 @@ położenie jest ograniczone do objętości $V$ w przestrzeni, więc liczba
 mikrostanów związana z położeniem to $V/h^3$. Warunek energetyczny sprowadza 
 się do ograniczenia wektora pędu do powierzchni sfery o promieniu $\sqrt{2mE}$. 
 Liczba stanów pędowych jest proporcjonalna do powierzchni tej sfery.
+Zgodnie z notacją z wykładu:
+\begin{align*}
+  \Omega = \int_{E<E_0} \frac{d^3p d^3q}{h^3} \qquad
+  \omega = \frac{d\Omega}{dE} \qquad
+  d\Omega = \omega dE
+\end{align*}
+
+
 {\bf Uwaga:} zliczamy stany w powłoce o grubości $\delta E$,
  a nie $\delta p$, więc musimy uwzględnić pochodną $dp/dE$.
 \begin{align*}
-\Omega_{p}(E) = \frac{4\pi (2mE)}{h^{3/2}}\delta p = 
+d\Omega_{p}(E) = \frac{4\pi (2mE)}{h^{3/2}}\delta p = 
 \frac{8\pi mE}{h^{3/2}} \frac{dp}{dE} \delta E = \\
 \frac{8\pi mE}{h^{3/2}} \frac{m}{\sqrt{2mE}} \delta E = 
 \frac{4\sqrt{2}\pi m^{3/2}E^{1/2}}{h^{3/2}}   \delta E
@@ -121,14 +129,14 @@ Liczba stanów pędowych jest proporcjonalna do powierzchni tej sfery.
 n-1 wymiarową powierzchnię n-wymiarowej bryły możemy też uzyskać 
 jako pochodną n-wymiarowej objętości:
 \begin{align*}
-\Omega_{p}(E) = \frac{1}{h^{3/2}} \frac{\partial}{\partial E} \left( \frac{4\pi (2mE)^{3/2}}{3} \right) =
+d\Omega_{p}(E) = \frac{1}{h^{3/2}} \frac{\partial}{\partial E} \left( \frac{4\pi (2mE)^{3/2}}{3} \right) =
 \frac{1}{h^{3/2}} \frac{4\pi (2m)^{3/2}}{3} \frac{3}{2} E^{1/2} \delta E = 
 \frac{4 \sqrt{2}\pi m^{3/2} E^{1/2}}{h^{3/2}} \delta E.
 \end{align*}
 
 Całkowita liczba mikrostanów to iloczyn liczby stanów związanych z położeniem i pędem:
 \begin{align*}
-\Omega(E) = \omega_{p}(E) \cdot \frac{V}{h^{3/2}} \delta E
+d\Omega(E) = \omega_{p}(E) \cdot \frac{V}{h^{3/2}} \delta E
 \end{align*}
 
 \newpage
@@ -168,7 +176,7 @@ o częstości $\omega$. Krotność stanów  szacujemy jako
 objętość powłoki o grubości $\delta E$ wokół energii $E$ w przestrzeni fazowej:
 
 \begin{align*}
-\omega(E) = \left.\frac{\partial \Omega}{\partial E}\right|_{E} \delta_E
+d\Omega(E) = \left.\frac{\partial \Omega}{\partial E}\right|_{E} \delta_E
 \end{align*}
 
 gdzie $h$ to stała konwersji jednostek przestrzeni fazowej na liczbę 
@@ -206,9 +214,9 @@ S_{6N}(\sqrt{E}) = \frac{\pi^{3N}}{\Gamma(3N + 1)} E^{3N} =
 \frac{\pi^{3N}}{(3N)!} E^{3N}
 \end{align*}
 
-Stąd krotność stanów mikrokanonicznych ma postać:
+Stąd liczba mikrostanów ma postać:
 \begin{align*}
-\omega(E) = \frac{1}{h^{3N}} 
+d\Omega(E) = \frac{1}{h^{3N}} 
 \left( \frac{2}{\omega} \right)^{3N} \frac{\pi^{3N}}{(3N)!} 
 \frac{\partial E^{3N}}{\partial E} \delta E =
 \frac{1}{h^{3N}} 
@@ -223,7 +231,7 @@ korzystając z przybliżenia Stirlinga dla silni, oraz
 przybliżając $3N-1$ przez $3N$:
 
 \begin{align*}
- \log \Omega(E) = 3N \log\left( \frac{2\pi E}{h \omega} \right) - \log((3N-1)!) + \log\left( \frac{\delta E}{E} \right) \approx \\
+ \log d\Omega(E) = 3N \log\left( \frac{2\pi E}{h \omega} \right) - \log((3N-1)!) + \log\left( \frac{\delta E}{E} \right) \approx \\
   3N \log\left( \frac{2\pi E}{h \omega} \right) - 3N \log(3N) + 3N + \log\left( \frac{\delta E}{E} \right) = \\
   3N \log\left( \frac{2\pi E}{3N h \omega} \right) + 3N + \log\left( \frac{\delta E}{E} \right) \simeq \\
   3N \log \left[ \left( \frac{E}{3N h \omega} \right) + 1 \right]
@@ -231,7 +239,7 @@ przybliżając $3N-1$ przez $3N$:
 
 Ostatecznie entropia układu ma postać:
 \begin{align*}
-S(E,N) \simeq k_B \log \Omega(E) \approx 3N k_B \log \left[ \left( \frac{2\pi E}{3N h \omega}\right) + 1 \right].
+S(E,N) \simeq k_B \log d\Omega(E) \approx 3N k_B \log \left[ \left( \frac{2\pi E}{3N h \omega}\right) + 1 \right].
 \end{align*}
 
 Temperatura statystyczna:
@@ -375,8 +383,8 @@ gdzie $k$ jest liczbą całkowitą. Proszę:
 \begin{itemize}
   \item korzystając z rozkładu mikrokanonicznego znaleźć entropię układu: $S(N,E)$
   \item rozkład obsadzeń w funkcji temperatury: $P_{i}(T)$, gdzie $i \in {0,1}$
-  \item przyjąć $g=2$, $E = 0.75N\varepsilon$ znaleźć kierunek przepływu ciepła, 
-        gdy układ będzie w kontakcie z dużym układem o stałej temperaturze $T = 500\,\mathrm{K}$.
+  \item przyjąć $g=2$, $E = 0.75N\varepsilon$ i znaleźć kierunek przepływu ciepła, 
+        gdy układ będzie w kontakcie z dużym układem o stałej temperaturze $T_0 = 500\,\mathrm{K}$.
 \end{itemize}
 
 {\bf Wskazówka:} Temperatura zależy od energii układu, więc liczby cząstek na poziomie wzbudzonym.
@@ -437,6 +445,25 @@ Obliczmy temperaturę układu z $k = 0.75N$ i $g=2$:
   \frac{\varepsilon}{k_B \ln \left[ 2 \frac{1-0.75}{0.75} \right]} = 
   \frac{\varepsilon}{k_B \ln \left[ \frac{2}{3} \right]} = -2.47k_B <0
 \end{align*}
+
+Kierunek przepływu ciepła w kontakcie ze zbiornikiem o 
+temperaturze $T_0$:
+\begin{align*}
+{\text \dj}Q = T_0 dS = T_0 \left( \frac{\partial S}{\partial E} \right)_N dE =
+\frac{T_0}{T} dE < 0
+\end{align*}
+
+Efekty ujemnej temperatury jest uzyskany dzięki inwersji obsadzeń - 
+większość cząstek jest na poziomie wzbudzonym, a nie podstawowym - energia jest duża,
+ale i uporządkowanie jest duże, więc entropia jest mała. 
+Układ o ujemnej temperaturze jest "gorętszy" niż układ o dodatniej 
+temperaturze, bo energia będzie przepływać w kierunku który zwiększa entropię, 
+czyli z układu o ujemnej temperaturze do układu o dodatniej temperaturze.
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{entropy.png}
+\end{center}
+
 
 \newpage
 \end{solution}
