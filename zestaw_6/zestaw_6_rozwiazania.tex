@@ -1,0 +1,298 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
+
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
+
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
+
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
+
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
+
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\  {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\  {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
+
+%dynamic solutions hiding
+\usepackage{comment}
+
+\newif\ifshowsolutions
+
+\def\showsolutions{} %comment this line to hide solutions
+
+\newif\ifshowsolutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
+
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R \\
+  Zestaw VI: Przekształcenie piekarskie.
+  }} \\  
+\end{centering}
+
+\vspace{1cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozpatrzmy przekształcenie jednostkowego kwadratu: 
+\begin{enumerate}
+\item skalowanie o czynniki $2$ i $1/2$ w kierunkach $x$ i $y$, 
+\item rozcięcie na pół w kierunku $x$ 
+\item nałożenie jedną część nad drugą w kierunku $y$.
+\end{enumerate}, czyli:
+\begin{align*}
+\vec{r}' = \hat{B}(\vec{r}) = \begin{cases} (2x, y/2), & x < 1/2 \\ (2x - 1, (y+1)/2), & x \geq 1/2 \end{cases}
+\end{align*}
+
+Proszę:
+\begin{itemize}
+\item znaleźć przekształcenie odwrotne: $\hat{B}^{-1}$, o ile takowe istnieje.
+\item sprawdzić, czy przekształcenie piekarskie zachowuje pole w przestrzeni fazowej
+\end{itemize}
+
+\begin{solution}
+
+Jesteśmy w stanie jednoznacznie odtworzyć punkt $(x, y)$ z jego obrazu $(x', y')$, 
+więc przekształcenie jest odwracalne. Przekształcenie odwrotne ma postać:
+\begin{align*}
+(x, y) = \hat{B}^{-1}(x', y') = \begin{cases} (x'/2, 2y'), & y' < 1/2 \\ ((x'+1)/2, 2y' - 1), & y' \geq 1/2 \end{cases}
+\end{align*}
+
+Czy przekształcenie zachowuje pole w przestrzeni fazowej? 
+Tak, wystarczy rozpatrzyć jakobian i pokazać, że jest równy $1$.
+Zapiszmy przekształcenie odwrotne w postaci macierzowej:
+\begin{align*}
+\left( \begin{array}{c} x' \\ y' \end{array} \right) = \left( \begin{array}{cc} 2 & 0 \\
+0 & 1/2 \end{array} \right) \left( \begin{array}{c} x \\ y \end{array} \right) + 
+\left( \begin{array}{c} 0 \\ 0 \end{array} \right) \text{ lub } \left( \begin{array}{cc} 2 & 0 \\ 0 & 1/2 \end{array} \right) \left( \begin{array}{c} x \\ y \end{array} \right) + \left( \begin{array}{c} -1 \\ 1/2 \end{array} \right)
+\end{align*}
+
+Jakobian jest dany przez wyznacznik macierzy przekształcenia, 
+która jest pochodną przekształcenia odwrotnego względem $x$ i $y$:
+\begin{align*}
+J = \det \left( \begin{array}{cc} 2 & 0 \\
+0 & 1/2 \end{array} \right) = 2 \cdot \frac{1}{2} = 1
+\end{align*}
+
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Niech $\rho(x, y)$ opisuje gęstość prawdopodobieństwa znalezienia układu 
+w danym punkcie $(x, y)$ przestrzeni fazowej. Proszę:
+\begin{itemize}
+    \item znaleźć postać gęstości prawdopodobieństwa po $n$ iteracjach 
+    przekształcenia: $\rho_n(x, y)$
+    \item dyskretny odpowiednik równania Liouville'a rządzącego ewolucją $\rho$ 
+    podczas kolejnych iteracji przekształcenia: $\rho_{n+1} = f(\rho_n)$
+\end{itemize}
+
+
+\begin{solution}
+
+Gęstość prawdopodobieństwa w kolejnej iteracji znajdujemy 
+sumując gęstość prawdopodobieństwa w poprzedniej iteracji po wszystkich 
+punktach,które są przekształcane do punktu $(x, y)$ w przestrzeni fazowej:
+\begin{align*}
+    \rho_{n+1}(x', y') = \int dx \int dy \rho_{n}(x, y) \delta((x', y') - \hat{B}(x, y))
+\end{align*}
+
+Odwzorowanie jest bijekcją, więc dla każdego punktu $(x', y')$ istnieje 
+dokładnie jeden punkt $(x, y)$ taki że $\hat{B}(x, y) = (x', y')$. Oznacza to, że powyższy całkowy wzór można uprościć do:
+\begin{align*}
+    \rho_{n+1}(x', y') = \rho_n(\hat{B}^{-1}(x', y'))
+\end{align*}
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+Zdefiniujmy zredukowaną funkcję rozkładu, która mierzy gęstość 
+prawdopodobieństwa znalezienia układu w punkcie przestrzeni fazowej 
+o danej wartości współrzędnej $x$ (bez względu na wartość $y$):
+\begin{align*}
+W(x) = \int_0^1 \rho(x, y)dy
+\end{align*}
+
+Taki, wielowymiarowy rozkład, odcałkowany po wybranych współrzędnych,
+nazywany też jest rozkładem brzegowym, lub zmarginalizowanym. Proszę:
+\begin{itemize}
+    \item pokazać, że $W_n(x)$, gdzie $n$ oznacza liczbę iteracji przekształcenia 
+    piekarskiego spełnia następujące dyskretne równanie Boltzmanna:
+\begin{align*}
+W_n(x) = \frac{1}{2}\left[W_{n-1}\left(\frac{x}{2}\right) + W_{n-1}\left(\frac{x+1}{2}\right)\right]
+\end{align*}
+\item znaleźć rozkład równowagowy $W_{\text{eq}}(x)$, czyli taki, który 
+      jest niezmienniczy względem przekształcenia
+\item pokazać, że entropia Gibbsa: $S_G = -k\int_0^1 W(x)\log W(x)dx$ 
+      nie maleje podczas kolejnych iteracji przekształcenia
+\end{itemize}
+
+\begin{solution}
+
+Gęstość przestrzeni fazowej w danej iteracji jest dana przez:
+\begin{align*}
+\rho_n(x, y) = \rho_{n-1}(\hat{B}^{-1}(x, y)) =
+ \begin{cases} \rho_{n-1}(x/2, 2y), & y < 1/2 \\ \rho_{n-1}((x+1)/2, 2y - 1), & y \geq 1/2 \end{cases}
+\end{align*} 
+
+Całkujemy po $y$ i zamieniamy zmienne $y \to z = 2y$ w pierwszej całce 
+oraz $y \to z = 2y - 1$ w drugiej całce:
+\begin{align*}
+W_n(x) = \int_0^1 \rho_n(x, y) dy = \int_0^{1/2} \rho_{n-1}(x/2, 2y) dy + \int_{1/2}^1 \rho_{n-1}((x+1)/2, 2y - 1) dy = \\
+\frac{1}{2}\int_0^1 \rho_{n-1}(x/2, z) dz + \frac{1}{2}\int_0^1 \rho_{n-1}((x+1)/2, z) dz = \\
+\frac{1}{2}\left[W_{n-1}\left(\frac{x}{2}\right) + W_{n-1}\left(\frac{x+1}{2}\right)\right]
+\end{align*}
+
+Kolejne iteracje przekształcenia mieszają rozkład $W(x)$, dla różnych
+wartości $x$ biorąc średnią z wartości $W$ w punktach $x/2$ i $(x+1)/2$. 
+Rozkład równowagowy, niezmienniczy względem tego
+przekształcenia, to rozkład jednorodny: $W_{\text{eq}}(x) = 1$.
+
+Jaka jest ogólna postać rozwiązania równania Boltzmanna? Możemy rozwinąć $W(x)$ 
+w szereg Fouriera:
+\begin{align*}
+W_{n}(x) = \sum_{k=-\infty}^{\infty} c_k(n) e^{2\pi i k x}
+\end{align*}
+
+Wstawiamy to do równania Boltzmanna i korzystamy z ortogonalności funkcji wykładniczych:
+\begin{align*}
+\sum_{k=-\infty}^{\infty} c_k(n) e^{2\pi i k x} = \frac{1}{2}\left[ \sum_{k=-\infty}^{\infty} c_k(n-1) e^{2\pi i k x/2} + \sum_{k=-\infty}^{\infty} c_k(n-1) e^{2\pi i k (x+1)/2} \right] = \\
+\sum_{k=-\infty}^{\infty} c_k(n-1) e^{2\pi i k x/2} \frac{1 + e^{2\pi i k / 2}}{2} = 
+\sum_{k=-\infty}^{\infty} c_k(n-1) e^{2\pi i k x/2} \frac{1 + (-1)^k}{2} = \\
+\sum_{k=-\infty}^{\infty} c_k(n-1) e^{2\pi i k x/2} \delta_{k 2j} = 
+\sum_{j=-\infty}^{\infty} c_{2j}(n-1) e^{2\pi i j x}
+\end{align*}
+
+\begin{align*}
+\sum_{k=-\infty}^{\infty} c_k(n+1) e^{2\pi i k x} = 
+\frac{1}{2}\left[ \sum_{j=-\infty}^{\infty} c_{2j}(n-1) e^{2\pi i j x/2} + 
+\sum_{j=-\infty}^{\infty} c_{2j}(n-1) e^{2\pi i j (x+1)/2} \right] = \\
+\sum_{j=-\infty}^{\infty} c_{2j}(n-1) e^{2\pi i j x/2} \frac{1 + e^{2\pi i j / 2}}{2} = 
+\sum_{j=-\infty}^{\infty} c_{2j}(n-1) e^{2\pi i j x/2} \delta_{j 2l} 
+\end{align*}
+
+Wniosek: w każdej iteracji przekształcenia, 
+współczynniki $c_k$ dla nieparzystych $k$ (w danej iteracji) stają się zerowe, 
+a współczynniki dla parzystych $k$ pozostają bez zmian. 
+Ostatecznie, po nieskończenie wielu iteracjach, pozostaje 
+tylko współczynnik $c_0$, który odpowiada rozkładowi jednorodnemu.
+
+\vspace{1cm}
+
+Ewolucję entropii Gibbsa znajdujemy korzystając z postaci $W_n(x)$:
+\begin{align*}
+S_n = -k\int_0^1 W_n(x)\log W_n(x) dx = \\
+-k\int_0^1 \frac{1}{2}\left[W_{n-1}\left(\frac{x}{2}\right) + W_{n-1}\left(\frac{x+1}{2}\right)\right] \log\left( \frac{1}{2}\left[W_{n-1}\left(\frac{x}{2}\right) + W_{n-1}\left(\frac{x+1}{2}\right)\right] \right) dx
+\end{align*}
+
+Nie obliczamy jawnej postaci $S(n)$, ale chcemy jedynie zbadać 
+czy $S(n) \geq S(n-1)$. Funkcja podcałkowa ma postać:
+\begin{align*}
+\frac{1}{2}\left[W_{n-1}\left(\frac{x}{2}\right) + W_{n-1}\left(\frac{x+1}{2}\right)\right] \log\left( \frac{1}{2}\left[W_{n-1}\left(\frac{x}{2}\right) + W_{n-1}\left(\frac{x+1}{2}\right)\right] \right) = \\
+f(a, b) = \frac{a + b}{2} \log\left( \frac{a + b}{2} \right) = f(z)\log(z), \text{ gdzie } z = \frac{a + b}{2}
+\end{align*}
+
+Funkcja $f(z) = z\log(z)$ jest wypukła: druga pochodna jest dodatnia dla $z > 0$:
+\begin{align*}
+f''(z) = \frac{1}{z} > 0
+\end{align*}
+
+Wypukłość funkcji oznacza, że prosta łącząca 
+dwa punkty na wykresie funkcji leży powyżej wykresu funkcji:
+\begin{align*}
+  f''(z) \simeq \frac{f(z+h) - 2f(z) + f(z-h)}{(h)^2} > 0 \Rightarrow \\
+f(z) < \frac{f(a) + f(b)}{2} \text{ dla } z = \frac{a + b}{2}
+\end{align*}
+
+Fakt ten jest znany jako nierówność Jensena. W naszym przypadku:
+\begin{align*}
+f\left(\frac{a + b}{2}\right) \leq \frac{f(a) + f(b)}{2} \Rightarrow \\
+\frac{a + b}{2} \log\left( \frac{a + b}{2} \right) \leq \frac{a\log(a) + b\log(b)}{2}
+\end{align*}
+
+Zatem:
+\begin{align*}
+S_n = -k\int_0^1 f(a, b) dx \geq -k\int_0^1 \frac{a\log(a) + b\log(b)}{2} dx = \\
+-\frac{k}{2} \int_0^1 W_{n-1}\left(\frac{x}{2}\right) \log\left(W_{n-1}\left(\frac{x}{2}\right)\right) dx - 
+\frac{k}{2} \int_0^1 W_{n-1}\left(\frac{x+1}{2}\right) \log\left(W_{n-1}\left(\frac{x+1}{2}\right)\right) dx = \\
+|| z = \frac{x}{2} \text{ w pierwszej całce, } z = \frac{x+1}{2} \text{ w drugiej całce} || = \\
+-k\int_0^{1/2} W_{n-1}(z) \log\left(W_{n-1}(z)\right) dz -k \int_{1/2}^1 W_{n-1}(z) \log\left(W_{n-1}(z)\right) dz = \\
+-k\int_0^1 W_{n-1}(z) \log\left(W_{n-1}(z)\right) dz =
+S_{n-1}
+\end{align*}
+
+Zatem $S_n \geq S_{n-1}$, czyli entropia Gibbsa nie maleje podczas kolejnych iteracji 
+przekształcenia piekarskiego.
+
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
