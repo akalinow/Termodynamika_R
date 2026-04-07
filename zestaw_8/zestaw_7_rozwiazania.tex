@@ -1,0 +1,60 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern} % Ensure proper font rendering for Polish characters
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{TIFS R - Ćwiczenia tydzień 7}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{I zasada termodynamiki i cykle termodynamiczne}
+
+Przećwiczmy I zasadę termodynamiki, pojęcie ciepła, pracy, procesu odwracalnego, licząc kilka cykli termodynamicznych. Ciałem roboczym będzie za każdym razem gaz doskonały. Dobrze jest przypomnieć, że dla tego gazu $u = c_v T$, gdzie $c_v = \frac{3}{2} k$, a zatem energia wewnętrzna zależy tylko od temperatury, jak również przypomnieć równanie stanu. Uwaga na dwa sposoby zapisu tych wielkości (na cząstkę i na mol - ze stałą gazową).
+
+Wszystkie poniższe procesy są odwracalne (kwazistatyczne).
+
+\subsection*{Zadanie 1}
+
+Znajdź pracę wykonaną nad gazem doskonałym i ilość ciepła zaabsorbowanego przez ten gaz podczas procesu cyklicznego $(p_1, V_1) \to (p_1, V_2) \to (p_2, V_2) \to (p_2, V_1) \to (p_1, V_1)$.
+
+\subsection*{Rozwiązanie}
+
+Wracamy do punktu wyjścia, więc $W = -Q$ (bo $\Delta U = 0$); podczas przemiany izochorycznej $W = 0$, podczas izobarycznej $W = -p\Delta V$, stąd całkowita praca $W = (V_2 - V_1)(p_2 - p_1)$. Interpretacja - pole prostokąta.
+
+\subsection*{Zadanie 2}
+
+Zdefiniować ciepła właściwe przy stałej objętości i ciśnieniu i udowodnić, że dla gazu doskonałego $C_p = C_v + R$.
+
+\subsection*{Rozwiązanie}
+
+Jest dużo dowodów tej równości (patrz np. Kubo - Zad 3 str.20), ja bym jednak chciała, żebyśmy udowodnili ją wykorzystując rozprężanie do próżni (tzw. cykl Mayera) - Kubo zad 11 str. 33). Podkreślcie koniecznie, że to proces nierównowagowy i pojęcie ciśnienia gazu nie ma tam sensu (patrz dyskusja w Kubo).
+
+\subsection*{Zadanie 3}
+
+Równanie adiabaty dla gazu doskonałego: Pokazać, że podczas procesu adiabatycznego (kwazistatycznego) spełniony jest następujący związek między ciśnieniem a objętością:
+\[ pV^\gamma = \text{const.} \]
+
+Znaleźć pracę gazu nad otoczeniem podczas kwazistatycznego rozszerzania adiabatycznego z $(p_1, V_1, T_1)$ do $(p_2, V_2, T_2)$. (Kubo - Zad 6 str. 22)
+
+\subsection*{Zadanie 4}
+
+Cykl Carnota dla gazu doskonałego (izoterma-adiabata-izoterma-adiabata). Pokazać równanie Clausiusa:
+\[ \frac{Q_1}{T_1} + \frac{Q_2}{T_2} = 0 \]
+
+(patrz Kubo 9/32, rozwiązanie tamże)
+
+\subsection*{Zadanie 5}
+
+Rozpatrzmy gaz fotonów, dla którego $p = \frac{1}{3} u$, $u = \sigma T^4$. Obliczyć entropię tego gazu, wyprowadzić równanie adiabaty, oraz przeanalizować cykl Carnota z udziałem tego gazu. (Kubo 20/36 i załączony artykuł).
+
+\end{document}
