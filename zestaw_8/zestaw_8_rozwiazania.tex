@@ -1,103 +1,475 @@
-\documentclass[a4paper,12pt]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[11pt,a4paper]{article}
+
 \usepackage[polish]{babel}
-\usepackage{amsmath,amssymb}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
 \usepackage[T1]{fontenc}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes,arrows.meta}
 
-\title{TIFS R - Ćwiczenia Tydzień 8}
-\author{}
-\date{11 lutego 2026}
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
 
-\begin{document}
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
 
-\maketitle
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
 
-\section*{Silniki, lodówki, entropia}
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
 
-Silnik cieplny - urządzenie do przetwarzania energii cieplnej na energię mechaniczną; silnik cieplny pobiera ciepło ze źródła o temperaturze wyższej (ciepło spalania paliwa w silniku spalinowym lub w turbinie), przetwarza jego część na pracę mechaniczną, a resztę oddaje w chłodnicy.
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\  {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\  {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
-Wynalazcą pierwszego urządzenia zmieniającego ciepło na pracę był Heron z Aleksandrii (I w. n.e.). Skonstruował on mianowicie tzw. banię Herona obracaną strumieniami pary wydostającymi się z niej przez odpowiednio zagięte rurki - wzór turbiny parowej.
+%dynamic solutions hiding
+\usepackage{comment}
 
-Sprawność silnika - stosunek pracy wykonanej przez układ do pobranego ciepła:
-\begin{equation}
-\eta = \frac{W}{Q_1}
-\end{equation}
+\newif\ifshowsolutions
 
-\subsection*{Zadanie 1}
-Udowodnić równość Clausiusa dla cyklu Carnota, a następnie znaleźć sprawność silnika Carnota.
+\def\showsolutions{} %comment this line to hide solutions
 
-\textbf{Rozwiązanie:}
+\newif\ifshowsolutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
 
-Wzór Clausiusa wyszedł nam już dwukrotnie - dla gazu doskonałego i gazu fotonów, teraz dostaniemy sformułowanie ogólne i okaże się, że tamte wyniki były nieprzypadkowe. Rozwiązanie jest proste, ale subtelne - omawiajcie każdy krok i podkreślajcie, z której zasady kiedy korzystamy.
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
 
-Najpierw z I-szej zasady termodynamiki:
-\begin{equation}
-0 = \Delta U_u = Q_1 + Q_2 + W
-\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R \\
+  Zestaw VIII: Rozkład kanoniczny
+  }} \\  
+\end{centering}
 
-Wielkości z indeksem $u$ odnoszą się do układu, z indeksem $1$ - grzejnik, $2$ - chłodnica. Potem z II-ej zasady (proces odwracalny!):
-\begin{equation}
-0 = \Delta S = \Delta S_1 + \Delta S_2 + \Delta S_u
-\end{equation}
+\vspace{1cm}
 
-Układ wraca do stanu początkowego, więc $\Delta S_u = 0$, stąd ostatecznie:
-\begin{equation}
-\Delta S_1 + \Delta S_2 = 0
-\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
 
-Zmiany entropii termostatów policzyć łatwo, z definicji mają bowiem stałe temperatury, więc:
-\begin{equation}
-Q_1 = -T_1 \Delta S_1
-\end{equation}
+W jednorodnym polu grawitacyjnym umieszczono naczynie o polu podstawy $S$ i
+nieskończonej wysokości. W naczyniu znajduje się gaz o temperaturze $T$,
+składający się z $N$ identycznych,  nieoddziałujących, cząsteczek o 
+masie $m$. Proszę wyznaczyć średnią i odchylenie standardowe
+środka masy gazu.
 
-Uwaga na znak: $T_1 \Delta S_1$ to ciepło oddane przez układ termostatowi. Analogicznie:
-\begin{equation}
-Q_2 = -T_2 \Delta S_2
-\end{equation}
+\begin{solution}
 
-Skąd dostajemy równość Clausiusa:
-\begin{equation}
-\frac{Q_1}{T_1} + \frac{Q_2}{T_2} = 0
-\end{equation}
+Gaz podlega rozkładowi kanonicznemu:
+\begin{align*}
+  \rho(x_{i},y_{i},z_{i}, \vec{p}_i) &=  
+  \frac{1}{Z_{i}}e^{-\frac{1}{kT}(mgz_i + \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m})} = \\
+   & \frac{1}{Z_{i}}e^{-\beta (mgz_i + \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m})}
+\end{align*}
 
-Pozwala to też na obliczenie sprawności:
-\begin{equation}
-\eta = \frac{-W}{Q_1} = \frac{Q_1 + Q_2}{Q_1} = 1 - \frac{T_2}{T_1}
-\end{equation}
+Czynnik normalizacyjny $Z_i$ jest iloczynem części przestrzennej i pędowej:
+\begin{align*}
+  Z_i &= \int e^{-\beta (mgz_i + \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m})} d^{3}x_i d^{3}p_i =
+  \int e^{-\beta mgz_i} d^{3}x_i \int e^{-\beta \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m}} d^{3}p_i = Z_{ri} Z_{pi} \\
+  Z_{ri} &= \int e^{-\beta mgz_i} d^{3}x_i = S \int_{0}^{\infty} e^{-\beta mgz_i} dz_i = \frac{S}{\beta mg} \\
+  Z_{pi} &= \int e^{-\beta \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m}} d^{3}p_i 
+\end{align*}
 
-Typowe wielkości - w elektrociepłowniach termostaty mają ok. $700\,\mathrm{K}$, chłodnice (woda) - $300\,\mathrm{K}$, co dawałoby idealne sprawności ok. $57\%$, w rzeczywistości silniki nie są idealne i jest gorzej - ok. $33\%$. (Dla porównania elektrownie niecieplne - np. wodne mają sprawność zamiany energii potencjalnej wody na prąd elektryczny rzędu $85\%$).
 
-Uwaga: Można również odwrócić kota ogonem i przyjąć stwierdzenie: \textit{Stosunek $|Q_2|/|Q_1| (T_2/T_1)$ jest taki sam dla wszystkich procesów Carnota (niezależnie od substancji roboczej) operujących między termostatami o temperaturze $T_1$ i $T_2$} za alternatywne sformułowanie drugiej zasady termodynamiki.
+Uśredniamy położenie środka masy z rozkładem kanonicznym:
+\begin{align*}
+  \langle \vec{r} \rangle &=  \langle \frac{1}{N} \sum_{i=1}^{N} \vec{r}_i \rangle = 
+  \frac{1}{N} \sum_{i=1}^{N} \langle\vec{r}_i \rangle = 
+  \langle \vec{r}_i \rangle = \frac{1}{Z_i} \int \vec{r}_i \rho(\vec{r}_i) d^{3}x_i d^{3}p_i = \\
+   & \frac{1}{Z_{ri}} \int \vec{r}_i e^{-\beta mgz_i} d^{3}x_i  \frac{1}{Z_{p,i}} \int e^{-\beta \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m}} d^{3}p_i = \frac{1}{Z_{ri}} \int \vec{r}_i e^{-\beta mgz_i} d^{3}x_i \\
+  \langle x_{i} \rangle &= \frac{1}{Z_i} \int_{-L_{x}}^{L_{x}} x_i e^{-\beta mgz_i} d^{3}x_i = 0 \\
+  \langle y_{i} \rangle &= \frac{1}{Z_i} \int_{-L_{y}}^{L_{y}} y_i e^{-\beta mgz_i} d^{3}x_i = 0 \\
+  \langle z_{i} \rangle &= \frac{1}{Z_i} \int_{0}^{\infty} z_i e^{-\beta mgz_i} d^{3}x_i = \frac{1}{Z_{zi}} \int_{0}^{\infty} z_i e^{-\beta mgz_i} dz_i = \\
+  & \frac{1}{Z_{zi}} \frac{-1}{mg} \frac{\partial}{\partial \beta} \int_{0}^{\infty} e^{-\beta mgz_i} dz_i = \frac{1}{Z_{zi}} \frac{-1}{mg} \frac{\partial}{\partial \beta} \left[ \frac{-1}{\beta mg} e^{-\beta mgz_i} \right]_{0}^{\infty} = \\
+  & \frac{1}{Z_{zi}} \frac{-1}{mg} \left[ \frac{-1}{\beta^2 mg} \right] = \frac{1}{Z_{zi}} \frac{1}{mg \beta} \frac{1}{\beta mg}
+  = \frac{1}{mg \beta} = \frac{kT}{mg}
+\end{align*}
 
-\subsection*{Zadanie 2}
-Pokazać, że żaden inny silnik cieplny nie będzie działał sprawniej od silnika Carnota.
+Odchylenie standardowe.
 
-\textbf{Rozwiązanie:}
+\begin{align*}
+  \sigma^{2}_{z} &= \langle z^2 \rangle - \langle z \rangle^2 \\
+  \langle z^2 \rangle &= \frac{1}{Z_{iz}^{N}} \int_{0}^{\infty} z_{SM}^2 e^{-\beta \sum_{i} mgz_i} d^{N}z
+\end{align*}
 
-(Przytaczam rozwiązanie za skryptem G.K do wykładu M.N - konwencja oznaczeń jest troszkę inna niż zwykle).
+Oznaczmy 
+\begin{align*}
+Z_{z} = \int_{0}^{\infty} e^{-\beta mgz_i} d^{N}z = 
+\left[ \int_{0}^{\infty} e^{-\beta mgz_i} dz_i \right]^{N} = Z_{i}^{N}
+\end{align*}
 
-Niech w czasie jednego cyklu silnik wykonuje pracę $W$, przy czym w trakcie cyklu pobiera z otoczenia ciepło $Q_+$ oraz oddaje do otoczenia ciepło $Q_-$. W czasie cyklu zmiana energii wewnętrznej silnika wynosi zero, więc z pierwszej zasady termodynamiki uzyskujemy:
-\begin{equation}
-0 = \Delta U = Q_+ - (W + Q_-)
-\end{equation}
+\begin{align*}
+  \langle z^2 \rangle &= \frac{1}{Z_{iz}^{N}} \int_{0}^{\infty} z_{SM}^2 e^{-\beta \sum_{i} mgz_i} d^{N}z = 
+    \frac{1}{Z_{z}} \int_{0}^{\infty} \left[\frac{1}{N} \sum_{i=1}^{N} z_i \right]^2 e^{-\beta \sum_{i} mgz_i} d^{N}z = \\
+    & \frac{1}{N^2 Z_{z}} \int_{0}^{\infty} \left[ \sum_{i=1}^{N} z_i \right]^{2} e^{-\beta \sum_{i} mgz_i} d^{N}z = 
+      \frac{1}{N^2 Z_{z}} \int_{0}^{\infty} \frac{1}{(mg)^{2}}  \frac{\partial^{2}}{\partial \beta^{2}} e^{-\beta \sum_{i} mgz_i} d^{N}z = \\
+    &  \frac{1}{N^2 Z_{z}}  \frac{1}{(mg)^{2}}  \frac{\partial^{2}}{\partial \beta^{2}}  \int_{0}^{\infty} e^{-\beta \sum_{i} mgz_i} d^{N}z = 
+      \frac{1}{N^2 Z_{z}}  \frac{1}{(mg)^{2}}  \frac{\partial^{2}}{\partial \beta^{2}}  \left[ \int_{0}^{\infty} e^{-\beta mgz_i} dz_i \right]^{N} = \\
+    & \frac{1}{N^2 Z_{z}}  \frac{1}{(mg)^{2}}  \frac{\partial^{2}}{\partial \beta^{2}}  \left[ \frac{1}{\beta mg} \right]^{N} =
+      \frac{1}{N^2 Z_{z}}  \frac{1}{(mg)^{2}}  \left[ N(N+1) \frac{1}{\beta^{N+2} (mg)^{N+2}} \right] = 
+        \frac{N+1}{N} \frac{1}{(mg)^{2} \beta^{2}} Z_{z} \left[\frac{1}{\beta mg} \right]^{N} =  \\
+        & \frac{N+1}{N} \left( \frac{kT}{mg} \right)^2 = \frac{N+1}{N} \langle z \rangle^2
+\end{align*}
 
-czyli:
-\begin{equation}
-W = Q_+ - Q_-
-\end{equation}
+Odchylenie standardowe wysokości środka masy ma więc postać:
+\begin{align*}
+  \sigma_{z}^{2} &= \langle z^2 \rangle - \langle z \rangle^2 = \frac{N+1}{N} \langle z \rangle^2 - \langle z \rangle^2 = \frac{1}{N} \langle z \rangle^2 \\
+  \sigma_{z} &= \frac{1}{\sqrt{N}} \frac{kT}{mg}
+\end{align*}
 
-Zgodnie z nierównością Clausiusa:
-\begin{equation}
-\oint \frac{\delta Q}{T} \leq 0
-\end{equation}
+Składowa $x$:
+\begin{align*}
+  \sigma_{x}^{2} &= \langle x^2 \rangle - \langle x \rangle^2 = \langle x^2 \rangle \\
+  \langle x^2 \rangle &= \frac{1}{Z_{r}} \int \left[\frac{1}{N} \sum_{i=1}^{N} x_i \right]^{2} e^{-\beta mgz_i} d^{3N}x_i = 
+  \frac{1}{2L_{x}} \int_{-L_{x}}^{L_{x}} \left[\frac{1}{N}  \sum_{i=1}^{N} x_i \right]^{2} d^{N}x_i
+\end{align*}
 
-Rozdzielmy cykl na odcinki odpowiadające poszczególnym kierunkom przepływu ciepła między silnikiem a otoczeniem:
-\begin{equation}
-\int_+ \frac{\delta Q_+}{T} - \int_- \frac{\delta Q_-}{T} \leq 0
-\end{equation}
+W funkcji podcałkowej mamy sumę kwadratów i sumę iloczynów:
+\begin{align*}
+  \left[\sum_{i=1}^{N} x_i \right]^{2} = \sum_{i=1}^{N} x_i^2 + 2 \sum_{i<j} x_i x_j
+\end{align*}
 
-Temperaturę w pierwszej całce oszacujmy przez najwyższą temperaturę osiąganą w trakcie cyklu, zaś w drugiej - najniższą. Wówczas...
+Człony zawierające iloczyny $x_i x_j$ znikają po całkowaniu, 
+ponieważ całkujemy po symetrycznym przedziale. Zatem:
+\begin{align*}
+  \langle x^2 \rangle &= \frac{1}{2L_{x}N^{2}} \int_{-L_{x}}^{L_{x}} \sum_{i=1}^{N} x_i^2 d^{N}x_i = 
+  \frac{1}{2L_{x}N} \int_{-L_{x}}^{L_{x}} x_i^2 dx_i = \frac{1}{2L_{x}N} \left[ \frac{x_i^3}{3} \right]_{-L_{x}}^{L_{x}} = 
+  \frac{L_{x}^2}{3N}
+\end{align*}
 
+Ostatecznie odchylenie standardowe środka masy w kierunku $x$ wynosi:
+\begin{align*}
+  \sigma_{x} = \frac{1}{\sqrt{N}} \frac{L_{x}}{\sqrt{3}}
+\end{align*}
+
+
+Mamy to odzwierciedlenie ogólnego faktu, że odchylenie standardowe średniej 
+z $N$ pomiarów jest równe odchyleniu standardowemu pojedynczego pomiaru 
+podzielonemu przez $\sqrt{N}$. 
+
+To samo z użyciem własności średniej i wariancji funkcji 
+zmiennej losowej $f(\vec{x})$:
+
+
+\begin{align*}
+  \langle \vec{f}(\vec{x}) \rangle &\simeq \vec{f}(\langle x_i \rangle),~~\text{ścisłe dla funkcji liniowych} \\
+  V(f) & \simeq \left[\frac{\partial \vec{f}}{\partial \vec{x}}\right] V(\vec{x})  \left[\frac{\partial \vec{f}}{\partial \vec{x}} \right]^{T},~~\text{ścisłe dla funkcji liniowych}
+\end{align*}
+
+Dla $f(\vec{x}) = \frac{1}{N} \sum_{i=1}^{N} x_i$ i niezależnych $x_{i}$ mamy:
+\begin{align*}
+  \langle f \rangle &= \frac{1}{N} \sum_{i=1}^{N} \langle x_i \rangle = \langle x_i \rangle \\
+  V(f) &= \frac{1}{N^2} \sum_{i=1}^{N} V(x_i) = \frac{1}{N} V(x_i) \to \sigma_{f} = \frac{1}{\sqrt{N}} \sigma_{x_i}
+\end{align*}
+
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ układ $N$ cząstek o momencie magnetycznym $\mu$ mogących swobodnie obracać się w przestrzeni. Układ
+znajduje się w zewnętrznym polu magnetycznym $\vec{B}$, zatem jego energia jest równa
+\[
+E = -\mu B \sum_{i=1}^{N} \cos\theta_i,
+\]
+gdzie $\theta_i$ są kątami między kierunkiem pola a kierunkami poszczególnych dipoli.
+ Znajdź magnetyzację: $M = \langle \sum_{i=1}^{N} \mu \cos\theta_i \rangle$
+układu w funkcji temperatury. Przeanalizuj przypadek słabych oraz silnych pól. 
+
+{\bf Wskazówka:} $\coth x \approx \frac{1}{x}+\frac{x}{3}$, gdy $x \to 0$.
+
+
+\begin{solution}
+
+Średnia jest operacją liniową, zatem możemy ją rozbić na sumę średnich dla 
+pojedynczych dipoli. Obliczamy średni $\cos\theta$ dla pojedynczego dipola.
+Orientujemy układ współrzędnych tak, że $\hat{e}_{z} \parallel \vec{B}$. 
+Wtedy energia pojedynczego dipola jest równa $E = -\mu B \cos\theta$, gdzie 
+$\theta$ to kąt biegunowy układu współrzędnych. 
+\begin{align*}
+  \langle \cos\theta \rangle &=  \frac{1}{Z} \int_{0}^{\pi} \cos\theta p(\theta) d\Omega =
+  \frac{2\pi}{Z} \int_{0}^{\pi} \cos\theta e^{\beta \mu B \cos\theta} \sin(\theta)d\theta = \\
+  || x = \cos\theta & \Rightarrow dx = -\sin\theta d\theta || 
+   = \frac{2\pi}{Z} \int_{-1}^{1} x e^{\beta \mu B x} dx = 
+   \frac{2\pi}{Z} \frac{\partial}{\partial (\beta \mu B)} \int_{-1}^{1} e^{\beta \mu B x} dx = \\
+  & \frac{2\pi}{Z} \frac{\partial}{\partial (\beta \mu B)} \left[ \frac{e^{\beta \mu B} - e^{-\beta \mu B}}{\beta \mu B} \right] =
+  \frac{2\pi}{Z} \left[ \frac{e^{\beta \mu B} + e^{-\beta \mu B}}{\beta \mu B} - \frac{e^{\beta \mu B} - e^{-\beta \mu B}}{(\beta \mu B)^2} \right] = \\
+  & \frac{2\pi}{Z} \left[ \frac{2\cosh(\beta \mu B)}{\beta \mu B} - \frac{2\sinh(\beta \mu B)}{(\beta \mu B)^2} \right] = \\
+  & || Z = \int e^{\beta \mu B \cos\theta} d\Omega = 2\pi \left[\frac{e^{\beta \mu B} - e^{-\beta \mu B}}{\beta \mu B} \right]  = \frac{2\pi}{\beta \mu B} \sinh(\beta \mu B) || \\
+  & = \frac{2\pi}{\frac{2\pi}{\beta \mu B} \sinh(\beta \mu B)} \left[ \frac{2\cosh(\beta \mu B)}{\beta \mu B} - \frac{2\sinh(\beta \mu B)}{(\beta \mu B)^2} \right] =
+  \coth(\beta \mu B) - \frac{1}{\beta \mu B} = || x = \frac{\mu B}{kT} ||  = \\
+   & \coth(x) - \frac{1}{x}
+\end{align*}
+
+Ostatecznie magnetyzacja układu jest równa:
+\begin{align*}
+  M = N \mu \langle \cos\theta \rangle = N \mu \left[ \coth\left( \frac{\mu B}{kT} \right) - \frac{kT}{\mu B} \right]
+\end{align*}
+
+Rozważamy przepadki graniczne:
+\begin{itemize}
+  \item silne pole ($\mu B \gg kT \to x \gg 1$):
+  \begin{align*}
+    M = N \mu \left[ \coth(x) - \frac{1}{x} \right] = 
+    N \mu \left[ \frac{e^{x} + e^{-x}}{e^{x} - e^{-x}} - \frac{1}{x} \right] = 
+    N \mu \left[ \frac{1 + e^{-2x}}{1 - e^{-2x}} - \frac{1}{x} \right] \approx \\
+    N \mu \left[ (1 + e^{-2x})(1 + e^{-2x}) - \frac{1}{x} \right] \approx 
+    N \mu \left[ 1 + 2e^{-2x}- \frac{1}{x} \right] \approx  N\mu
+  \end{align*}
+   Wszystkie dipole są ustawione w kierunku pola, 
+   a magnetyzacja osiąga maksymalną wartość $M_{max} = N\mu$.
+  \item słabe pole ($\mu B \ll kT \to x \ll 1$):
+  \begin{align*}
+    M  = N \mu \left[ \coth(x) - \frac{1}{x} \right] =
+    N \mu \left[ \frac{1}{x} + \frac{x}{3} - \frac{1}{x} \right] =
+    N \frac{\mu^2}{3kT} B
+  \end{align*}
+
+  Podatność magnetyczna jest odwrotnie proporcjonalna do temperatury (prawo Curie):
+\begin{align*}
+  \chi = \frac{\partial M}{\partial B} \approx N \frac{\mu^2}{3kT}
+\end{align*}
+
+\end{itemize}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+
+Rozważ układ $N$, kwantowych, cząstek o spinie $s$ mogących swobodnie obracać się 
+w przestrzeni. Układ znajduje się w zewnętrznym polu magnetycznym $\vec{B}$, 
+zatem jego energia jest równa
+\[
+E = -\mu_{B}g B \sum_{i=1}^{N} m^{(i)},~~m^{(i)} = -s, -s + 1, \ldots, s - 1, s,
+\]
+gdzie $g$ jest współczynnikiem Landégo, 2 - dla swobodnego elektronu.
+Proszę:
+\begin{itemize}
+\item znaleźć magnetyzację: $M = \langle \sum_{i=1}^{N} \mu_{B} g m^{(i)} \rangle$ układu w funkcji temperatury,
+\item przeanalizować przypadek słabych oraz silnych pól,
+\item znaleźć magnetyzację dla przypadku $s = \frac{1}{2}$,
+\item znaleźć magnetyzację w granicy klasycznej (niech $s \to \infty$).
+\end{itemize}
+
+{\bf Wskazówka:} $\coth x \approx \frac{1}{x}+\frac{x}{3}$, gdy $x \to 0$.
+
+\begin{solution}
+
+Poszukujemy średniej wartości $s_{z}$ dla pojedynczej cząstki.
+\begin{align*}
+  \langle s_{z} \rangle &= \frac{1}{Z_{1}} \sum_{m=-s}^{s} m e^{\beta \mu_{B} g B m} = 
+  \frac{1}{Z_{1}} \sum_{m=-s}^{s} m e^{x m} \qquad || x = \beta \mu_{B} g B ||
+\end{align*}
+
+Korzystamy z zaleznosci
+\begin{align*}
+  \langle s_z \rangle = \frac{1}{Z_1}\frac{\partial Z_1}{\partial x}
+  = \frac{\partial}{\partial x}\ln Z_1,
+\end{align*}
+
+\begin{align*}
+  Z_1(x) = \sum_{m=-s}^{s} e^{xm}
+  = e^{-sx}\sum_{m=0}^{2s} e^{xm} = e^{-sx}\frac{1-e^{x(2s+1)}}{1-e^{x}} = \\
+  e^{-sx}e^{x(2s+1)/2}\frac{e^{-x(2s+1)/2}-e^{x(2s+1)/2}}{1-e^{x}}  = \\
+  e^{x/2}\frac{e^{-x(2s+1)/2}-e^{x(2s+1)/2}}{1-e^{x}} = \\
+  \frac{e^{-x(2s+1)/2}-e^{x(2s+1)/2}}{e^{-x/2}-e^{x/2}} =
+  \frac{\sinh\!\left(\frac{2s+1}{2}x\right)}{\sinh\!\left(\frac{x}{2}\right)}.
+\end{align*}
+
+\begin{align*}
+  \langle s_z \rangle = \frac{\partial}{\partial x}\ln Z_1 =
+   \frac{\partial}{\partial x}\ln \sinh\!\left(\frac{2s+1}{2}x\right) - \frac{\partial}{\partial x}\ln \sinh\!\left(\frac{x}{2}\right) = \\
+  = \frac{2s+1}{2}\coth\!\left(\frac{2s+1}{2}x\right)
+   - \frac{1}{2}\coth\!\left(\frac{x}{2}\right).
+\end{align*}
+
+Magnetyzacja całego układu:
+\begin{align*}
+  M = N\mu_B g\,\langle s_z \rangle = \\
+      N\mu_B g\left[
+    \frac{2s+1}{2}\coth\!\left(\frac{2s+1}{2}x\right)
+   - \frac{1}{2}\coth\!\left(\frac{x}{2}\right)
+   \right].
+\end{align*}
+
+Jest to rownowaznie
+\begin{align*}
+  M = N\mu_B g s\,B_s(sx),
+\end{align*}
+gdzie
+\begin{align*}
+  B_s(y)=\frac{2s+1}{2s}\coth\!\left(\frac{2s+1}{2s}y\right)-\frac{1}{2s}\coth\!\left(\frac{1}{2s}y\right)
+\end{align*}
+to funkcja Brillouina.
+
+Przypadki graniczne:
+\begin{itemize}
+  \item silne pole ($x\gg 1$):
+  \begin{align*}
+    \langle s_z \rangle \to s,\qquad M \to M_{\max}=N\mu_B g s.
+  \end{align*}
+  \item slabe pole ($x\ll 1$): korzystajac z rozwinięcia $\coth x \approx \frac{1}{x}+\frac{x}{3}$,
+  \begin{align*}
+    \langle s_z \rangle &\approx \frac{(2s+1)}{2} \left(\frac{2}{2s+1}+\frac{2s+1}{6}\right) - 
+    \frac{1}{2} \left(2+\frac{1}{6}\right) = \frac{(2s+1)^2-1}{12} = \frac{s(s+1)}{3},\\
+    M &\approx N\frac{(\mu_B g)^2 s(s+1)}{3kT}B.
+  \end{align*}
+\end{itemize}
+
+Dla $s=\frac{1}{2}$:
+\begin{align*}
+  \langle s_z \rangle &= \frac{1}{2}\tanh\!\left(\frac{x}{2}\right),\\
+  M &= N\frac{\mu_B g}{2}\tanh\!\left(\frac{\mu_B g B}{2kT}\right).
+\end{align*}
+
+Granica klasyczna: $s\to\infty,~s\mu_B g \to \mu_{0}$, $y = sx = \frac{\mu_{0} B}{kT}$:
+\begin{align*}
+  M =  N\mu_B g s \left[\frac{2s+1}{2s}\coth\!\left(\frac{2s+1}{2s}y\right)-\frac{1}{2s}\coth\!\left(\frac{1}{2s}y\right) \right] \to \\
+  N\mu_{0}\left[\coth\!\left(y\right)- \frac{1}{2s}\frac{2s}{y} \right] = 
+  N\mu_{0}\left[\coth\!\left(\frac{\mu_{0} B}{kT}\right)- \frac{kT}{\mu_{0} B} \right]
+\end{align*}
+czyli otrzymujemy funkcje Langevina i ten sam wynik co dla klasycznych dipoli.
+
+
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+W naczyniu o kształcie walca o wysokości $L$ i promieniu podstawy $R$ znajduje się 
+$N$ cząsteczek gazu doskonałego. Naczynie obraca się wokół swojej osi ze stałą 
+prędkością kątową $\omega$. Proszę wyznaczyć ciśnienie, jakie gaz wywiera na boczne ścianki 
+naczynia w stanie równowagi termodynamicznej o temperaturze $T$.
+
+\begin{solution}
+
+Ciśnienie obliczymy korzystając z energii swobodnej:
+\begin{align*}
+  p = -\left( \frac{\partial F}{\partial V} \right)_{T,N}
+\end{align*}
+Energia swobodna jest związana z funkcją podziału przez zależność:
+\begin{align*}
+  F = -kT \ln Z = -kT \ln \frac{Z_{i}^N}{N!} = -NkT \ln Z_{i} + kT \ln N!
+\end{align*}
+
+
+Przechodzimy do układu obracającego się z naczyniem. 
+W tym układzie cząstki gazu doświadczają siły odśrodkowej, o energii potencjalnej:
+\begin{align*}
+  V(\rho) = -\frac{1}{2} m \omega^2 \rho^2
+\end{align*}
+
+Ta energia daje wkład do całkowitej energii występującej w rozkładzie kanonicznym.
+Dla pojedynczej cząstki mamy więc ($\beta = \frac{1}{kT}$):
+\begin{align*}
+  \rho(\vec{r},\vec{p}) = \frac{1}{Z_{i}} e^{-\beta \left( \frac{p_{i}^2}{2m} - \frac{1}{2} m \omega^2 \rho_{i}^2 \right)} =   
+  \frac{1}{Z_{i,p}} e^{-\beta \frac{p_{i}^2}{2m}} \frac{1}{Z_{i,\rho}} e^{\beta \frac{1}{2} m \omega^2 \rho_{i}^2}
+\end{align*}
+
+Rozkłady dla poszczególnych cząstek są niezależne, więc dla N, nierozróżnialnych cząstek,
+mamy:
+\begin{align*}
+  \rho(\vec{r}_1, \ldots, \vec{r}_N, \vec{p}_1, \ldots, \vec{p}_N) =  
+  \frac{1}{N!} \prod_{i=1}^{N} \rho(\vec{r}_i, \vec{p}_i) = 
+  \frac{1}{N!} \prod_{i=1}^{N} \frac{1}{Z_{i,p}} e^{-\beta \frac{p_{i}^2}{2m}} \frac{1}{Z_{i,\rho}} e^{\beta \frac{1}{2} m \omega^2 \rho_{i}^2}
+\end{align*}
+
+Energia swobodna jest więc równa:
+\begin{align*}
+  F = -kT \ln Z = -kT \ln \frac{Z_{i,p}^N Z_{i,\rho}^N}{N!} = -NkT \ln Z_{i,p} - NkT \ln Z_{i,\rho} + kT \ln N!
+\end{align*}
+
+Będziemy obliczali pochodną po objętości, więc interesuje nas tylko 
+składnik $-NkT \ln Z_{i,\rho}$.
+\begin{align*}
+  Z_{i,\rho} &= \int e^{\beta \frac{1}{2} m \omega^2 \rho^2} d^{3}r = 
+  \int_{0}^{L} dz \int_{0}^{R} e^{\beta \frac{1}{2} m \omega^2 \rho^2} 2\pi \rho d\rho = 
+  \pi L  \int_{0}^{R^2} e^{\beta \frac{1}{2} m \omega^2 r^2} dr^2 = 
+  \frac{2\pi L}{\beta m \omega^2} \left(e^{\beta \frac{1}{2} m \omega^2 R^2}-1\right)
+\end{align*}
+
+Ciśnienie wywierane na ścianki boczne:
+\begin{align*}
+  p = -\left( \frac{\partial F}{\partial V} \right)_{T,N} =
+  -\left( \frac{\partial F}{\partial R} \right)_{T,N} \frac{\partial R}{\partial V} = 
+  -\left(\frac{\partial F}{\partial R} \right)_{T,N} \frac{1}{2\pi R L} = 
+  \frac{NkT}{Z_{i,\rho}} \frac{1}{2\pi R L} \frac{\partial Z_{i,\rho}}{\partial R} = \\
+   \frac{NkT}{Z_{i,\rho}} \frac{1}{2\pi R L} \frac{2\pi L}{\beta m \omega^2} e^{\beta \frac{1}{2} m \omega^2 R^2} \beta m \omega^2 R = \\
+  \frac{NkT e^{\beta \frac{1}{2} m \omega^2 R^2}}{Z_{i,\rho}} = 
+  \frac{NkT e^{\beta \frac{1}{2} m \omega^2 R^2}}{\frac{2\pi L}{\beta m \omega^2} \left(e^{\beta \frac{1}{2} m \omega^2 R^2}-1\right)} = \\
+  \frac{NkT \beta m \omega^2}{2\pi L} \frac{e^{\beta \frac{1}{2} m \omega^2 R^2}}{e^{\beta \frac{1}{2} m \omega^2 R^2}-1} =
+  \frac{NkT}{V} \frac{\beta m\omega^{2}R^{2}}{2} \frac{e^{\beta \frac{1}{2} m \omega^2 R^2}}{e^{\beta \frac{1}{2} m \omega^2 R^2}-1} = \\
+  || x = \beta \frac{1}{2} m \omega^2 R^2 || =
+  \frac{NkT}{V} \frac{x e^{x}}{e^{x}-1}
+\end{align*}
+
+Sprawdźmy zachowanie w granicy $\omega \to 0$:
+\begin{align*}
+  p = \frac{NkT}{V} \frac{x e^{x}}{e^{x}-1} \approx \frac{NkT}{V} \frac{x(1+x)}{x} = \frac{NkT}{V}
+\end{align*}
+
+czyli otrzymujemy ciśnienie gazu doskonałego o temperaturze $T$ i objętości $V$ 
+w nieruchomym naczyniu, co jest zgodne z oczekiwaniami.
+
+
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

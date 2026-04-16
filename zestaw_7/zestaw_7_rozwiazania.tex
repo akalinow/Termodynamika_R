@@ -17,6 +17,8 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{xspace}
 \xspaceaddexceptions{[]\{\}}
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes,arrows.meta}
 
 %
 %
@@ -65,7 +67,7 @@
 
 \newif\ifshowsolutions
 
-\def\showsolutions{} %comment this line to hide solutions
+%\def\showsolutions{} %comment this line to hide solutions
 
 \newif\ifshowsolutions
 \ifdefined\showsolutions
@@ -86,7 +88,7 @@
 \begin{centering}
   {\bf {\Large
   Termodynamika i Fizyka Statystyczna R \\
-  Zestaw VI: Ergodyczność
+  Zestaw VII: Ergodyczność
   }} \\  
 \end{centering}
 
@@ -96,7 +98,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Układ jest ergodyczny, jeśli jego trajektorie w przestrzeni fazowej są gęste, 
 czyli przechodzą przez każdy punkt przestrzeni fazowej 
-(poza być może zbiorem o miarze zero). Dla układu ergodycznego, 
+(poza być może zbiorem o mierze zero), oraz równomiernie wypełniają przestrzeń fazową.
+Dla układu ergodycznego, 
 średnie czasowe i średnie po przestrzeni fazowej są równe. Oznacza to, 
 że dla prawie wszystkich punktów początkowych $\Gamma_0$ w przestrzeni fazowej, 
 średnia czasowa dowolnej funkcji $f$ wzdłuż trajektorii zaczynającej się 
@@ -139,7 +142,7 @@ Kąt $\beta$ jest zachowywany podczas odbić na podstawie prawa odbicia:
 kąt padania jest równy kątowi odbicia. Tory w kolejnych odbiciach:
 $P_{k-1}P_kP_{k+1}$ można wygenerowować przez obrót dowolnego wybranego toru,
 np. $P_0P_1P_2$, o kąt $\alpha = \pi - 2\beta$ wokół środka okręgu.
-ślad obracanych torów pozostawi "dziurę" w środku okręgu, której 
+Ślad obracanych torów pozostawi "dziurę" w środku okręgu, której 
 promień jest równy $R\sin\beta$, gdzie $R$ jest promieniem okręgu.
 To oznacza, że trajektoria nie przechodzi przez każdy punkt przestrzeni fazowej,
 więc ruch nie jest ergodyczny.
@@ -169,57 +172,104 @@ Musimy więc pokazać, że zbiór punktów
   \{\varphi_0 + n\alpha \pmod{2\pi} : n=0,1,2,\ldots\}
 \end{align*}
 jest gęsty na okręgu, gdy $\alpha/\pi$ jest liczbą niewymierną.
-Położeniu punktu $P_0$ możemy przyjąć jako punkt odniesienia, 
-więc bez straty ogólności możemy założyć, że $\varphi_0 = 0$.
-
+Punkt $P_0$ możemy przyjąć jako punkt odniesienia: $\varphi_0 = 0$.
 Jeśli $\alpha$ jest współmierne z $\pi$, czyli $\alpha/\pi$ jest liczbą 
-wymierną: $m/n$ to trajektoria będzie okresowa, z okresem $n$,
+wymierną: $m/n$ to trajektoria będzie okresowa, z okresem co najwyżej $2n$:
+\begin{align*}
+  P_{2n} = \varphi_0 + 2n\alpha = \varphi_0 + 2m\pi = P_0.
+\end{align*}
 a punkty $P_0, P_1, \ldots P_{n-1}$  
 będą znajdować się tylko w skończonej liczbie punktów na okręgu, więc nie 
 będą gęste.
 
-
-
-Weźmy dowolne $N \in \mathbb{N}$ i rozważmy $N+1$ punktów:
+Rozważmy $\alpha$ niewspółmierne z $\pi$ i punkt $P_{N}$ wypadający tuż przed $P_0$:
+(wszystkie obliczenia są mod $2\pi$)
 \begin{align*}
-  0,\ \alpha,\ 2\alpha,\ \ldots,\ N\alpha \pmod{2\pi}.
+  P_{N} =& \varphi_0 + N\alpha < P_0 \\
+  P_{N+1} =& \varphi_0 + (N+1)\alpha > P_0
 \end{align*}
-Podzielmy okrąg na $N$ łuków o równej długości $2\pi/N$. Na mocy zasady
-szufladkowej Dirichleta dwa z powyższych $N+1$ punktów muszą wpaść do tego
-samego łuku. Ich różnica ma więc postać
-\begin{align*}
-  \delta = m\alpha \pmod{2\pi}, \qquad 1 \le m \le N,
-\end{align*}
-oraz spełnia nierówność
-\begin{align*}
-  0 < \delta < \frac{2\pi}{N}.
-\end{align*}
-Lewa nierówność jest ścisła, bo z założenia $\alpha/\pi$ jest niewymierne,
-więc nie istnieje takie całkowite $m \ne 0$, dla którego $m\alpha$ byłoby
-wielokrotnością $2\pi$.
 
-Rozważmy teraz punkty
+Odległość między $P_{N+1}$ i $P_{N}$ wynosi $\alpha$, a odległość 
+$P_{N} - P_{0}$ lub $P_{N+1}-P_{0}$ jest mniejsza niż $\alpha/2$.
+Nie może to być dokładnie  $\alpha/2$, ponieważ w tej sytuacji 
+po kolejnych ${N+1}$ krokach trafimy w $P_{0}$:
 \begin{align*}
-  0,\ \delta,\ 2\delta,\ 3\delta,\ \ldots \pmod{2\pi}.
+   P_{N} = P_{0}  + N\alpha = P_0 - \frac{\alpha}{2} \to N\alpha (\text{mod} 2\pi) = -\frac{\alpha}{2} \\
+   P_{2N+1} = P_0 - \frac{\alpha}{2} - \frac{\alpha}{2} + \alpha = P_{0} 
 \end{align*}
-Ponieważ krok $\delta$ jest mniejszy niż $2\pi/N$, to kolejne wielokrotności
-$\delta$ rozmieszczają się na okręgu z odstępem nie większym niż $2\pi/N$.
-Innymi słowy: w każdym łuku o długości większej niż $2\pi/N$ znajduje się
-co najmniej jeden punkt postaci $l\delta \pmod{2\pi}$.
 
-Ale każdy taki punkt ma postać
-\begin{align*}
-  l\delta = lm\alpha \pmod{2\pi},
-\end{align*}
-a więc jest jednym z punktów trajektorii $P_0,P_1,\ldots$.
-Otrzymaliśmy zatem, że dla dowolnego $N$ w każdym łuku o długości większej niż
-$2\pi/N$ leży pewien punkt trajektorii.
+\begin{minipage}{0.5\textwidth}
+\begin{tikzpicture}[scale=4]
+  \def\angAlpha{40} % angle alpha
+  \def\angZero{90}   % P_0
+  \def\angN{\angZero-\angAlpha/2*0.6}     % P_N  (between P_0 and P_{N+1})
+  \def\angNone{\angN+\angAlpha}  % P_{N+1}
 
-Teraz bierzemy dowolny niepusty łuk okręgu. Ma on pewną dodatnią długość $L$.
-Wybieramy $N$ tak duże, aby $2\pi/N < L$. Wtedy w tym łuku musi znajdować się
-co najmniej jeden punkt trajektorii. Ponieważ taki wybór można wykonać dla
-każdego łuku o dodatniej długości, zbiór punktów $P_0,P_1,\ldots$ jest gęsty
-na okręgu.
+  % Points on circle
+  \coordinate (P0)   at ({cos(\angZero)},{sin(\angZero)});
+  \coordinate (PN)   at ({cos(\angN)},{sin(\angN)});
+  \coordinate (PNhalf)   at ({cos(\angN+\angAlpha/2)},{sin(\angN+\angAlpha/2)});
+  \coordinate (PNone) at ({cos(\angNone)},{sin(\angNone)});
+
+  % Draw dots and labels
+  \fill (P0)    circle (1.2pt) node[above=2pt]{$P_0$};
+  \fill (PN)    circle (1.2pt) node[above right=1pt]{$P_N$};
+  \fill (PNone) circle (1.2pt) node[above left=2pt]{$P_{N+1}$};
+
+  % Radii to mark the angle alpha
+  \draw[dashed, thin] (0,0) -- (PN);
+  \draw[dashed, thin] (0,0) -- (PNhalf);
+  \draw[dashed, thin] (0,0) -- (PNone);
+
+  % Arc marking angle alpha at centre
+  \draw[thick, -{Stealth}] ({0.35*cos(\angN)},{0.35*sin(\angN)})
+    arc (\angN:\angNone:0.35)
+    node[above right=10pt]{$\alpha$};
+
+  % Arc on circle from P_N to P_{N+1} highlighted
+  \draw[blue, thick] (PN) arc (\angN:\angNone:1);
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{tikzpicture}[scale=4]
+  \def\angAlpha{40} % angle alpha
+  \def\angZero{90}   % P_0
+  \def\angN{\angZero-\angAlpha/2*0.6}     % P_N  (between P_0 and P_{N+1})
+  \def\angNone{\angN+\angAlpha}  % P_{N+1}
+
+  \def\angM{\angN-\angAlpha/2*0.6}     % P_M  (between P_0 and P_{N+1})
+  \def\angMone{\angM+\angAlpha}  % P_{M+1}
+
+  % Points on circle
+  \coordinate (P0)   at ({cos(\angZero)},{sin(\angZero)});
+  \coordinate (PN)   at ({cos(\angN)},{sin(\angN)});
+  \coordinate (PNhalf)   at ({cos(\angN+\angAlpha/2)},{sin(\angN+\angAlpha/2)});
+  \coordinate (PNone) at ({cos(\angNone)},{sin(\angNone)});
+  \coordinate (PM)   at ({cos(\angM)},{sin(\angM)});
+  \coordinate (PMone) at ({cos(\angMone)},{sin(\angMone)});
+
+  % Draw dots and labels
+  \fill (P0)    circle (1.2pt) node[above=2pt]{$P_0$};
+  \fill (PN)    circle (1.2pt) node[above right=1pt]{$P_N$};
+  \fill (PNone) circle (1.2pt) node[above left=2pt]{$P_{N+1}$};
+  \fill (PM)    circle (1.2pt) node[above right=1pt]{$P_M$};
+  \fill (PMone) circle (1.2pt) node[above left=2pt]{$P_{M+1}$};
+
+  % Radii to mark the angle alpha
+  \draw[dashed, thin] (0,0) -- (PN);
+  \draw[dashed, thin] (0,0) -- (PNhalf);
+  \draw[dashed, thin] (0,0) -- (PNone);
+
+  % Arc marking angle alpha at centre
+  \draw[thick, -{Stealth}] ({0.35*cos(\angN)},{0.35*sin(\angN)})
+    arc (\angN:\angNone:0.35)
+    node[above right=10pt]{$\alpha$};
+
+  % Arc on circle from P_N to P_{N+1} highlighted
+  \draw[blue, thick] (PN) arc (\angN:\angNone:1);
+\end{tikzpicture}
+\end{minipage}
+
 
 \newpage   
 \end{solution}
@@ -229,8 +279,126 @@ na okręgu.
 Proszę pokazać, że trajektoria bilardu jest gęsta w całym obszarze między brzegiem
 bilardu ($\Gamma$) a okręgiem wewnętrznym $\gamma$.
 
+\vspace{1cm}
+
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\begin{tikzpicture}[scale=2]
+  \def\R{1.0}
+  \def\r{0.36}
+  \def\phiZero{12}
+  \def\alpha{137.5}
+
+  % outer billiard boundary and inner caustic
+  \draw[thick] (0,0) circle (\R);
+  \draw[thick, dashed, gray] (0,0) circle (\r);
+  \node[right] at (1.02,0.08) {$\Gamma$};
+  \node[left] at (0.38,0.02) {$\gamma$};
+
+  % long trajectory generated by repeated rotation by a fixed angle
+  \foreach \k in {0,...,24} {
+    \pgfmathsetmacro{\angA}{mod(\phiZero + \k*\alpha, 360)}
+    \pgfmathsetmacro{\angB}{mod(\phiZero + (\k+1)*\alpha, 360)}
+    \draw[blue, line width=0.45pt, opacity=0.8]
+      ({\R*cos(\angA)},{\R*sin(\angA)}) --
+      ({\R*cos(\angB)},{\R*sin(\angB)});
+  }
+
+  % a few impact points on the boundary
+  \foreach \k in {0,1,2,3,4,5} {
+    \pgfmathsetmacro{\ang}{mod(\phiZero + \k*\alpha, 360)}
+    \fill ({\R*cos(\ang)},{\R*sin(\ang)}) circle (0.45pt);
+  }
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\begin{tikzpicture}[scale=2]
+  \def\R{1.0}
+  \def\r{0.36}
+  \def\phiZero{12}
+  \def\alpha{137.5}
+
+  % outer billiard boundary and inner caustic
+  \draw[thick] (0,0) circle (\R);
+  \draw[thick, dashed, gray] (0,0) circle (\r);
+  \node[right] at (1.02,0.08) {$\Gamma$};
+  \node[left] at (0.38,0.02) {$\gamma$};
+
+  % long trajectory generated by repeated rotation by a fixed angle
+  \foreach \k in {0,...,96} {
+    \pgfmathsetmacro{\angA}{mod(\phiZero + \k*\alpha, 360)}
+    \pgfmathsetmacro{\angB}{mod(\phiZero + (\k+1)*\alpha, 360)}
+    \draw[blue, line width=0.45pt, opacity=0.8]
+      ({\R*cos(\angA)},{\R*sin(\angA)}) --
+      ({\R*cos(\angB)},{\R*sin(\angB)});
+  }
+
+  % a few impact points on the boundary
+  \foreach \k in {0,1,2,3,4,5} {
+    \pgfmathsetmacro{\ang}{mod(\phiZero + \k*\alpha, 360)}
+    \fill ({\R*cos(\ang)},{\R*sin(\ang)}) circle (0.45pt);
+  }
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
 \begin{solution}
-    
+
+
+Niech kolejne punkty odbicia na $\Gamma$ będą oznaczone przez $P_0,P_1,\ldots$. Z poprzedniego zadania,
+gdy $\alpha/\pi$ jest niewymierne, zbiór punktów $\{P_n\}$ jest gęsty na okręgu
+$\Gamma$. Każdemu punktowi $P_n$ odpowiada dokładnie jedna cięciwa trajektorii
+$P_nP_{n+1}$ styczna do $\gamma$.
+
+Weźmy teraz dowolny punkt $X$ z pierścienia oraz dowolne jego otoczenie. Istnieje 
+cięciwa $AB$ styczna do $\gamma$, która przechodzi przez $X$.
+Ponieważ punkty odbicia są gęste na $\Gamma$, możemy znaleźć indeks $n$ taki, że
+$P_n$ leży dowolnie blisko punktu $A$. Ale odcinek trajektorii $P_nP_{n+1}$ jest
+również cięciwą styczną do $\gamma$, więc dla $P_n$ bliskiego $A$ także punkt $P_{n+1}$
+będzie bliski $B$, a sama cięciwa $P_nP_{n+1}$ będzie bliska cięciwie $AB$.
+W szczególności będzie przechodziła dowolnie blisko punktu $X$.
+
+\begin{center}
+\begin{tikzpicture}[scale=2]
+  \def\R{1.0}
+  \def\r{0.36}
+  \def\yt{0.36}
+  \pgfmathsetmacro{\xt}{sqrt(\R*\R-\yt*\yt)}
+  \pgfmathsetmacro{\xX}{0.35}
+
+  % boundaries
+  \draw[thick] (0,0) circle (\R);
+  \draw[thick, dashed, gray] (0,0) circle (\r);
+  \node[right] at (1.02,0.08) {$\Gamma$};
+  \node[left] at (0.38,0.02) {$\gamma$};
+
+  % tangent chord AB
+  \coordinate (A) at (-\xt,\yt);
+  \coordinate (B) at (\xt,\yt);
+  \coordinate (T) at (0,\yt);
+  \coordinate (X) at (\xX,\yt);
+
+  \draw[blue, thick] (A) -- (B);
+  \draw[dashed, thin] (0,0) -- (T);
+  \draw[dashed, thin] (T) -- (X);
+
+  % points
+  \fill (A) circle (0.7pt) node[above left] {$A$};
+  \fill (B) circle (0.7pt) node[above right] {$B$};
+  \fill (T) circle (0.7pt) node[above] {$T$};
+  \fill (X) circle (0.9pt) node[above] {$X$};
+  \fill (0,0) circle (0.6pt) node[below left] {$O$};
+
+  % small neighbourhood around X
+  \draw[red] (X) circle (0.11);
+\end{tikzpicture}
+\end{center}
+
+Czyli każde otoczenie każdego punktu z obszaru między $\Gamma$ i $\gamma$
+przecina pewien odcinek trajektorii. A więc trajektoria bilardu jest gęsta w całym
+pierścieniu między brzegiem bilardu $\Gamma$ a okręgiem wewnętrznym $\gamma$.
 
 \newpage   
 \end{solution}
@@ -242,11 +410,72 @@ Proszę pokazać, że trajektoria bilardu jest ergodyczna na okręgu $\Gamma$.
 
 
 \begin{solution}
-    
+
+Ergodyczność trajektorii bilardu na okręgu $\Gamma$ 
+oznacza, że średnia czasowa dowolnej funkcji ciągłej 
+$f(\varphi)$, gdzie $\varphi$ jest kątem punktów odbicia, 
+jest równa średniej po okręgu tej funkcji:
+\begin{align*}
+  \lim_{N\to\infty}\frac{1}{N}\sum_{n=0}^{N-1} f(\varphi_n)
+  = \frac{1}{2\pi}\int_0^{2\pi} f(\varphi)\,d\varphi, \qquad \varphi_n = \varphi_0 + n\alpha \pmod{2\pi}.
+\end{align*}
+
+Wystarczy, że pokażemy tę równość dla 
+\begin{align*}
+  f_k(\varphi)=e^{ik\varphi}, \qquad k\in\mathbb{Z}.
+\end{align*}
+Dla $k=0$ mamy:
+\begin{align*}
+  \frac{1}{N}\sum_{n=0}^{N-1} f_0(\varphi_n)
+  = \frac{1}{N}\sum_{n=0}^{N-1} 1
+  = 1
+  = \frac{1}{2\pi}\int_0^{2\pi} e^{i0\cdot\varphi}\,d\varphi
+\end{align*}
+
+Dla $k\neq 0$ mamy zaś:
+\begin{align*}
+  \frac{1}{N}\sum_{n=0}^{N-1} f_k(\varphi_n)
+  = \frac{1}{N}\sum_{n=0}^{N-1} e^{ik(\varphi_0+n\alpha)}
+  = e^{ik\varphi_0}\frac{1}{N}\sum_{n=0}^{N-1} \left(e^{ik\alpha}\right)^n
+\end{align*}
+$\alpha/\pi$ jest niewymierne, więc dla $k\neq 0$
+\begin{align*}
+  e^{ik\alpha}\neq 1.
+\end{align*}
+Korzystamy z wartości skończonej sumy szeregu geometrycznego:
+\begin{align*}
+  \sum_{n=0}^{N-1} \left(e^{ik\alpha}\right)^n
+  = \frac{1-e^{ikN\alpha}}{1-e^{ik\alpha}} \\
+  \left|\frac{1-e^{ikN\alpha}}{1-e^{ik\alpha}}\right|
+  \leq \frac{2}{|1-e^{ik\alpha}|}
+\end{align*}
+czyli jej moduł jest ograniczony przez stałą niezależną od $N$. Po podzieleniu przez
+$N$ dostajemy granicę równą zero:
+\begin{align*}
+  \lim_{N\to\infty}\frac{1}{N}\sum_{n=0}^{N-1} f_k(\varphi_n)=0
+  = \frac{1}{2\pi}\int_0^{2\pi} e^{ik\varphi}\,d\varphi
+  \qquad (k\neq 0).
+\end{align*}
+
+Zatem równość średniej czasowej i średniej po okręgu zachodzi dla wszystkich modów
+Fouriera, a więc także dla dowolnej funkcji ciągłej $f(\varphi)$, 
+ponieważ można ją przybliżyć dowolnie dobrze przez skończoną sumę 
+funkcji $f_k(\varphi)$.
+\begin{align*}
+  \lim_{N\to\infty}\frac{1}{N}\sum_{n=0}^{N-1} f(\varphi_n)
+  = \frac{1}{2\pi}\int_0^{2\pi} f(\varphi)\,d\varphi.
+\end{align*}
+
+Ergodyczność oznacza, że dla długich czasów
+punkty odbicia spędzają taki sam ułamek czasu w każdym łuku o tej 
+samej długości.
 
 \newpage   
 \end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \zadanie[]
 
 Rozpatrzmy pierwsze cyfry kolejnych potęg dwójki: 1, 2, 4, 8, 1, 3, 6, \ldots Czy w tym ciągu znajdzie się liczba 7?
