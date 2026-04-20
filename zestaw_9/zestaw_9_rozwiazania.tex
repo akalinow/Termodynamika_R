@@ -1,71 +1,507 @@
-\documentclass[a4paper,12pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\documentclass[11pt,a4paper]{article}
+
 \usepackage[polish]{babel}
-\usepackage{lmodern} % Ensure proper font rendering for Polish characters
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{amsfonts}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes,arrows.meta,decorations.markings}
 
-\title{TIFS R - Ćwiczenia tydzień 9}
-\author{}
-\date{}
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
 
-\begin{document}
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
 
-\maketitle
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
 
-\section*{Wielki zespół kanoniczny}
+% definition of inexact differential symbol:
+\newcommand{\dbar} {\ensuremath{\,\mathchar'26\mkern-12mu d}}
 
-Na wykładzie pojawił się wielki zespół kanoniczny, wielki potencjał termodynamiczny $\Omega = -pV$ oraz jego różniczka.
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
 
-\subsection*{Zadanie 1}
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\ {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\ {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
-Dalvit (Zad 3.24). Płyn cząstek z oddziaływaniami odpychającymi może być modelowany jako "gaz sieciowy" w następujący sposób: Podzielmy naczynie na $N$ komórek, każda o objętości $v$ porównywalnej z objętością cząsteczki. Komórka niezajęta oraz zajęta przez jedną cząstkę mają energię zerową. Komórki zajęte przez dwie cząstki mają energię $\epsilon$ i zakładamy, że w żadnej komórce nie mogą znajdować się więcej niż dwie cząstki. Używając wielkiego rozkładu kanonicznego znajdźcie średnią energię na komórkę $e$, koncentrację cząstek $n$ (czyli średnią liczbę cząstek na komórkę) oraz ciśnienie $p$ wyrażone przez temperaturę i potencjał chemiczny. Znajdźcie odpowiednie wyrażenia na te wielkości w granicy małych koncentracji i w przypadku, gdy $n \to 2$.
+%dynamic solutions hiding
+\usepackage{comment}
 
-\subsection*{Rozwiązanie}
+\newif\ifshowsolutions
 
-Rozwiązanie jest bardzo porządnie zrobione w Dalvicie. Warto podkreślić, że analogiczne zadanie bardzo trudno liczy się w kanonicznym (nie można wykonać sumy). Warto też podać interpretację wyników, które wychodzą w poszczególnych granicach: gaz doskonały i płyn nieściśliwy (nieskończone ciśnienie).
+\def\showsolutions{} %comment this line to hide solutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
 
-\subsection*{Zadanie 2}
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
 
-(Kubo 29/78) Rozpatrzmy powierzchnię adsorbującą, która posiada $N$ węzłów, każdy z których może adsorbować jedną cząsteczkę gazu. Załóżmy, że powierzchnia ta znajduje się w kontakcie z gazem o ustalonym potencjale chemicznym $\mu$ i temperaturze $T$. Załóżmy, że cząsteczki swobodne mają energię $0$, a zaabsorbowane $-\epsilon_0$. Wyznacz współczynnik adsorbcji $\theta$ równy stosunkowi liczby zaabsorbowanych molekuł do liczby węzłów. Policz ten współczynnik dla gazu doskonałego o ciśnieniu $p$ (i temperaturze $T$).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R \\
+  Zestaw IX: Cykle termodynamiczne.
+  }} \\  
+\end{centering}
 
-\subsection*{Rozwiązanie}
+\vspace{1cm}
 
-Wielka suma statystyczna:
-\[
-\Xi = \sum_{N_1} \frac{N!}{N_1!(N-N_1)!} (e^{\beta(\epsilon_0 + \mu)})^{N_1} = (1 + e^{\beta(\epsilon_0 + \mu)})^N
-\]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
 
-Współczynnik adsorbcji:
-\[
-\theta = \frac{1}{1 + e^{-\beta(\epsilon_0 + \mu)}}
-\]
+Proszę wypisać:
+\begin{itemize}
+  \item I zasadę termodynamiki,
+  \item wyrażenie na energię wewnętrzną gazu doskonałego,
+  \item ciepło właściwe gazu doskonałego przy stałej objętości,
+  \item równanie stanu gazu doskonałego,
+\end{itemize}
 
-Po wstawieniu potencjału chemicznego gazu doskonałego z zadania 1 dostajemy tzw. równanie Langmuira:
-\[
-\theta = \frac{p}{p + \left(\frac{2\pi m k T}{h^2}\right)^{3/2} e^{-\epsilon_0 / k T} k T}
-\]
+\begin{solution}
+  
+I zasada termodynamiki dla ustalonej liczby cząstek: 
 
-Dla dużych ciśnień koncentracja cząstek w gazie jest duża i często dają się "złapać" centrom adsorbującym: $\theta \to 1$. Z kolei dla małych ciśnień $\theta \to 0$. Podobnie z temperaturą - im wyższa, tym łatwiej cząstki uciekają z centrów adsorbujących, zatem $\theta$ maleje ze wzrostem $T$.
+\begin{align*}
+  dU =   \dbar Q + dW = || \text{dla pracy objętościowej} || =   \dbar Q - pdV
+\end{align*}
 
-\subsection*{Zadanie 3}
+Gdzie $Q>0$ oznacza ciepło dostarczone do układu, a $W>0$ pracę wykonaną nad układem.
 
-Oświetlając półprzewodnik wiązką światła laserowego, można wywołać powstawanie par elektronów (o ładunku $-e$ i masie efektywnej $m_e$) i dziur (o ładunku $+e$ i masie efektywnej $m_d$). Przeciwnie naładowane elektrony i dziury mogą łączyć się w pary (podobnie do elektronu z protonem w atomie wodoru) i tworzyć gaz ekscytonów. Rozważmy bardzo uproszczony model tego procesu:
+\vspace{0.5cm}
 
-\begin{enumerate}
-    \item Oblicz energię swobodną gazu złożonego z $N$ elektronów i $N$ dziur w (wysokiej) temperaturze $T$, traktując je jako klasyczne, nieoddziałujące cząstki o masach odpowiednio $m_e$ i $m_d$.
-    \item Łącząc się w stan ekscytonowy, para elektron-dziura obniża swoją energię o $\epsilon$. (Można pokazać, że $\epsilon \approx \frac{m_r e^4}{2\hbar^2 \epsilon^2}$, gdzie $\epsilon$ jest przenikalnością dielektryczną, zaś $m_r^{-1} = m_e^{-1} + m_d^{-1}$ jest masą zredukowaną układu elektron-dziura). Oblicz energię swobodną gazu złożonego z $N_p$ ekscytonów, traktując je jako klasyczne nieoddziałujące cząstki o masie $m_p = m_e + m_d$.
-    \item W stanie równowagi potencjały chemiczne poszczególnych składników spełniać będą warunek:
-    \[
-    \mu_e + \mu_d = \mu_p
-    \]
-    Korzystając z powyższego, znajdź stosunek gęstości ekscytonów, $n_p$, do całkowitej gęstości nośników ($n = n_e + n_d = 2n_e$).
-\end{enumerate}
+Energia wewnętrzna gazu doskonałego:
+\begin{align*}
+  U = \frac{3}{2} k_B N T = || \text{dla n moli}, R = k_B \cdot N_{A} || =
+   \frac{3}{2} nR T
+\end{align*}
 
-(Rozwiązanie na kartkach)
+\vspace{0.5cm}
+
+Ciepło właściwe gazu doskonałego przy stałej objętości:
+\begin{align*}
+  C_V = \frac{1}{n}\left( \frac{\dbar Q}{\partial T} \right)_V = 
+         \frac{1}{n} \frac{dU}{\partial T} = \frac{3}{2}R
+\end{align*}
+
+Uwaga o notacji:
+\begin{itemize}
+  \item wielkości na mol: $C_V$,
+  \item wielkości na cząstkę:  $u = \frac{U}{N}$, $c_V = \frac{C_V}{N}$,
+\end{itemize}
+
+\vspace{0.5cm}
+
+Równanie stanu gazu doskonałego:
+\begin{align*}
+  pV - nRT = 0
+\end{align*}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ proces cykliczny:
+\begin{align*}
+  (p_1, V_1) \to (p_1, V_2) \to (p_2, V_2) \to (p_2, V_1) \to (p_1, V_1)
+\end{align*}
+
+Proszę:
+\begin{itemize}
+  \item narysować ten proces w układzie współrzędnych $p$-$V$,
+  \item znaleźć pracę wykonaną nad gazem 
+  \item znaleźć ilość ciepła zaabsorbowanego przez gaz
+\end{itemize}
+
+\begin{solution}
+
+\begin{center}
+\begin{tikzpicture}
+
+  \coordinate (A) at (1,1);
+  \coordinate (B) at (4,1);
+  \coordinate (C) at (4,4);
+  \coordinate (D) at (1,4);
+
+  \fill (A) circle (1.2pt) node[below] {$A(V_1,p_1)$};
+  \fill (B) circle (1.2pt) node[below] {$B(V_2,p_1)$};
+  \fill (C) circle (1.2pt) node[above] {$C(V_2,p_2)$};
+  \fill (D) circle (1.2pt) node[above] {$D(V_1,p_2)$};
+
+  \draw[->] (0,0) -- (5,0) node[right] {$V$};
+  \draw[->] (0,0) -- (0,5) node[above] {$p$};
+  \draw[thick, red, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}] (1,1) node[below] {} -- (4,1) node[below] {};
+  \draw[thick, red, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}] (4,1) -- (4,4) node[above] {};
+  \draw[thick, red, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}] (4,4) -- (1,4) node[above] {};
+  \draw[thick, red, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}] (1,4) -- (1,1);
+\end{tikzpicture}
+\end{center}
+
+Praca wykonana nad gazem:
+\begin{align*}
+  W = - \oint p dV = - \int_{V_1}^{V_2} p_1 dV - \int_{V_2}^{V_1} p_2 dV = (p_2 - p_1)(V_2 - V_1) > 0
+\end{align*}
+
+Ilość energii przekazanej do gazu w postaci nieuporządkowanej, czyli 
+``ilość ciepła zaabsorbowanego przez gaz'':
+\begin{align*}
+  dU = \dbar Q + dW \implies \dbar Q = dU - dW \\
+  Q = \oint dU - \oint dW = 0 - W = (p_1 - p_2)(V_2 - V_1) < 0
+\end{align*}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+
+Korzystając z I zasady termodynamiki i równania stanu gazu 
+doskonałego, znaleźć wyrażenie na ciepło właściwe gazu 
+doskonałego proszę wykazać prawo Mayera: 
+$C_p - C_v = R$ 
+
+\begin{solution}
+
+Ciepła właściwe gazu doskonałego przy stałej objętości i ciśnieniu:
+\begin{align*}
+  C_V = \frac{1}{n}\left( \frac{\dbar Q}{\partial T} \right)_{V}, \quad 
+  C_p = \frac{1}{n}\left( \frac{\dbar Q}{\partial T} \right)_{p}
+\end{align*}  
+
+Korzystamy z I zasady termodynamiki oraz wyrażenia na energię wewnętrzną 
+gazu doskonałego:
+\begin{align*}
+  dU = \dbar Q - pdV \implies \dbar Q = dU + pdV = \\
+        C_V dT + pdV = || pV = nRT \to dV = \frac{nR}{p} dT || = \\
+        C_V dT + nR dT = n(C_V + R) dT \\
+        \frac{1}{n}\left( \frac{\dbar Q}{\partial T} \right)_{p} = C_V + R \implies C_p - C_V = R
+\end{align*}
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę rozważyć proces cykliczny w którym gaz doskonały najpierw jest izotermicznie rozprężany 
+do próżni od objętości $V_A$ do $V_B$, 
+następnie izobarycznie ($p=p_0=const$) jest sprężany do objętości $V_A$, 
+po czym ogrzewany jest on izochorycznie ($V=V_A=const$) tak, 
+iż stan układu wraca do stanu początkowego. Proszę:
+\begin{itemize}
+  \item narysować ten proces w układzie współrzędnych $p$-$V$,
+  \item wykazać prawo Mayera dla gazu doskonałego: $C_p - C_v = R$ 
+\end{itemize}
+
+\begin{solution}
+
+%tikz diagram for Mayers cycle 
+\begin{center}
+\begin{tikzpicture}
+  % osie ukladu p-V
+  \draw[->] (0,0) -- (6.5,0) node[right] {$V$};
+  \draw[->] (0,0) -- (0,5.5) node[above] {$p$};
+
+  % punkty charakterystyczne
+  \coordinate (A) at (2,4.2);
+  \coordinate (B) at (5.2,2.2);
+  \coordinate (C) at (2,2.2);
+
+  \draw[dashed, red, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=2.5mm]}}}] (A) -- (B);
+  \draw[thick, blue, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=2.5mm]}}}] (B) -- (C);
+  \draw[thick, green!60!black, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=2.5mm]}}}] (C) -- (A);
+
+  \fill (A) circle (1.2pt) node[above left] {$A(V_A,p_A)$};
+  \fill (B) circle (1.2pt) node[above right] {$B(V_B,p_0)$};
+  \fill (C) circle (1.2pt) node[below left] {$C(V_A,p_0)$};
+
+\end{tikzpicture}
+\end{center}
+Przemiana $AB$ jest nierównowagowa, więc gaz nie ma ustalonego ciśnienia na tym odcinku, dlatego
+na diagramie ten odcinek jest przerywany.
+
+Eksperyment Joule'a pokazuje, że temperatura gazu doskonałego nie zmienia się 
+podczas rozprężania do próżni, więc proces $AB$ jest izotermiczny. 
+W każdym cyklu mamy $\Delta U = 0$,  W procesie izotermicznym $AB$ energia wewnętrzna 
+gazu doskonałego nie zmienia się, więc $\Delta U_{AB} = 0$. 
+Policzmy zmianę energii wewnętrznej podczas dwóch pozostałych procesów:
+\begin{itemize}
+	\item $BC$: izobara $Q_{BC}$ obliczamy korzystając z $C_p$:
+	\begin{align*}
+	       Q_{BC} = n C_p (T_C - T_B) = \frac{C_p p }{R}(V_C - V_B), \qquad 
+         W_{BC} = -\int_{V_B}^{V_C} p dV = p (V_B - V_C).
+	\end{align*}
+	więc
+	\begin{align*}
+		\Delta U_{BC} = Q_{BC} - W_{BC} = p (V_B - V_C) \left(1 - \frac{C_p}{R} \right).
+	\end{align*}
+	\item $CA$: izochora. W procesie izochorycznym praca wynosi $0$, więc $W_{CA} = 0$, 
+   a $U_{CA} = Q_{CA}$. Ponieważ znamy ciepło właściwe $C_V$ otrzymujemy,
+	\begin{align*}
+    Q_{CA} = n C_V (T_A - T_C) \\
+		\Delta U_{CA} = n C_V (T_A - T_C) = || T_A = T_B || =  n C_V (T_B - T_C) = \frac{p C_V}{R}(V_B - V_C),
+	\end{align*}
+
+
+\end{itemize}
+Całkowita zmiana energii wynosi więc
+\begin{align*}
+	0 = \Delta U = \Delta U_{AB} + \Delta U_{BC} + \Delta U_{CA} = \\
+   0 + p (V_B - V_C) \left(1 - \frac{C_p}{R} \right) + \frac{p C_V}{R}(V_B - V_C) = \\
+    p (V_B -  V_C) \left(1 - \frac{C_p}{R} + \frac{C_V}{R} \right) = p (V_B - V_C) \left(1 + \frac{C_V - C_p}{R} \right) \to \\
+    C_V - C_p = R
+\end{align*}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+
+Znajdź energię wewnętrzną $U(T)$ i równanie adiabaty gazu doskonałego o cieple molowym \\
+$C_V = \frac{1}{n}\left( \frac{\dbar Q}{\rm{d}T}\right)_V$.
+
+\vspace{0.2cm}
+
+\textbf{Wskazówki:}
+\begin{itemize}
+  \item $dU = n C_V dT$.
+\end{itemize}
+
+\begin{solution}
+
+Równanie adiabaty $\rm{\dbar} Q =0$ znajdujemy korzystając ponownie z pierwszej 
+zasady termodynamiki  i wyrażenia na energię wewnętrzną uzyskanego powyżej:
+\begin{align*}
+\rm{d}U = \rm{\dbar} W \\
+n C_V \rm{d} T = - p \rm{d}V
+\end{align*}
+
+Po obu stronach mamy różniczki innych parametrów stanu. Tłumaczymy je na siebie
+korzystając z równania stanu gazu doskonałego.
+
+\begin{align*}
+\rm{d}(pV) = n R \rm{d} T \implies  \rm{d} T = \frac{\rm{d}(pV)}{n R} = \frac{1}{n R}(p\rm{d}V + V\rm{d}p  )
+\end{align*}
+i stąd
+\begin{align*}
+- p \rm{d}V  = \frac{C_V}{R}\left(  p \rm{d}V +  V \rm{d}p \right)\\
+- \left( 1 + \frac{R}{C_V}\right) p \rm{d}V = V \rm{d}p. \\
+-\frac{C_P}{C_V}\frac{\rm{d} V}{V}=\frac{\rm{d} p}{p}
+\end{align*}
+
+Całkujemy obie strony równania:
+\begin{align*}
+-\frac{C_P}{C_V}\ln(V) = \ln(p) + const. \\
+V^{-\frac{C_P}{C_V}} = const. \cdot p \implies pV^{\frac{C_P}{C_V}} = const.
+\end{align*}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę udowodnić równanie Clausiusa dla cyklu Carnota (izoterma-adiabata-izoterma-adiabata): 
+\begin{align*}
+  \frac{Q_1}{T_1} + \frac{Q_2}{T_2} = 0
+\end{align*}
+
+\begin{solution}
+
+%tikz diagram for Carnot cycle
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  % osie ukladu p-V
+  \draw[->] (0,0) -- (6.5,0) node[below] {$V$};
+  \draw[->] (0,0) -- (0,5.5) node[left] {$p$};
+
+  \coordinate (A) at (1.5, 4.0);   % poczatek, izoterma T1
+  \coordinate (B) at (3.5, 2.0);   % koniec izotermy T1, poczatek adiabaty
+  \coordinate (C) at (5.0, 1.0);   % koniec adiabaty, izoterma T2
+  \coordinate (D) at (2.0, 2.4);   % koniec izotermy T2, poczatek adiabaty do A
+
+  % izoterma AB (T1) - czerwona
+  \draw[thick, red, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (A) .. controls (2.0,3.0) .. (B) node[midway, above right] {};
+
+  % adiabata BC - niebieska
+  \draw[thick, blue, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (B) .. controls (3.8,1.7) .. (C);
+
+  % izoterma CD (T2) - czerwona przerywana
+  \draw[thick, red, dashed, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (C) .. controls (3.0,1.6) .. (D);
+
+  % adiabata DA - niebieska
+  \draw[thick, blue, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (D) .. controls (1.7,3.0) .. (A);
+
+  \fill (A) circle (1.5pt) node[above left] {$A$};
+  \fill (B) circle (1.5pt) node[above right] {$B$};
+  \fill (C) circle (1.5pt) node[below right] {$C$};
+  \fill (D) circle (1.5pt) node[below left] {$D$};
+
+  \node[red] at (3.2, 3.0) {$T_1$=const.};
+  \node[red] at (3.3, 1.0) {$T_2$=const.};
+  \node[blue] at (5.0, 1.8) {$\dbar Q = 0$};
+  \node[blue] at (0.7, 3.3) {$\dbar Q = 0$};
+\end{tikzpicture}
+\end{center}
+
+
+Rozpatrzmy bilans energetyczny dla każdej z przemian.
+\begin{itemize}
+	\item $AB$ izoterma: $\Delta U = 0$ czyli $\Delta Q = - \Delta W$. 
+	\begin{align*}
+		W_{AB} = - \int_{V_A}^{V_B} p {\rm d}V =  n R T_2  \ln \frac{V_A}{V_B} < 0 \\
+		Q_{AB} = -W_{AB} = - n R T_2 \ln \frac{V_A}{V_B} > 0.
+	\end{align*}
+	\item $BC$ adiabata: $\Delta Q = 0$ więc $\Delta U = \Delta W$. 
+	\begin{align*}
+		U_{BC} = - n C_V (T_2 - T_1) < 0 \\
+		W_{BC} = - n C_V (T_2 - T_1) < 0, \\ 
+    Q_{BC} = 0.
+	\end{align*}
+	\item $CD$ izoterma: 
+	\begin{align*}
+		W_{CD} =  n R T_1 \ln \frac{V_C}{V_D} > 0 \\
+    Q_{CD} = -W_{CD} =  -n RT_1 \ln \frac{V_C}{V_D} < 0
+	\end{align*}
+	\item $DA$ adiabata:
+	\begin{align*}
+		W_{DA} = n C_V (T_2 - T_1) \\
+    Q_{DA} = 0
+	\end{align*}
+\end{itemize}
+
+Sumujemy bilans całego cyklu:
+\begin{align*}
+  Q_{AB} + Q_{BC} + Q_{CD} + Q_{DA} = 0  \\
+  - n R T_2 \ln \frac{V_A}{V_B} + 0 - n R T_1 \ln \frac{V_C}{V_D} + 0 = \\
+  - n R T_2 \ln \frac{V_A}{V_B} - n R T_1 \ln \frac{V_B}{V_A} = 0 \\
+  \frac{Q_{AB}}{T_2} + \frac{Q_{CD}}{T_1} = 0
+\end{align*}
+
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\zadanie[]
+
+Rozpatrzmy gaz fotonów, dla którego $p = \frac{1}{3} u$, $u = \sigma T^4$. Obliczyć entropię tego gazu, wyprowadzić
+równanie adiabaty, oraz przeanalizować cykl Carnota z udziałem tego gazu. (Kubo 20/36 i załączony artykuł).
+Warto dodać dłuższy lub krótszy komentarz o gazie fotonów, promieniowaniu reliktowym i jego temperaturze,
+ew. gazie neutrin etc. -- załączam artykułik pedag. z American Journal of Physics.
+Teraz zadanie o ekstensywności a potem kilka zadań o procesach nieodwracalnych.
+
+
+\begin{solution}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Wyznaczyć zależność energii wewnętrznej jednokomponentowego gazu van der Waalsa od temperatury $T$, objętości
+$V$ i liczby moli $N$ wiedząc, że dla jednego mola
+\[U = \frac{3}{2} RT + \frac{a}{V}\]
+gdzie $R$ i $a$ są stałymi. Energia wewnętrzna jest wielkością ekstensywną zaś temperatura intensywną.
+
+
+\begin{solution}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Układ izolowany podzielony jest ścianką adiabatyczną na dwie części. W każdej z nich znajduje się po $N$ moli
+gazu doskonałego o stałym cieple właściwym $c_v$. Temperatura gazu w jednej części wynosi $T_1$, a w drugiej $T_2 > T_1$.
+Wykazać, że podczas wyrównywania się temperatur po zamianie ścianki adiabatycznej na diatermiczną wzrośnie
+entropia wewnętrzna układu, a zatem jest to proces nieodwracalny. Wyznaczyć temperaturę końcową układu.
+
+\begin{solution}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Dla stanu początkowego opisanego w poprzednim zadaniu ustalić, czy proces wyrównywania się temperatur
+można przeprowadzić w sposób odwracalny (dokładnie -- czy w rezultacie procesu odwracalnego możemy dojść do
+sytuacji, w której temperatury obu części są równe? Jeżeli tak, to zaproponować sposób jego przeprowadzenia i
+wyznaczyć temperaturę końcową.
+
+\begin{solution}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Wyznaczyć zależność energii wewnętrznej od objętości dla gazu opisywanego równaniem 
+stanu van der Waalsa:
+\begin{align*}
+(p + a \left(\frac{N}{V}\right)^{2})(V - Nb) = nRT
+\end{align*}
+
+\begin{solution}
+
+\newpage   
+\end{solution}
 
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
