@@ -52,6 +52,7 @@
 
 % definition of inexact differential symbol:
 \newcommand{\dbar} {\ensuremath{\,\mathchar'26\mkern-12mu d}}
+\newcommand{\Partial}[3]{\left( \frac{\partial #1}{\partial #2} \right)_{#3}}
 
 %Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
 \newcommand{\nucl}[3]{\ensuremath{
@@ -111,7 +112,7 @@ Proszę wypisać:
 I zasada termodynamiki dla ustalonej liczby cząstek: 
 
 \begin{align*}
-  dU =   \dbar Q + dW = || \text{dla pracy objętościowej} || =   \dbar Q - pdV
+  dU =   \dbar Q + \dbar W = || \text{dla pracy objętościowej} || =   \dbar Q - pdV
 \end{align*}
 
 Gdzie $Q>0$ oznacza ciepło dostarczone do układu, a $W>0$ pracę wykonaną nad układem.
@@ -134,8 +135,9 @@ Ciepło właściwe gazu doskonałego przy stałej objętości:
 
 Uwaga o notacji:
 \begin{itemize}
-  \item wielkości na mol: $C_V$,
-  \item wielkości na cząstkę:  $u = \frac{U}{N}$, $c_V = \frac{C_V}{N}$,
+  \item ciepło molowe: $C_V$,
+  \item ciepło właściwe: $c_V = \frac{1}{m_{mol}} = \frac{1}{m} \Partial{Q}{T}{V}$,
+  \item energia wewnętrzna na cząstkę:  $u = \frac{U}{N}$,
 \end{itemize}
 
 \vspace{0.5cm}
@@ -195,8 +197,8 @@ Praca wykonana nad gazem:
 Ilość energii przekazanej do gazu w postaci nieuporządkowanej, czyli 
 ``ilość ciepła zaabsorbowanego przez gaz'':
 \begin{align*}
-  dU = \dbar Q + dW \implies \dbar Q = dU - dW \\
-  Q = \oint dU - \oint dW = 0 - W = (p_1 - p_2)(V_2 - V_1) < 0
+  dU = \dbar Q + \dbar W \implies \dbar Q = dU - \dbar W \\
+  Q = \oint dU - \oint \dbar W = 0 - W = (p_1 - p_2)(V_2 - V_1) < 0
 \end{align*}
 
 \newpage   
@@ -204,11 +206,10 @@ Ilość energii przekazanej do gazu w postaci nieuporządkowanej, czyli
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[]
 
-
 Korzystając z I zasady termodynamiki i równania stanu gazu 
 doskonałego, znaleźć wyrażenie na ciepło właściwe gazu 
 doskonałego proszę wykazać prawo Mayera: 
-$C_p - C_v = R$ 
+$C_p - C_V = R$ 
 
 \begin{solution}
 
@@ -239,7 +240,7 @@ po czym ogrzewany jest on izochorycznie ($V=V_A=const$) tak,
 iż stan układu wraca do stanu początkowego. Proszę:
 \begin{itemize}
   \item narysować ten proces w układzie współrzędnych $p$-$V$,
-  \item wykazać prawo Mayera dla gazu doskonałego: $C_p - C_v = R$ 
+  \item wykazać prawo Mayera dla gazu doskonałego: $C_p - C_V = R$ 
 \end{itemize}
 
 \begin{solution}
@@ -266,26 +267,33 @@ iż stan układu wraca do stanu początkowego. Proszę:
 
 \end{tikzpicture}
 \end{center}
-Przemiana $AB$ jest nierównowagowa, więc gaz nie ma ustalonego ciśnienia na tym odcinku, dlatego
-na diagramie ten odcinek jest przerywany.
 
-Eksperyment Joule'a pokazuje, że temperatura gazu doskonałego nie zmienia się 
-podczas rozprężania do próżni, więc proces $AB$ jest izotermiczny. 
-W każdym cyklu mamy $\Delta U = 0$,  W procesie izotermicznym $AB$ energia wewnętrzna 
-gazu doskonałego nie zmienia się, więc $\Delta U_{AB} = 0$. 
-Policzmy zmianę energii wewnętrznej podczas dwóch pozostałych procesów:
+{\bf Dyskusja:} rozprężanie do próżni jest procesem adiabatycznym, więc spodziewamy 
+się zmiany temperatury gazu podczas tego procesu. 
+Jednak eksperyment Joule'a pokazuje, że temperatura gazu doskonałego nie zmienia się 
+podczas rozprężania do próżni, więc proces $AB$ jest izotermiczny.
+Proces nie może być jednocześnie izotermiczny i adiabatyczny, 
+więc proces $AB$ jest nierównowagowy. Gaz nie ma ustalonego ciśnienia 
+na tym odcinku, dlatego na diagramie ten odcinek jest przerywany.
+
+\vspace{0.2cm}
+
+Znajdujemy bilans zmian energii wewnętrznej dla całego cyklu:
+
 \begin{itemize}
-	\item $BC$: izobara $Q_{BC}$ obliczamy korzystając z $C_p$:
+  \item $AB$: izoterma: $\Delta U_{AB} = 0$.
+	\item $BC$: izobara. $Q_{BC}$ obliczamy korzystając z ciepła molowego $c_p$, pracę całkujemy:
 	\begin{align*}
-	       Q_{BC} = n C_p (T_C - T_B) = \frac{C_p p }{R}(V_C - V_B), \qquad 
+	       Q_{BC} = n c_p (T_C - T_B) = \frac{c_p p }{R}(V_C - V_B), \qquad 
          W_{BC} = -\int_{V_B}^{V_C} p dV = p (V_B - V_C).
 	\end{align*}
 	więc
 	\begin{align*}
-		\Delta U_{BC} = Q_{BC} - W_{BC} = p (V_B - V_C) \left(1 - \frac{C_p}{R} \right).
+		\Delta U_{BC} = Q_{BC} + W_{BC} = p (V_B - V_C) \left(1 - \frac{c_p}{R} \right).
 	\end{align*}
-	\item $CA$: izochora. W procesie izochorycznym praca wynosi $0$, więc $W_{CA} = 0$, 
-   a $U_{CA} = Q_{CA}$. Ponieważ znamy ciepło właściwe $C_V$ otrzymujemy,
+	\item $CA$: izochora. W procesie izochorycznym praca wynosi $0$: $W_{CA} = 0$, 
+   czyli $\Delta U_{CA} = Q_{CA}$. Ponownie obliczamy $Q_{CA}$ korzystając z 
+   ciepła właściwego $C_V$:
 	\begin{align*}
     Q_{CA} = n C_V (T_A - T_C) \\
 		\Delta U_{CA} = n C_V (T_A - T_C) = || T_A = T_B || =  n C_V (T_B - T_C) = \frac{p C_V}{R}(V_B - V_C),
@@ -293,19 +301,18 @@ Policzmy zmianę energii wewnętrznej podczas dwóch pozostałych procesów:
 
 
 \end{itemize}
-Całkowita zmiana energii wynosi więc
+Całkowita zmiana energii w cyklu wynosi $0$, więc:
 \begin{align*}
-	0 = \Delta U = \Delta U_{AB} + \Delta U_{BC} + \Delta U_{CA} = \\
-   0 + p (V_B - V_C) \left(1 - \frac{C_p}{R} \right) + \frac{p C_V}{R}(V_B - V_C) = \\
-    p (V_B -  V_C) \left(1 - \frac{C_p}{R} + \frac{C_V}{R} \right) = p (V_B - V_C) \left(1 + \frac{C_V - C_p}{R} \right) \to \\
-    C_V - C_p = R
+	0 = \Delta U_{ABC} = \Delta U_{AB} + \Delta U_{BC} + \Delta U_{CA} = \\
+   0 + p (V_B - V_C) \left(1 - \frac{c_p}{R} \right) + \frac{p C_V}{R}(V_B - V_C) = \\
+    p (V_B -  V_C) \left(1 - \frac{c_p}{R} + \frac{C_V}{R} \right) = p (V_B - V_C) \left(1 + \frac{C_V - c_p}{R} \right) \to \\
+    C_V - c_p = R
 \end{align*}
 
 \newpage   
 \end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[]
-
 
 Znajdź energię wewnętrzną $U(T)$ i równanie adiabaty gazu doskonałego o cieple molowym \\
 $C_V = \frac{1}{n}\left( \frac{\dbar Q}{\rm{d}T}\right)_V$.
@@ -319,11 +326,10 @@ $C_V = \frac{1}{n}\left( \frac{\dbar Q}{\rm{d}T}\right)_V$.
 
 \begin{solution}
 
-Równanie adiabaty $\rm{\dbar} Q =0$ znajdujemy korzystając ponownie z pierwszej 
-zasady termodynamiki  i wyrażenia na energię wewnętrzną uzyskanego powyżej:
+Równanie adiabaty $\rm{\dbar} Q =0$ znajdujemy korzystając z pierwszej 
+zasady termodynamiki  i wyrażenia na energię wewnętrzną:
 \begin{align*}
-\rm{d}U = \rm{\dbar} W \\
-n C_V \rm{d} T = - p \rm{d}V
+\rm{d}U = n C_V \rm{d} T   = \dbar W = - p \rm{d}V
 \end{align*}
 
 Po obu stronach mamy różniczki innych parametrów stanu. Tłumaczymy je na siebie
@@ -398,7 +404,7 @@ Proszę udowodnić równanie Clausiusa dla cyklu Carnota (izoterma-adiabata-izot
 \end{center}
 
 
-Rozpatrzmy bilans energetyczny dla każdej z przemian.
+Rozpatrzmy bilans energetyczny dla każdej z przemian:\\
 \begin{itemize}
 	\item $AB$ izoterma: $\Delta U = 0$ czyli $\Delta Q = - \Delta W$. 
 	\begin{align*}
@@ -411,94 +417,424 @@ Rozpatrzmy bilans energetyczny dla każdej z przemian.
 		W_{BC} = - n C_V (T_2 - T_1) < 0, \\ 
     Q_{BC} = 0.
 	\end{align*}
-	\item $CD$ izoterma: 
+	\item $CD$ izoterma, $\Delta U = 0$ czyli $\Delta Q = - \Delta W$.
 	\begin{align*}
 		W_{CD} =  n R T_1 \ln \frac{V_C}{V_D} > 0 \\
     Q_{CD} = -W_{CD} =  -n RT_1 \ln \frac{V_C}{V_D} < 0
 	\end{align*}
-	\item $DA$ adiabata:
+	\item $DA$ adiabata, $\Delta Q = 0$ więc $\Delta U = \Delta W$.
 	\begin{align*}
 		W_{DA} = n C_V (T_2 - T_1) \\
     Q_{DA} = 0
 	\end{align*}
 \end{itemize}
 
-Sumujemy bilans całego cyklu:
+Sumujemy bilans zmian energii dla całego cyklu:
 \begin{align*}
-  Q_{AB} + Q_{BC} + Q_{CD} + Q_{DA} = 0  \\
-  - n R T_2 \ln \frac{V_A}{V_B} + 0 - n R T_1 \ln \frac{V_C}{V_D} + 0 = \\
-  - n R T_2 \ln \frac{V_A}{V_B} - n R T_1 \ln \frac{V_B}{V_A} = 0 \\
-  \frac{Q_{AB}}{T_2} + \frac{Q_{CD}}{T_1} = 0
+  \frac{Q_{AB}}{T_1} + \frac{Q_{CD}}{T_2} = \\
+  - n R \ln \frac{V_A}{V_B} - n R \ln \frac{V_C}{V_D} = \\
+  -nR \ln \frac{V_A}{V_B} + n R \ln \frac{V_D}{V_C} = \\
+  n R \ln \frac{V_D V_B}{V_A V_C}
+\end{align*}
+
+Związek między $V_A V_C$ i $V_B V_D$ znajduje się z warunku, 
+że przemiany $AB$ i $CD$ są izotermami, 
+a przemiany $BC$ i $DA$ są adiabatyczne:
+\begin{align*}
+  \text{izotermy}: & p_A V_A = n R T_1 = p_B V_B & p_C V_C = n R T_2 = p_D V_D \\
+  \text{adiabaty}: & p_B V_B^{\gamma}= p_C V_C^{\gamma} & p_D V_D^{\gamma} = p_A V_A^{\gamma} \\ 
+  \text{rów. stanu}: & p_B V_B V_B^{\gamma-1} = nR T_1 V_B^{\gamma-1} & p_C V_C V_C^{\gamma-1} = nR T_2 V_C^{\gamma-1} \\
+\end{align*}
+
+Dzielimy stronami równania dla adiabat $BC$ i $DA$:
+\begin{align*}
+  \frac{p_A V_B^{\gamma}}{p_B V_B^{\gamma}} = \frac{p_D V_D^{\gamma}}{p_C V_C^{\gamma}} \\
+  \frac{p_A V_A V_A^{\gamma-1}}{p_B V_B V_B^{\gamma-1}} = \frac{p_D V_D V_D^{\gamma-1}}{p_C V_C V_C^{\gamma-1}} \\
+  \frac{n R T_1 V_A^{\gamma-1}}{n R T_1 V_B^{\gamma-1}} = \frac{n R T_2 V_D^{\gamma-1}}{n R T_2 V_C^{\gamma-1}} \to \\
+  \frac{V_A}{V_B} = \frac{V_D}{V_C} \to V_A V_C = V_B V_D
+\end{align*}
+
+Czyli
+\begin{align*}
+  \frac{Q_{AB}}{T_1} + \frac{Q_{CD}}{T_2} = n R \ln \frac{V_D V_B}{V_A V_C} = 0
 \end{align*}
 
 
 \newpage   
 \end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\end{document}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 \zadanie[]
 
-Rozpatrzmy gaz fotonów, dla którego $p = \frac{1}{3} u$, $u = \sigma T^4$. Obliczyć entropię tego gazu, wyprowadzić
-równanie adiabaty, oraz przeanalizować cykl Carnota z udziałem tego gazu. (Kubo 20/36 i załączony artykuł).
-Warto dodać dłuższy lub krótszy komentarz o gazie fotonów, promieniowaniu reliktowym i jego temperaturze,
-ew. gazie neutrin etc. -- załączam artykułik pedag. z American Journal of Physics.
-Teraz zadanie o ekstensywności a potem kilka zadań o procesach nieodwracalnych.
-
-
+Rozpatrzmy gaz fotonów, dla którego $p = \frac{1}{3}\frac{U}{V}$, 
+$U = \frac{4\sigma}{c} T^4V$. Proszę znaleźć entropię
+i równanie adiabaty dla tego gazu.
+ 
 \begin{solution}
 
-\newpage   
-\end{solution}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\zadanie[]
-
-Wyznaczyć zależność energii wewnętrznej jednokomponentowego gazu van der Waalsa od temperatury $T$, objętości
-$V$ i liczby moli $N$ wiedząc, że dla jednego mola
-\[U = \frac{3}{2} RT + \frac{a}{V}\]
-gdzie $R$ i $a$ są stałymi. Energia wewnętrzna jest wielkością ekstensywną zaś temperatura intensywną.
-
-
-\begin{solution}
-
-\newpage   
-\end{solution}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\zadanie[]
-
-Układ izolowany podzielony jest ścianką adiabatyczną na dwie części. W każdej z nich znajduje się po $N$ moli
-gazu doskonałego o stałym cieple właściwym $c_v$. Temperatura gazu w jednej części wynosi $T_1$, a w drugiej $T_2 > T_1$.
-Wykazać, że podczas wyrównywania się temperatur po zamianie ścianki adiabatycznej na diatermiczną wzrośnie
-entropia wewnętrzna układu, a zatem jest to proces nieodwracalny. Wyznaczyć temperaturę końcową układu.
-
-\begin{solution}
-
-\newpage   
-\end{solution}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\zadanie[]
-
-Dla stanu początkowego opisanego w poprzednim zadaniu ustalić, czy proces wyrównywania się temperatur
-można przeprowadzić w sposób odwracalny (dokładnie -- czy w rezultacie procesu odwracalnego możemy dojść do
-sytuacji, w której temperatury obu części są równe? Jeżeli tak, to zaproponować sposób jego przeprowadzenia i
-wyznaczyć temperaturę końcową.
-
-\begin{solution}
-
-\newpage   
-\end{solution}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\zadanie[]
-
-Wyznaczyć zależność energii wewnętrznej od objętości dla gazu opisywanego równaniem 
-stanu van der Waalsa:
+Entropię znajdujemy korzystając z podstawowego równania termodynamiki:
 \begin{align*}
-(p + a \left(\frac{N}{V}\right)^{2})(V - Nb) = nRT
+dS = \frac{\dbar Q}{T} = \frac{dU}{T} + \frac{p}{T} dV
+\end{align*}
+
+Różniczka energii wewnętrznej:
+\begin{align*}
+  U = \frac{4\sigma}{c} T^4 V  = 3pV \implies
+	dU = 3p dV + 3 V dp,
+\end{align*}
+więc
+\begin{align*}
+	dS = \frac{3p}{T} dV + \frac{3 V}{T} dp  + \frac{p}{T} dV =
+  \frac{4p}{T} dV + \frac{3 V}{T} dp = \\
+  || p =  \frac{4}{3} \frac{\sigma}{c} T^4  \to dp = \frac{16}{3} \frac{\sigma}{c} T^3 dT || =
+  \frac{16}{3} \frac{\sigma}{c} T^3 dV + 16 \frac{\sigma }{c} V T^2 dT
+\end{align*}
+
+Otrzymaliśmy różniczkę entropii wyrażoną przez różniczki objętości i temperatury.
+Przyrównujemy ją do różniczki funkcji $S(V,T)$:
+
+\begin{align*}
+    dS = \Partial{S}{V}{T} dV + \Partial{S}{T}{V} dT = \\
+    \frac{16}{3} \frac{\sigma}{c} T^3 dV + 16 \frac{\sigma }{c} V T^2 dT \to \\
+    \Partial{S}{V}{T}=\frac{16}{3} \frac{\sigma}{c}T^3 \qquad \Partial{S}{T}{V}=
+    16 \frac{\sigma}{c}V T^2
+\end{align*}
+
+Całkujemy:
+\begin{align*}
+  \int \Partial{S}{V}{T} dV = \int \frac{16}{3} \frac{\sigma}{c} T^3 dV  = \frac{16}{3} \frac{\sigma}{c} T^3 V + f(T) \\
+  \int \Partial{S}{T}{V} dT = \int 16 \frac{\sigma}{c} V T^2 dT  = \frac{16}{3} \frac{\sigma}{c} V T^3 + g(V)
+\end{align*}
+
+Mamy więc:
+\begin{align*}
+  S(V,T) = \frac{16}{3} \frac{\sigma}{c} T^3 V + f(T) = \frac{16}{3} \frac{\sigma}{c} V T^3 + g(V) \to \\
+  f(T) = g(V) = const. = S_0
+\end{align*}
+
+
+Możemy teź zauważyć, że różniczkę $dS$ możemy zapisać jako różniczkę zupełną:
+\begin{align*}
+	dS = \frac{16}{3} \frac{\sigma}{c} T^3 dV + 16 \frac{\sigma }{c} V T^2 dT = 
+  \frac{16}{3} \frac{\sigma }{c}   d \left(T^3 V\right).
+\end{align*}
+Całkując obustronnie otrzymujemy:
+\begin{align*}
+	S = \frac{16}{3} \frac{\sigma }{c} T^3 V + S_0.
+\end{align*}
+
+Wyrażamy entropię jako funkcję różnych par parametrów stanu:
+\begin{align*}
+	S - S_0 = \frac{16}{3} \frac{\sigma }{c} T^3 V = 
+  \frac{4}{3} \frac{U}{T} = 
+  4 \frac{p V}{T} = || p = \frac{4}{3} \frac{\sigma}{c} T^4 || =
+  4 p V \left(\frac{4}{3}\frac{\sigma}{c p} \right)^{1/4} =
+  4\left(\frac{4}{3} \frac{\sigma}{c} \right)^{1/4}p^{3/4}V
+\end{align*}
+W procesie adiabatycznym $S=\text{const.}$ co prowadzi do związku
+\begin{align*}
+    pV^{4/3}=\text{const.}
+\end{align*}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę znaleźć efektywność silnika pracującego w cyklu Carnota, w którym gaz fotonów 
+jest czynnikiem roboczym jest gaz fotonowy. Efektywność silnika jest zdefiniowana jako 
+stosunek pracy wykonanej przez silnik do ciepła dostarczonego do silnika:
+\begin{align*}
+  \eta = -\frac{W}{Q_{in}}
+\end{align*}
+
+gdzie $W$ jest pracą wykonaną nad układem.
+
+
+\begin{solution}
+
+Równanie stanu gazu fotonowego: 
+\begin{align*}
+  p = \frac{1}{3}\frac{U}{V} = \frac{4}{3} \frac{\sigma}{c} T^4
+  \quad U = \frac{4\sigma}{c} T^4V
+\end{align*}
+ 
+
+%tikz diagram for Carnot cycle
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  % osie ukladu p-V
+  \draw[->] (0,0) -- (6.5,0) node[below] {$V$};
+  \draw[->] (0,0) -- (0,5.5) node[left] {$p$};
+
+  \coordinate (A) at (1.5, 4.0);   % poczatek, izoterma T1
+  \coordinate (B) at (3.5, 4.0);   % koniec izotermy T1, poczatek adiabaty
+  \coordinate (C) at (5.0, 1.0);   % koniec adiabaty, izoterma T2
+  \coordinate (D) at (2.5, 1.0);   % koniec izotermy T2, poczatek adiabaty do A
+
+  % izoterma AB (T1) - czerwona
+  \draw[thick, red, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (A) -- (B) node[midway, above right] {};
+
+  % adiabata BC - niebieska
+  \draw[thick, blue, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (B) .. controls (3.8,2.5) .. (C);
+
+  % izoterma CD (T2) - czerwona przerywana
+  \draw[thick, red, dashed, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (C) -- (D);
+
+  % adiabata DA - niebieska
+  \draw[thick, blue, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (D) .. controls (1.7,3.0) .. (A);
+
+  \fill (A) circle (1.5pt) node[above left] {$A$};
+  \fill (B) circle (1.5pt) node[above right] {$B$};
+  \fill (C) circle (1.5pt) node[below right] {$C$};
+  \fill (D) circle (1.5pt) node[below left] {$D$};
+
+  \node[red] at (2.8, 4.4) {$T_1$=const.};
+  \node[red] at (3.3, 1.5) {$T_2$=const.};
+  \node[blue] at (5.0, 2.0) {$\dbar Q = 0$};
+  \node[blue] at (1.0, 3.0) {$\dbar Q = 0$};
+\end{tikzpicture}
+\end{center}
+
+Rozpatrzmy bilans energetyczny dla każdej z przemian:\\
+\begin{itemize}
+	\item $AB$ izoterma: $\Delta U = 0$ czyli $\Delta Q = - \Delta W$. 
+	\begin{align*}
+		W_{AB} = - \int_{V_A}^{V_B} p {\rm d}V = \frac{4}{3} \frac{\sigma}{c} T_1^4 (V_A - V_B) < 0 \\
+		Q_{AB} = -W_{AB} = - \frac{4}{3} \frac{\sigma}{c} T_1^4 (V_A - V_B) > 0.
+	\end{align*}
+	\item $BC$ adiabata: $\Delta Q = 0$ więc $\Delta U = \Delta W$. 
+	\begin{align*}
+		U_{B} = \frac{4\sigma}{c} T_1^4 V_B, \qquad U_{C} = \frac{4\sigma}{c} T_2^4 V_C \\
+    \Delta U_{BC} = U_C - U_B = \frac{4\sigma}{c} (T_2^4 V_C - T_1^4 V_B) < 0 \\
+		W_{BC} = \Delta U_{BC} < 0, \\
+    Q_{BC} = 0.
+	\end{align*}
+	\item $CD$ izoterma, $\Delta U = 0$ czyli $\Delta Q = - \Delta W$.
+	\begin{align*}
+		W_{CD} =  \frac{4}{3} \frac{\sigma}{c} T_2^4 (V_C - V_D) \\
+    Q_{CD} = -W_{CD} =  -\frac{4}{3} \frac{\sigma}{c} T_2^4 (V_C - V_D) < 0
+	\end{align*}
+	\item $DA$ adiabata, $\Delta Q = 0$ więc $\Delta U = \Delta W$.
+	\begin{align*}
+		W_{DA} = \frac{4\sigma}{c} (T_1^4 V_A - T_2^4 V_D) \\
+    Q_{DA} = 0
+	\end{align*}
+\end{itemize}
+
+Równanie Clausiusa dla cyklu Carnota:
+\begin{align*}
+  \frac{Q_{AB}}{T_1} + \frac{Q_{CD}}{T_2} = 
+  \frac{-\frac{4}{3} \frac{\sigma}{c} T_1^4 (V_A - V_B)}{T_1} + \frac{-\frac{4}{3} \frac{\sigma}{c} T_2^4 (V_C - V_D)}{T_2} = \\
+  -\frac{4}{3} \frac{\sigma}{c} T_1^3 (V_A - V_B) - \frac{4}{3} \frac{\sigma}{c} T_2^3 (V_C - V_D)
+\end{align*}
+
+Korzystamy z równania adiabaty dla gazu fotonowego:
+\begin{align*}
+  pV^{4/3} = \frac{4}{3} \frac{\sigma}{c} T^4 V^{4/3} = const. \\
+  T^{3}V = const. \to T_1^3 V_A = T_2^3 V_D \quad \text{oraz} \quad T_1^3 V_B = T_2^3 V_C
+\end{align*}
+
+\begin{align*}
+  T_1^3 (V_A - V_B) - T_2^3 (V_C - V_D) =\\
+  T_2^3 V_D - T_2^3 V_C - T_2^3 (V_C - V_D) = 0
+\end{align*}
+
+Całkowita praca wykonana przez silnik w dowolnym cyklu:
+\begin{align*}
+  \Delta U_{ABC} = 0 = W_{ABC} + Q_{ABC} \to W_{ABC} = - Q_{ABC} = -(Q_{AB} + Q_{CD})
+\end{align*}
+
+Sprawność:
+\begin{align*}
+  \eta = -\frac{W}{Q_{in}} = \frac{Q_{AB} + Q_{CD}}{Q_{AB}} = 1 + \frac{Q_{CD}}{Q_{AB}} = 1 - \frac{T_2}{T_1}
+\end{align*}
+
+\newpage   
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Energia wewnętrzna jednego mola gazu van der Waalsa ma postać:
+\begin{align*}
+  U = \frac{3}{2} RT + \frac{a}{V}
+\end{align*}
+Proszę znaleźć zależność energii wewnętrznej od temperatury $T$, objętości $V$ i liczby moli $n$.\\
+
+{\bf Wskazówka}: Energia wewnętrzna jest wielkością ekstensywną, a temperatura intensywną,
+
+\begin{solution}
+
+ Ekstensywność energii wewnętrznej oznacza:
+ \begin{align*}
+  U(\lambda n, T, \lambda V) = \lambda U(n, T, V)
+ \end{align*}
+
+ Energię jednego mola uzyskujemy dla $\lambda = \frac{1}{n}$:
+\begin{align*}
+  U(n, T, V) = n U\left(1, T, \frac{V}{n}\right) = n \left( \frac{3}{2} RT + \frac{a}{V/n} \right) = 
+  \frac{3}{2} n R T + \frac{a n^2}{V}
+\end{align*}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ izolowany układ podzielony ścianką adiabatyczną na dwie części. 
+W każdej z nich znajduje się po $n$ moli gazu doskonałego o stałym cieple molowym $C_V$. 
+Temperatura gazu w jednej części wynosi $T_1$, a w drugiej $T_2 > T_1$. W pewnym momencie ścianka 
+adiabatyczna zostaje zastąpiona ścianką diatermiczną. Proszę:
+\begin{itemize}
+  \item znaleźć znak zmiany entropii  układu podczas wyrównywania się temperatur,
+  \item temperaturę końcową układu.
+\end{itemize}
+
+\begin{solution}
+
+Układ jest izolowany, więc energia całkowita nie zmieni się podczas wyrównywania się temperatur:
+\begin{align*}
+  U_{\text{initial}} =  n C_V T_1 + n C_V T_2 \qquad
+  U_{\text{final}} = 2 n C_V T_{\text{final}} \\
+  U_{\text{initial}} = U_{\text{final}} \to \\
+  n C_V T_1 + n C_V T_2 = 2 n C_V T_{\text{final}} \to 
+  T_{\text{final}} = \frac{T_1 + T_2}{2}
+\end{align*}
+
+Zmiana entropii układu:
+\begin{align*}
+  \Delta S = \Delta S_1 + \Delta S_2 =
+  n C_V \ln \frac{T_{\text{final}}}{T_1} + n C_V \ln \frac{T_{\text{final}}}{T_2} = 
+  n C_V \ln \frac{T_{\text{final}}^2}{T_1 T_2} = 
+  n C_V \ln \frac{(\frac{T_1 + T_2}{2})^2}{T_1 T_2} > 0
+\end{align*}
+
+Entropia układu wzrosła, więc proces samorzutnego wyrównywania się temperatur jest nieodwracalny.
+
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ izolowany układ podzielony ścianką adiabatyczną na dwie części. 
+W każdej z nich znajduje się po $n$ moli gazu doskonałego o stałym cieple molowym $C_V$. 
+Temperatura gazu w jednej części wynosi $T_1$, a w drugiej $T_2 > T_1$. 
+Przeprowadzamy odwracalny proces wyrównywania się temperatur. Pytania:
+\begin{itemize}
+  \item jaka będzie temperatura końcowa układu? 
+  \item jak można przeprowadzić taki proces?
+\end{itemize}
+
+\begin{solution}
+
+Skoro proces ma być odwracalny, to entropia nie może się zmienić.
+Zmiana entropii w procesie wyrównywania się temperatur: 
+\begin{align*}
+  \Delta S = \Delta S_1 + \Delta S_2 =
+  n C_V \ln \frac{T_{\text{final}}}{T_1} + n C_V \ln \frac{T_{\text{final}}}{T_2} = 
+  n C_V \ln \frac{T_{\text{final}}^2}{T_1 T_2} = 0 \to 
+  T_{\text{final}} = \sqrt{T_1 T_2}
+\end{align*}
+
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę wykazać prawdziwość równania energetycznego:
+\begin{align*}
+  \Partial{U}{V}{T} = T\Partial{p}{T}{V} - p
 \end{align*}
 
 \begin{solution}
+
+Korzystamy z fundamentalnego równania termodynamiki:
+\begin{align*}
+  dU = T dS - p dV
+\end{align*}
+
+...i zmierzamy $dS$ do pochodnych po $T$ i $V$:
+\begin{align*}
+  dS = \frac{1}{T}dU + \frac{1}{T} pdV = \\
+  || dU = \Partial{U}{T}{V} dT + \Partial{U}{V}{T} dV || =
+  \frac{1}{T} \Partial{U}{T}{V} dT + \left( \frac{1}{T} \Partial{U}{V}{T} + \frac{p}{T} \right) dV = \\
+  \Partial{S}{T}{V} dT + \Partial{S}{V}{T} dV
+\end{align*}
+
+Pochodne cząstkowe $S$ po dwu różnych parametrach stanu są równe, więc:
+\begin{align*}
+  \Partial{S}{T}{V} = \frac{1}{T} \Partial{U}{T}{V} \qquad
+  \Partial{S}{V}{T} = \frac{1}{T} \Partial{U}{V}{T} + \frac{p}{T}
+\end{align*}
+
+Przyrównujemy pochodne mieszane:
+\begin{align*}
+  \frac{\partial^{2}S}{\partial T \partial V} =& \frac{\partial}{\partial V} \left( \frac{1}{T} \Partial{U}{T}{V} \right) = \\
+  \frac{\partial^{2}S}{\partial V \partial T} =& \frac{\partial}{\partial T} \left( \frac{1}{T} \Partial{U}{V}{T} + \frac{p}{T} \right) = \\
+  & -\frac{1}{T^2} \Partial{U}{V}{T} + \frac{1}{T} \frac{\partial^2 U}{\partial T \partial V} + \frac{1}{T} \Partial{p}{T}{V} - \frac{p}{T^2} \to  \\
+  \frac{1}{T^{2}} \Partial{U}{V}{T} =& \frac{1}{T} \Partial{p}{T}{V} - \frac{p}{T^2} \to \\
+  \Partial{U}{V}{T} =& T \Partial{p}{T}{V} - p
+\end{align*}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę znaleźć zależność energii wewnętrznej $U$ $V$ dla gazu van der Waalsa,
+spełniającego równanie stanu:
+
+\begin{align*}
+\left[p + a \left(\frac{n}{V}\right)^{2}\right](V - nb) = nRT
+\end{align*}
+
+Proszę założyć, że molowe ciepło właściwe, $C_V$, jest znane i nie zależy od temperatury.
+
+\begin{solution}
+
+Energia wewnętrzna zależy od dwu parametrów stanu, np. $U = U(T, V)$. Wtedy jej różniczka ma postać:
+\begin{align}
+  \rm{d} U &= \left(\frac{\partial U}{\partial T} \right)_V \rm{d}T  + \left(\frac{\partial U}{\partial V} \right)_T \rm{d}V \\
+\end{align}
+
+Pierwsza zasada termodynamiki:
+\begin{align}
+\rm{d}U = \rm{\dbar}Q + \rm{\dbar}W,
+\end{align}
+w warunkach izochorycznych przyjmuje postać:
+\begin{align}
+\rm{d}U_V = \rm{\dbar}Q _V, 
+\end{align}
+co implikuje,
+\begin{align}
+C_V = \frac{1}{n}\left( \frac{\rm{d}U}{\rm{d}T}\right)_V.
+\end{align}
+
+Różniczka $\rm{d}U$ ma więc ogólną postać:
+
+\begin{align}
+  \rm{d} U &= n C_V \rm{d}T + \left(\frac{\partial U}{\partial V} \right)_T \rm{d}V \\
+ &= n C_V \rm{d}T + \left[    T \cdot \left(\frac{\partial p}{\partial T}\right)_V - p\right] \rm{d}V.
+\end{align}
+ Z drugiej strony, z równania van der Waalsa mamy:
+ \begin{align}
+ \left( \frac{\partial p}{\partial T} \right)_V = \frac{nR}{V - bn},
+ \end{align}
+ a stąd: 
+ \begin{align}
+  \rm{d} U &=  n C_V \rm{d} T + a \frac{n^2}{V^2} \rm{d}V.
+ \end{align}
+ Ostatecznie po wycałkowaniu:
+ \begin{align}
+ U(T, V) = n C_V T - a \frac{n^2}{V}  + U_0.
+ \end{align}
+
 
 \newpage   
 \end{solution}
