@@ -282,14 +282,14 @@ Znajdujemy bilans zmian energii wewnętrznej dla całego cyklu:
 
 \begin{itemize}
   \item $AB$: izoterma: $\Delta U_{AB} = 0$.
-	\item $BC$: izobara. $Q_{BC}$ obliczamy korzystając z ciepła molowego $c_p$, pracę całkujemy:
+	\item $BC$: izobara. $Q_{BC}$ obliczamy korzystając z ciepła molowego $C_p$, pracę całkujemy:
 	\begin{align*}
-	       Q_{BC} = n c_p (T_C - T_B) = \frac{c_p p }{R}(V_C - V_B), \qquad 
+	       Q_{BC} = n C_p (T_C - T_B) = \frac{C_p p }{R}(V_C - V_B), \qquad 
          W_{BC} = -\int_{V_B}^{V_C} p dV = p (V_B - V_C).
 	\end{align*}
 	więc
 	\begin{align*}
-		\Delta U_{BC} = Q_{BC} + W_{BC} = p (V_B - V_C) \left(1 - \frac{c_p}{R} \right).
+		\Delta U_{BC} = Q_{BC} + W_{BC} = p (V_B - V_C) \left(1 - \frac{C_p}{R} \right).
 	\end{align*}
 	\item $CA$: izochora. W procesie izochorycznym praca wynosi $0$: $W_{CA} = 0$, 
    czyli $\Delta U_{CA} = Q_{CA}$. Ponownie obliczamy $Q_{CA}$ korzystając z 
@@ -304,9 +304,9 @@ Znajdujemy bilans zmian energii wewnętrznej dla całego cyklu:
 Całkowita zmiana energii w cyklu wynosi $0$, więc:
 \begin{align*}
 	0 = \Delta U_{ABC} = \Delta U_{AB} + \Delta U_{BC} + \Delta U_{CA} = \\
-   0 + p (V_B - V_C) \left(1 - \frac{c_p}{R} \right) + \frac{p C_V}{R}(V_B - V_C) = \\
-    p (V_B -  V_C) \left(1 - \frac{c_p}{R} + \frac{C_V}{R} \right) = p (V_B - V_C) \left(1 + \frac{C_V - c_p}{R} \right) \to \\
-    C_V - c_p = R
+   0 + p (V_B - V_C) \left(1 - \frac{C_p}{R} \right) + \frac{p C_V}{R}(V_B - V_C) = \\
+    p (V_B -  V_C) \left(1 - \frac{C_p}{R} + \frac{C_V}{R} \right) = p (V_B - V_C) \left(1 + \frac{C_V - C_p}{R} \right) \to \\
+    C_V - C_p = R
 \end{align*}
 
 \newpage   
@@ -314,7 +314,7 @@ Całkowita zmiana energii w cyklu wynosi $0$, więc:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[]
 
-Znajdź energię wewnętrzną $U(T)$ i równanie adiabaty gazu doskonałego o cieple molowym \\
+Znajdź równanie adiabaty gazu doskonałego o cieple molowym \\
 $C_V = \frac{1}{n}\left( \frac{\dbar Q}{\rm{d}T}\right)_V$.
 
 \vspace{0.2cm}
@@ -342,13 +342,13 @@ i stąd
 \begin{align*}
 - p \rm{d}V  = \frac{C_V}{R}\left(  p \rm{d}V +  V \rm{d}p \right)\\
 - \left( 1 + \frac{R}{C_V}\right) p \rm{d}V = V \rm{d}p. \\
--\frac{C_P}{C_V}\frac{\rm{d} V}{V}=\frac{\rm{d} p}{p}
+-\frac{C_p}{C_V}\frac{\rm{d} V}{V}=\frac{\rm{d} p}{p}
 \end{align*}
 
 Całkujemy obie strony równania:
 \begin{align*}
--\frac{C_P}{C_V}\ln(V) = \ln(p) + const. \\
-V^{-\frac{C_P}{C_V}} = const. \cdot p \implies pV^{\frac{C_P}{C_V}} = const.
+-\frac{C_p}{C_V}\ln(V) = \ln(p) + const. \\
+V^{-\frac{C_p}{C_V}} = const. \cdot p \implies pV^{\frac{C_p}{C_V}} = const.
 \end{align*}
 
 \newpage   
@@ -540,8 +540,8 @@ W procesie adiabatycznym $S=\text{const.}$ co prowadzi do związku
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[]
 
-Proszę znaleźć efektywność silnika pracującego w cyklu Carnota, w którym gaz fotonów 
-jest czynnikiem roboczym jest gaz fotonowy. Efektywność silnika jest zdefiniowana jako 
+Proszę znaleźć efektywność silnika pracującego w cyklu Carnota, w którym 
+czynnikiem roboczym jest gaz fotonowy. Efektywność silnika jest zdefiniowana jako 
 stosunek pracy wykonanej przez silnik do ciepła dostarczonego do silnika:
 \begin{align*}
   \eta = -\frac{W}{Q_{in}}
@@ -787,7 +787,7 @@ Przyrównujemy pochodne mieszane:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \zadanie[]
 
-Proszę znaleźć zależność energii wewnętrznej $U$ $V$ dla gazu van der Waalsa,
+Proszę znaleźć zależność energii wewnętrznej $U(V)$ dla gazu van der Waalsa,
 spełniającego równanie stanu:
 
 \begin{align*}
