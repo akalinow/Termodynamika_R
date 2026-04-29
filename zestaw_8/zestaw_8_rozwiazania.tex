@@ -115,8 +115,8 @@ Gaz podlega rozkładowi kanonicznemu:
 
 Czynnik normalizacyjny $Z_i$ jest iloczynem części przestrzennej i pędowej:
 \begin{align*}
-  Z_i &= \int e^{-\beta (mgz_i + \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m})} d^{3}x_i d^{3}p_i =
-  \int e^{-\beta mgz_i} d^{3}x_i \int e^{-\beta \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m}} d^{3}p_i = Z_{ri} Z_{pi} \\
+  h^{3}Z_i &=  \int e^{-\beta (mgz_i + \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m})} d^{3}x_i d^{3}p_i =
+  \int e^{-\beta mgz_i} d^{3}x_i \int e^{-\beta \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m}} d^{3}p_i = h^{3}Z_{ri} Z_{pi} \\
   Z_{ri} &= \int e^{-\beta mgz_i} d^{3}x_i = S \int_{0}^{\infty} e^{-\beta mgz_i} dz_i = \frac{S}{\beta mg} \\
   Z_{pi} &= \int e^{-\beta \frac{p_{x,i}^2 + p_{y,i}^2 + p_{z,i}^2}{2m}} d^{3}p_i 
 \end{align*}
@@ -418,20 +418,21 @@ Ta energia daje wkład do całkowitej energii występującej w rozkładzie kanon
 Dla pojedynczej cząstki mamy więc ($\beta = \frac{1}{kT}$):
 \begin{align*}
   \rho(\vec{r},\vec{p}) = \frac{1}{Z_{i}} e^{-\beta \left( \frac{p_{i}^2}{2m} - \frac{1}{2} m \omega^2 \rho_{i}^2 \right)} =   
-  \frac{1}{Z_{i,p}} e^{-\beta \frac{p_{i}^2}{2m}} \frac{1}{Z_{i,\rho}} e^{\beta \frac{1}{2} m \omega^2 \rho_{i}^2}
+   \frac{1}{h^{3}} \frac{1}{Z_{i,p}} e^{-\beta \frac{p_{i}^2}{2m}} \frac{1}{Z_{i,\rho}} e^{\beta \frac{1}{2} m \omega^2 \rho_{i}^2}
 \end{align*}
 
 Rozkłady dla poszczególnych cząstek są niezależne, więc dla N, nierozróżnialnych cząstek,
 mamy:
 \begin{align*}
   \rho(\vec{r}_1, \ldots, \vec{r}_N, \vec{p}_1, \ldots, \vec{p}_N) =  
-  \frac{1}{N!} \prod_{i=1}^{N} \rho(\vec{r}_i, \vec{p}_i) = 
-  \frac{1}{N!} \prod_{i=1}^{N} \frac{1}{Z_{i,p}} e^{-\beta \frac{p_{i}^2}{2m}} \frac{1}{Z_{i,\rho}} e^{\beta \frac{1}{2} m \omega^2 \rho_{i}^2}
+  \frac{1}{N!} \frac{1}{h^{3N}}\prod_{i=1}^{N} \rho(\vec{r}_i, \vec{p}_i) = 
+  \frac{1}{N!} \frac{1}{h^{3N}} \prod_{i=1}^{N} \frac{1}{Z_{i,p}} e^{-\beta \frac{p_{i}^2}{2m}} \frac{1}{Z_{i,\rho}} e^{\beta \frac{1}{2} m \omega^2 \rho_{i}^2}
 \end{align*}
 
 Energia swobodna jest więc równa:
 \begin{align*}
-  F = -kT \ln Z = -kT \ln \frac{Z_{i,p}^N Z_{i,\rho}^N}{N!} = -NkT \ln Z_{i,p} - NkT \ln Z_{i,\rho} + kT \ln N!
+  F = -kT \ln Z = -kT \ln \frac{Z_{i,p}^N Z_{i,\rho}^N}{N!h^{3N}} = 
+  -NkT \ln Z_{i,p} - NkT \ln Z_{i,\rho} + kT \ln N! + 3NkT \ln h
 \end{align*}
 
 Będziemy obliczali pochodną po objętości, więc interesuje nas tylko 
@@ -443,11 +444,31 @@ składnik $-NkT \ln Z_{i,\rho}$.
   \frac{2\pi L}{\beta m \omega^2} \left(e^{\beta \frac{1}{2} m \omega^2 R^2}-1\right)
 \end{align*}
 
-Ciśnienie wywierane na ścianki boczne:
+Ciśnienie to pochodna energii swobodnej po objętości. 
+Jeśli objętość nie występuje explicite musimy różniczkować
+po kolejnych współrzędnych w kierunku wyznaczonym przez objętość:
 \begin{align*}
-  p = -\left( \frac{\partial F}{\partial V} \right)_{T,N} =
-  -\left( \frac{\partial F}{\partial R} \right)_{T,N} \frac{\partial R}{\partial V} = 
-  -\left(\frac{\partial F}{\partial R} \right)_{T,N} \frac{1}{2\pi R L} = 
+  \frac{dF}{dV} =  \nabla F \cdot \hat{e}_{V}, \quad 
+  \nabla F = \left[\left( \frac{\partial F}{\partial R} \right), 
+              \left( \frac{\partial F}{\partial L} \right) \right], \quad
+\hat{e}_{V} = \frac{\left( \frac{\partial V}{\partial R}, \frac{\partial V}{\partial L} \right)}{\sqrt{\left(\frac{\partial V}{\partial R}\right)^2 + \left(\frac{\partial V}{\partial L}\right)^2}} 
+\end{align*}
+
+Różniczka $F$ nie zależy od drogi: 
+$dF = \left( \frac{d F}{d V} \right)_{T,N} dV $
+możemy więc pójść na skróty i różniczkować po dowolnej drodze
+pod warunkiem że ma długość $dV$:
+\begin{align*}
+  \frac{dF}{dV} = \left( \frac{\partial F}{\partial R} \right) \frac{dR}{dV} =
+       \left( \frac{\partial F}{\partial L} \right) \frac{dL}{dV} = 
+       \left[\left( \frac{\partial F}{\partial R} \right) \frac{dR}{dV}  + 
+       \left( \frac{\partial F}{\partial L} \right) \frac{dL}{dV} \right] \frac{1}{\sqrt{\left(\frac{dR}{dV}\right)^2 + \left(\frac{dL}{dV}\right)^2}} = 1
+\end{align*} 
+
+\begin{align*}
+  p = -\left( \frac{\partial F}{\partial V} \right) =
+  -\left( \frac{\partial F}{\partial R} \right) \frac{\partial R}{\partial V} = 
+  -\left(\frac{\partial F}{\partial R} \right) \frac{1}{2\pi R L} = 
   \frac{NkT}{Z_{i,\rho}} \frac{1}{2\pi R L} \frac{\partial Z_{i,\rho}}{\partial R} = \\
    \frac{NkT}{Z_{i,\rho}} \frac{1}{2\pi R L} \frac{2\pi L}{\beta m \omega^2} e^{\beta \frac{1}{2} m \omega^2 R^2} \beta m \omega^2 R = \\
   \frac{NkT e^{\beta \frac{1}{2} m \omega^2 R^2}}{Z_{i,\rho}} = 
@@ -457,6 +478,20 @@ Ciśnienie wywierane na ścianki boczne:
   || x = \beta \frac{1}{2} m \omega^2 R^2 || =
   \frac{NkT}{V} \frac{x e^{x}}{e^{x}-1}
 \end{align*}
+
+To samo możemy zrobić różniczkując po $L$:
+
+\begin{align*}
+  p = -\left( \frac{\partial F}{\partial V} \right) =
+  -\left( \frac{\partial F}{\partial L} \right) \frac{\partial L}{\partial V} = 
+  -\left(\frac{\partial F}{\partial L} \right) \frac{1}{\pi R^2} =
+  \frac{NkT}{Z_{i,\rho}} \frac{1}{\pi R^2} \frac{\partial Z_{i,\rho}}{\partial L} = \\
+  \frac{NkT}{Z_{i,\rho}} \frac{1}{\pi R^2} \frac{2\pi}{\beta m \omega^2} \left(e^{\beta \frac{1}{2} m \omega^2 R^2}-1\right) = \\
+   NkT\frac{1}{\pi R^2} \frac{2\pi}{\beta m \omega^2} \left(e^{\beta \frac{1}{2} m \omega^2 R^2}-1\right) 
+  \frac{1}{\frac{2\pi L}{\beta m \omega^2} \left(e^{\beta \frac{1}{2} m \omega^2 R^2}-1\right)} =
+  \frac{NkT}{V} 
+\end{align*}
+
 
 Sprawdźmy zachowanie w granicy $\omega \to 0$:
 \begin{align*}
