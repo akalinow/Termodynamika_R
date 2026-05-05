@@ -601,10 +601,14 @@ Równanie stanu gazu fotonowego:
 
 Rozpatrzmy bilans energetyczny dla każdej z przemian:\\
 \begin{itemize}
-	\item $AB$ izoterma: $\Delta U = 0$ czyli $\Delta Q = - \Delta W$. 
+	\item $AB$ izoterma: $\Delta U \ne 0$!  
 	\begin{align*}
+    \Delta U_{AB} = \frac{4\sigma}{c} T_1^4 (V_B - V_A) < 0 \\
 		W_{AB} = - \int_{V_A}^{V_B} p {\rm d}V = \frac{4}{3} \frac{\sigma}{c} T_1^4 (V_A - V_B) < 0 \\
-		Q_{AB} = -W_{AB} = - \frac{4}{3} \frac{\sigma}{c} T_1^4 (V_A - V_B) > 0.
+		Q_{AB} = \Delta U_{AB} - W_{AB} =
+     \frac{4\sigma}{c} T_1^4 (V_B - V_A)
+    - \frac{4}{3} \frac{\sigma}{c} T_1^4 (V_A - V_B) = \\
+    \frac{16}{3} \frac{\sigma}{c} T_1^4 (V_B - V_A) > 0
 	\end{align*}
 	\item $BC$ adiabata: $\Delta Q = 0$ więc $\Delta U = \Delta W$. 
 	\begin{align*}
@@ -613,10 +617,13 @@ Rozpatrzmy bilans energetyczny dla każdej z przemian:\\
 		W_{BC} = \Delta U_{BC} < 0, \\
     Q_{BC} = 0.
 	\end{align*}
-	\item $CD$ izoterma, $\Delta U = 0$ czyli $\Delta Q = - \Delta W$.
+	\item $CD$ izoterma, 
 	\begin{align*}
+    \Delta U_{CD} = U_D - U_C = \frac{4\sigma}{c} T_2^4 (V_D - V_C) < 0 \\
 		W_{CD} =  \frac{4}{3} \frac{\sigma}{c} T_2^4 (V_C - V_D) \\
-    Q_{CD} = -W_{CD} =  -\frac{4}{3} \frac{\sigma}{c} T_2^4 (V_C - V_D) < 0
+    Q_{CD} = \Delta U_{CD} - W_{CD} =  
+    \frac{4\sigma}{c} T_2^4 (V_D - V_C) - \frac{4}{3} \frac{\sigma}{c} T_2^4 (V_C - V_D) = \\
+    \frac{16}{3} \frac{\sigma}{c} T_2^4 (V_D - V_C) < 0
 	\end{align*}
 	\item $DA$ adiabata, $\Delta Q = 0$ więc $\Delta U = \Delta W$.
 	\begin{align*}
@@ -628,8 +635,8 @@ Rozpatrzmy bilans energetyczny dla każdej z przemian:\\
 Równanie Clausiusa dla cyklu Carnota:
 \begin{align*}
   \frac{Q_{AB}}{T_1} + \frac{Q_{CD}}{T_2} = 
-  \frac{-\frac{4}{3} \frac{\sigma}{c} T_1^4 (V_A - V_B)}{T_1} + \frac{-\frac{4}{3} \frac{\sigma}{c} T_2^4 (V_C - V_D)}{T_2} = \\
-  -\frac{4}{3} \frac{\sigma}{c} T_1^3 (V_A - V_B) - \frac{4}{3} \frac{\sigma}{c} T_2^3 (V_C - V_D)
+  \frac{-\frac{12}{3} \frac{\sigma}{c} T_1^4 (V_A - V_B)}{T_1} + \frac{-\frac{12}{3} \frac{\sigma}{c} T_2^4 (V_C - V_D)}{T_2} = \\
+  -\frac{12}{3} \frac{\sigma}{c} T_1^3 (V_A - V_B) - \frac{12}{3} \frac{\sigma}{c} T_2^3 (V_C - V_D)
 \end{align*}
 
 Korzystamy z równania adiabaty dla gazu fotonowego:
@@ -706,6 +713,19 @@ Układ jest izolowany, więc energia całkowita nie zmieni się podczas wyrówny
 \end{align*}
 
 Zmiana entropii układu:
+Entropia gazu doskonałego (wzór Sakur-Tetrode'a):
+\begin{align*}
+  S = N k_B \left[ \ln \left( \frac{V}{N} \right) + 
+    \frac{3}{2} \ln \left( \frac{U}{N} \right) + \frac{5}{2} +
+    \frac{3}{2} \ln \frac{4 \pi m}{3 h^{2}} \right] = \\
+  n R \left[ \ln V + \frac{3}{2} \ln T + const. \right]  = \\
+  || C_V = \frac{3}{2} R || =
+  n R \ln V + n C_V \ln T + const.
+\end{align*}
+
+Zmiana entropii układu (objętość gazu się nie zmienia, więc 
+pomijamy składnik $n R \ln V$):
+
 \begin{align*}
   \Delta S = \Delta S_1 + \Delta S_2 =
   n C_V \ln \frac{T_{\text{final}}}{T_1} + n C_V \ln \frac{T_{\text{final}}}{T_2} = 
@@ -741,6 +761,13 @@ Zmiana entropii w procesie wyrównywania się temperatur:
   T_{\text{final}} = \sqrt{T_1 T_2}
 \end{align*}
 
+W jaki sposób można przeprowadzić taki proces? 
+
+Uruchamiamy silnik Carnota, który będzie pracował między dwoma zbiornikami 
+ciepła o temperaturach $T_1$ i $T_2$. Taki silnik będzie wykonywał pracę, 
+do momentu zrównania się temperatur w obu zbiornikach. Silnik Carnota jest 
+odwracalny, więc proces wyrównywania się temperatur będzie odwracalny, a 
+temperatura końcowa będzie równa $T_{\text{final}} = \sqrt{T_1 T_2}$.
 
 \newpage   
 \end{solution}

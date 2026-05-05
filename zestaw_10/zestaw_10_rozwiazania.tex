@@ -1,71 +1,541 @@
-\documentclass[a4paper,12pt]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[11pt,a4paper]{article}
+
 \usepackage[polish]{babel}
-\usepackage{amsmath,amssymb}
-\usepackage{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
 \usepackage[T1]{fontenc}
-\geometry{a4paper, margin=1in}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes,arrows.meta,decorations.markings}
 
-\title{TIFS R - Ćwiczenia Tydzień 10}
-\author{}
-\date{11 lutego 2026}
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
 
-\begin{document}
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
 
-\maketitle
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
 
-\section*{Równowaga faz i przejścia fazowe}
+% definition of inexact differential symbol:
+\newcommand{\dbar} {\ensuremath{\,\mathchar'26\mkern-12mu d}}
+\newcommand{\Partial}[3]{\left( \frac{\partial #1}{\partial #2} \right)_{#3}}
 
-\subsection*{Zadanie 1}
-Rozpatrzmy dwa pojemniki z jednoatomowymi gazami doskonałymi $A$ i $B$, które w chwili początkowej były oddzielone przegrodą, a w chwili końcowej - zmieszane. Załóżmy, że zmiennymi niezależnymi (kontrolowanymi przez kontakt z otoczeniem) są ciśnienie $p$ i temperatura $T$. Pokaż, że proces mieszania jest nieodwracalny.
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
 
-\textbf{Rozwiązanie:}
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\ {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\ {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
-Odpowiednim potencjałem termodynamicznym jest tu $G = \mu N$. Jeżeli okaże się, że $\Delta G < 0$, to proces będzie nieodwracalny. Ale $G = \mu N$, zaś wzór na potencjał chemiczny gazu doskonałego w zmiennych $p,T$ wyprowadzaliśmy jakiś czas temu i miał postać:
-\begin{equation}
-\mu_i = kT \log\left(\frac{p}{kT}\left(\frac{h^2}{2\pi m_i kT}\right)^{3/2}\right) = kT \log p + f_i(T)
-\end{equation}
+%dynamic solutions hiding
+\usepackage{comment}
 
-Stąd na początku:
-\begin{equation}
-G_p = G_A + G_B = N_A \mu_A + N_B \mu_B = NkT \log p + N_A f_A(T) + N_B f_B(T)
-\end{equation}
+\newif\ifshowsolutions
 
-Natomiast po zmieszaniu, ciśnienia każdego ze składników zmaleją (względem ciśnienia początkowego), a ciśnienie całkowite - nie zmieni się. Zgodnie z prawem Daltona:
-\begin{equation}
-p_A = \frac{N_A}{N}p, \quad p_B = \frac{N_B}{N}p
-\end{equation}
+\def\showsolutions{} %comment this line to hide solutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
 
-A zatem końcowy potencjał Gibbsa:
-\begin{equation}
-G_k = N_A kT \log p_A + N_B kT \log p_B + N_A f_A(T) + N_B f_B(T)
-\end{equation}
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
 
-Różnica potencjałów:
-\begin{equation}
-\Delta G = N_A kT \log\frac{p_A}{p} + N_B kT \log\frac{p_B}{p}
-\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R \\
+  Zestaw X: Wielki zespół kanoniczny
+  }} \\  
+\end{centering}
 
-Można przekształcić do postaci:
-\begin{equation}
-\Delta G = N_A kT \log\frac{N_A}{N} + N_B kT \log\frac{N_B}{N}
-\end{equation}
+\vspace{1cm}
 
-Dla małych wartości:
-\begin{equation}
-\Delta g = kT(x \log x + (1 - x)\log(1 - x))
-\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
 
-dla $x = \frac{N_A}{N}$. Nietrudno zobaczyć, że $\Delta g(x)$ jest symetryczna względem $x = \frac{1}{2}$, poza tym $\Delta g(0) = \Delta g(1) = 0$ oraz pochodna zeruje się tylko dla $x = \frac{1}{2}$, w którym to punkcie funkcja przyjmuje wartość ujemną. A zatem $\Delta g(x) < 0$ i faktycznie proces jest nieodwracalny.
+Proszę wypisać:
+\begin{itemize}
+\item ogólny wzór na wielki rozkład kanoniczny
+\item związek między wielkim rozkładem kanonicznym a rozkładem kanonicznym
+\item wzór na potencjał termodynamiczny $\Omega$ w wielkim rozkładzie kanonicznym
+\item różnicznkę  $\Omega$ 
+\item związki między makroskopowymi wielkościami termodynamicznymi:
+      $S$, $N$, $p$ a $\Omega$
+\item związek między średnią energią układu $U$ a $\Omega$ i $\langle N \rangle$      
+\end{itemize}
 
-Z drugiej strony pamiętamy, że $G = U - TS + pV$. W tym przypadku $U = \text{const.}$, $T = \text{const.}$ oraz $p = \text{const.}$. Nietrudno też zauważyć, że nie zmieni się objętość zajmowana przez gazy, gdyż przed zmieszaniem $V = V_A + V_B = \frac{N_A kT}{p} + \frac{N_B kT}{p}$, a po zmieszaniu $V = \frac{(N_A + N_B)kT}{p}$. Możemy więc proces izobaryczno-izotermicznego zmieszania wyobrazić sobie jako usuwanie przegrody w naczyniu o ustalonej objętości $V$. Tak czy inaczej w naszym przypadku:
-\begin{equation}
-\Delta G = -T \Delta S
-\end{equation}
+\begin{solution}
 
-a zatem:
-\begin{equation}
-\Delta S = -k\left(N_A \log\frac{N_A}{N} + N_B \log\frac{N_B}{N}\right) \equiv \Delta S_{\text{mix}}
-\end{equation}
+Wielki rozkład kanoniczny uwzględnia możliwość wymiany cząstek z otoczeniem.
+Wkład do czynnika Boltzmanna związany z liczbą cząstek $N$ jest 
+równy $e^{+\beta \mu N}$, gdzie $\mu$ jest potencjałem chemicznym.
+Zatem wielki rozkład kanonicznny ma postać:
+\begin{align*}
+  p(N, E) = \frac{1}{\Xi} e^{-\beta E + \beta \mu N}
+\end{align*}
+gdzie $\Xi$ jest funkcją podziału:
+\begin{align*}
+  \Xi = \sum_{N} \int e^{-\beta E + \beta \mu N} d\Gamma_{N}
+\end{align*}
 
+Czynnik z potencjałem chemicznym (aktywność) można wyłączyć jako: 
+$z = e^{\beta \mu}$:
+\begin{align*}
+  p(N, E) = \frac{1}{\Xi} z^N e^{-\beta E} \\
+  \Xi = \sum_{N} z^N \int e^{-\beta E} d\Gamma_{N} = \sum_{N} z^N Z_N
+\end{align*}
+
+W granicy termodynamicznej, gdy
+$N = \langle N \rangle \to \infty$, $V \to \infty$, $N/V = const$,
+$ N \simeq \langle N \rangle$
+\begin{align*}
+  F = -k_B T \ln \Xi + \mu N \\
+  \Omega = F - \mu N  = -k_B T \ln \Xi \\
+\end{align*}
+
+gdzie $F$ jest energią swobodną, a $\Omega$ wielkim potencjałem termodynamicznym.
+Różniczka $\Omega$ pozwala znaleźć związki między makroskopowymi wielkościami 
+termodynamicznymi:
+\begin{align*}
+  d \Omega =& dF - \mu dN - N d\mu = \\
+            &(-pdV - S dT + \mu dN) - \mu dN - N d\mu = \\
+            &-pdV - S dT - N d\mu 
+\end{align*}
+
+Zatem \begin{align*}
+  S = -\Partial{\Omega}{T}{V, \mu} \\
+  \langle N \rangle = -\Partial{\Omega}{\mu}{V, T} \\
+  p = -\Partial{\Omega}{V}{T, \mu}
+\end{align*}
+
+Średnia energia układu ($E= U$):
+\begin{align*}
+  <E - \mu N> = \sum_{N} \int (E - \mu N) p(N, E) d\Gamma_N = \\
+  \frac{1}{\Xi} \sum_{N} \int (E - \mu N) e^{-(\beta E - \beta \mu N)} d\Gamma_N = \\
+  -\frac{1}{\Xi} \frac{\partial \Xi}{\partial \beta} = 
+  -\frac{\partial \ln \Xi}{\partial \beta}
+\end{align*}
+
+Stąd \begin{align*}
+  U = - \frac{\partial \ln \Xi}{\partial \beta} + \mu \langle N \rangle 
+\end{align*}
+
+Na koniec postać $\Omega$ wynikająca z tw. Euler'a:
+\begin{align*}
+  \Omega = F - \mu N = -pV
+\end{align*}
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważmy płyn odpychających się cząstek, zamkniętych w naczyniu objętości $V$.
+Zamodelujmy ten płyn jako ``gaz sieciowy'':
+\begin{itemize}
+\item naczynie dzielimy na $N$ komórek, o objętości $v$ 
+      porównywalnej z objętością cząsteczki
+\item komórka niezajęta oraz zajęta przez jedną cząstkę mają energię zerową
+\item komórki zajęte przez dwie cząstki mają energię $\epsilon$
+\item w żadnej komórce nie mogą się znajdować więcej niż dwie cząstki
+\end{itemize}
+
+\vskip 0.2cm
+
+Korzystając z wielkiego rozkładu kanonicznego, proszę znaleźć:
+\begin{itemize}
+\item średnią energię na komórki: $e$
+\item średnią liczbę cząstek na komórkę (koncentrację): $n$
+\item ciśnienie $p$ wyrażone przez temperaturę i potencjał chemiczny: $p = p(T, \mu)$
+\end{itemize}
+
+\vskip 0.2cm
+
+Znaleźć odpowiednie wyrażenia na te wielkości w granicach $n \ll 1$ i  $n=2$.
+
+\begin{solution}
+
+Wielka funkcja podziału $\Xi$: 
+\begin{align*}
+  \Xi = \sum_{N=0}^{2N} z^N Z_N
+\end{align*}
+
+Maksymalna liczba cząstek w układzie to $2N$, zatem sumujemy po $N$ od $0$ do $2N$.
+
+\vskip 0.2cm
+
+Funkcja podziału $Z_M$ dla $M$ cząstek zależy o liczby komórek obsadzonych przez
+jedną: $n_{1}$ lub dwie: $2n_{2} = M - n_{1}$ cząstki. 
+Energia układu to $\epsilon n_2$.
+\begin{align*}
+Z(N, n_1, n_2) = \binom{N}{n_1} \binom{N-n_1}{n_2} e^{-\beta \epsilon n_2}
+\end{align*}
+
+Możemy próbować obliczyć wartość $Z(M)$, ale to nie będzie łatwe z uwagi na warunek
+$n_1 + 2 n_2 = M$. Zamiast tego, możemy obliczyć wielką funkcję podziału $\Xi$ 
+gdzie pojawia się sumowanie po wszystkich dozwolonych wartościach $n_1$ i $n_2$.
+Przyjmujemy aktywność $z = e^{\beta \mu}$, wtedy:
+\begin{align*}
+  \Xi = \sum_{M=0}^{2N} z^M Z(M) =
+  \sum_{n_1=0}^{N} \sum_{n_2=0}^{N-n_1} z^{n_1 + 2 n_2} Z(N, n_1, n_2) = \\
+  \sum_{n_1=0}^{N} \binom{N}{n_1} z^{n_1} \sum_{n_2=0}^{N-n_1} \binom{N-n_1}{n_2} z^{2 n_2} e^{-\beta \epsilon n_2} = 
+   \sum_{n_1=0}^{N} \binom{N}{n_1} z^{n_1} \sum_{n_2=0}^{N-n_1} \binom{N-n_1}{n_2} (e^{-\beta \epsilon}z^{2})^{n_2} = 
+\end{align*}
+
+\vskip 0.2cm
+
+Sumy możemy zwinąć korzystając z wzoru Newtona:
+\begin{align*}
+  \sum_{k=0}^{N} \binom{N}{k} a^{k}b^{N-k} = (a + b)^N 
+\end{align*}
+
+Zatem:
+\begin{align*}
+  \Xi = \sum_{n_1=0}^{N} \binom{N}{n_1} z^{n_1} (1 + e^{-\beta \epsilon}z^{2})^{N-n_1} = 
+  (1 + z + e^{-\beta \epsilon}z^{2})^N = Z_{1}^N \\
+   Z_{1} = 1 + z + e^{-\beta \epsilon}z^{2}
+\end{align*}
+
+\newpage
+
+Możemy teraz obliczyć szukane parametry termodynamiczne.
+Uwaga na to które zmienne są niezależne w czasie różniczkowania.
+
+Koncentracja $n$:
+
+\begin{align*}
+  n = \frac{1}{N} \langle M \rangle = 
+   \frac{1}{N} \frac{\partial \Omega}{\partial \mu} =
+    \frac{1}{N} \frac{1}{\beta Z_{1}^{N}}\frac{\partial Z_{1}^{N}}{\partial \mu} = 
+    \frac{1}{N} \frac{1}{\beta Z_{1}^{N}} N Z_{1}^{N-1} \frac{\partial Z_{1}}{\partial \mu} = \\
+    \frac{1}{\beta Z_{1}} \frac{\partial Z_{1}}{\partial \mu} =
+    \frac{z + 2 z^2 e^{-\beta \epsilon}}{1 + z + z^2 e^{-\beta \epsilon}}
+\end{align*}
+
+Energia na komórkę $e$:
+
+\begin{align*}
+  e = \frac{1}{N} \langle U \rangle =  
+  -\frac{\partial \ln \Xi}{\partial \beta} + \mu n = \\
+  -\frac{1}{N} \frac{1}{Z_{1}^{N}}  \left (\frac{\partial Z_{1}^{N}}{\partial \beta} \right)_{\mu} +
+  \frac{1}{N} \frac{1}{\beta Z_{1}^{N}} \left( \frac{\partial Z_{1}^{N}}{\partial \mu} \right)_{\beta} = \\
+  -\frac{1}{N} \frac{1}{Z_{1}^{N}} 
+  \left[ \left( \frac{\partial Z_{1}^{N}}{\partial \beta} \right)_{\mu} -
+    \left( \frac{\partial Z_{1}^{N}}{\partial \beta \mu} \right)_{\beta} \right] =\\
+    || \text{ drugi człon usuwa z pochonej człony z kombnacją}~ \beta \mu || = \\
+    -\frac{1}{N} \frac{1}{Z_{1}^{N}} \left( \frac{\partial Z_{1}^{N}}{\partial \beta} \right)_{\beta\mu} = \\
+    -\frac{1}{N} \frac{1}{Z_{1}^{N}} N Z_{1}^{N-1} \left( \frac{\partial Z_{1}}{\partial \beta} \right)_{\beta\mu} =
+    -\frac{1}{Z_{1}} \left( \frac{\partial Z_{1}}{\partial \beta} \right)_{\beta\mu} = 
+    \frac{\epsilon z^2 e^{-\beta \epsilon}}{1 + z + z^2 e^{-\beta \epsilon}}
+\end{align*}
+
+Ciśnienie $p$:
+
+\begin{align*}
+    p = - \frac{\partial \Omega}{\partial V} =
+     \frac{1}{\beta Z_{1}^{N}}\frac{\partial Z_{1}^{N}}{\partial V} =
+     || V = N v || =
+     \frac{1}{\beta Z_{1}^{N}}\frac{\partial Z_{1}^{N}}{\partial (Nv)} = \\
+     \frac{1}{\beta Z_{1}^{N}v}\frac{\partial Z_{1}^{N}}{\partial N} = 
+      \frac{1}{\beta Z_{1}^{N}v} Z_{1}^{N} \ln Z_{1} =
+      \frac{1}{\beta v} \ln Z_{1} =
+      \frac{1}{\beta v} \ln (1 + z + z^2 e^{-\beta \epsilon}) 
+\end{align*}
+  
+Przypadki graniczne: 
+$n \ll 1$:
+\begin{align*}
+  n = \frac{z + 2 z^2 e^{-\beta \epsilon}}{1 + z + z^2 e^{-\beta \epsilon}} \simeq 
+  (z + 2 z^2 e^{-\beta \epsilon})(1 - z - z^2 e^{-\beta \epsilon}) \simeq  
+  ||\text{zachowujemy człony do rzędu}~{\cal O}(z)|| \simeq z
+\end{align*}
+
+\begin{align*}
+    e = \frac{\epsilon z^2 e^{-\beta \epsilon}}{1 + z + z^2 e^{-\beta \epsilon}} \simeq
+    \epsilon z^2 e^{-\beta \epsilon} (1 - z - z^2 e^{-\beta \epsilon}) \simeq
+    ||\text{zachowujemy człony do rzędu}~{\cal O}(z^2)|| \simeq \epsilon z^2 e^{-\beta \epsilon}
+\end{align*}
+
+Model nie uwzględnia ruchu cząstek, więc energia jest związana tylko 
+z oddziaływaniem, które pojawia się przy obsadzeniu komórki przez dwie cząstki.
+
+
+\begin{align*}
+    p = \frac{1}{\beta v} \ln (1 + z + z^2 e^{-\beta \epsilon}) \simeq
+    \frac{1}{\beta v} (z + z^2 e^{-\beta \epsilon} - \frac{z^2}{2}) \simeq
+    ||\text{zachowujemy człony do rzędu}~{\cal O}(z)|| \simeq \frac{z}{\beta v} \simeq \\
+    \frac{n}{v} kT = \frac{n}{V/N} kT = \frac{N n}{V} kT
+\end{align*}
+
+Gdzie $nN$ to liczba cząstek gazu. Uzyskaliśmy więc ciśnienie gazu doskonałego, 
+co jest zgodne z intuicją, 
+bo w granicy $n \ll 1$ oddziaływania między cząstkami są rzadkie, 
+a zatem układ zachowuje się jak gaz doskonały.
+
+\newpage
+
+$n=2$:
+\begin{align*}
+  n = \frac{z + 2 z^2 e^{-\beta \epsilon}}{1 + z + z^2 e^{-\beta \epsilon}} = 2-\delta\\
+  z + 2 z^2 e^{-\beta \epsilon} = 2-\delta + (2 - \delta) z + (2 - \delta) z^2 e^{-\beta \epsilon} \\
+  \delta z^2 e^{-\beta \epsilon} + (\delta - 1) z + \delta - 2 \simeq \\
+  || 2 - \delta \ll 1 || \simeq 
+  \delta z^2 e^{-\beta \epsilon} + (\delta - 1) z \simeq \\
+  || \delta \ll 1 || \simeq
+  \delta z^2 e^{-\beta \epsilon} - z = 0 \Rightarrow
+  z \simeq \frac{1}{\delta} e^{\beta \epsilon} \gg 1
+\end{align*}
+
+\begin{align*}
+  e = \frac{\epsilon z^2 e^{-\beta \epsilon}}{1 + z + z^2 e^{-\beta \epsilon}} \simeq
+  \frac{\epsilon z^2 e^{-\beta \epsilon}}{z^2 e^{-\beta \epsilon}} = \epsilon
+\end{align*}
+
+Średnia energia na komórkę jest równa $\epsilon$, co jest zgodne z intuicją,
+bo w granicy $n=2$ wszystkie komórki są zajęte przez dwie cząstki, a zatem 
+energia każdej komórki to $\epsilon$
+
+
+\begin{align*}
+  p = \frac{1}{\beta v} \ln (1 + z + z^2 e^{-\beta \epsilon}) \simeq \\
+  \frac{1}{\beta v} \ln (z^2 e^{-\beta \epsilon}) = \\
+  \frac{1}{\beta v} (2 \ln z - \beta \epsilon) = \\
+  \frac{1}{\beta v} (2 \ln (\frac{1}{\delta} e^{\beta \epsilon}) - \beta \epsilon) = \\
+  \frac{1}{\beta v} (2 \ln (\frac{1}{\delta}) + 2 \beta \epsilon - \beta \epsilon) = \\
+  ||\text{zachowujemy człony do rzędu}~{\cal O}(\delta)|| =
+  -\frac{2}{\beta v} \ln (\delta) + \frac{\epsilon}{v}
+\end{align*}
+
+W granicy $n=2$ ciśnienie rośnie logarytmicznie z $\delta$. W granicy 
+$ \delta \to 0$ ciśnienie dąży do nieskończoności - wszystkie komórki są zajęte 
+przez dwie cząstki, więcej cząstek nie można dodać, więc układ (płyn) staje się 
+nieściśliwy.
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozpatrzmy powierzchnię pokrytą $N$ węzłami, z których każdy może adsorbować
+jedną cząsteczkę gazu. Powierzchnia ta znajduje się w kontakcie 
+z gazem o potencjale chemicznym $\mu$ i temperaturze $T$. 
+Swobodne cząsteczki gazu mają energię $0$, a zaabsorbowane $-\epsilon_0$.
+Proszę: 
+\begin{itemize} 
+  \item  wyznaczyć współczynnik adsorpcji:
+\begin{align*}
+  \theta = \frac{\langle N_{ads} \rangle}{N}
+\end{align*}
+gdzie $\langle N_{ads} \rangle$ jest średnią liczbą zaabsorbowanych cząsteczek gazu,
+ a $N$ jest całkowitą liczbą węzłów na powierzchni.
+\item znaleźć $\theta$ dla gazu doskonałego o ciśnieniu $p$ i temperaturze $T$.
+\end{itemize}
+
+\begin{solution}
+
+Mamy dwa podukłady gazu: cząsteczki swobodne i zaabsorbowane. Znajdźmy wielką 
+funkcję podziału $\Xi$ dla cząsteczek zaabsorbowanych. 
+Każdy węzeł może być zajęty lub niezajęty, zatem:
+\begin{align*}
+  \Xi = \sum_{N_{ads}=0}^{N} z^{N_{ads}} e^{\beta \epsilon_0 N_{ads}} \binom{N}{N_{ads}} = 
+  (1 + z e^{\beta \epsilon_0})^N
+\end{align*}
+
+Średnia liczba zaabsorbowanych cząsteczek gazu:
+\begin{align*}
+  \langle N_{ads} \rangle = -\frac{\partial \Omega}{\partial \mu} = 
+  \frac{1}{\beta \Xi} \frac{\partial \Xi}{\partial \mu} = 
+  \frac{1}{\beta (1 + z e^{\beta \epsilon_0})^N} N (1 + z e^{\beta \epsilon_0})^{N-1} e^{\beta \epsilon_0} z = \\
+  \frac{N z e^{\beta \epsilon_0}}{1 + z e^{\beta \epsilon_0}} = 
+  \frac{N}{e^{-\beta (\mu + \epsilon_0)} + 1}
+\end{align*}
+
+Współczynnik adsorpcji:
+\begin{align*}
+  \theta = \frac{\langle N_{ads} \rangle}{N} = 
+  \frac{1}{e^{-\beta (\mu + \epsilon_0)} + 1}
+\end{align*}
+
+W przypadku gazu doskonałego, potencjał chemiczny jest związany 
+z ciśnieniem i temperaturą wzorem:
+\begin{align*}
+  z = e^{\beta \mu} = \frac{p \lambda^3}{k_B T} \qquad \lambda = \sqrt{\frac{2 \pi \hbar^2}{m k_B T}}
+\end{align*}
+
+zatem:
+\begin{align*}
+  \theta = \frac{1}{e^{-\beta (1 + \mu + \epsilon_0)}} = 
+  \frac{1}{1 + e^{-\beta \epsilon_0} \left[\frac{2\pi m}{h^{2}}\right]^{3/2} \frac{(k_B T)^{5/2}}{p}} = \\
+  \frac{p}{p + e^{-\beta \epsilon_0} \left[\frac{2\pi m}{h^{2}}\right]^{3/2} (k_B T)^{5/2}}
+\end{align*}
+
+Dla dużego ciśnienia: $ p \gg e^{-\beta \epsilon_0} \left[\frac{2\pi m}{h^{2}}\right]^{3/2} (k_B T)^{5/2}$,
+wszystkie centracje węzłów są zajęte:
+\begin{align*}
+  \theta \simeq 1
+\end{align*}
+
+Dla dużej temperatury: 
+$k_B T \gg e^{-\beta \epsilon_0} \left[\frac{2\pi m}{h^{2}}\right]^{3/2}p^{-1}$,
+wszystkie centracje węzłów są wolne:
+\begin{align*}
+  \theta \simeq 0
+\end{align*}
+
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Naśwetlanie półprzewodnika wiązką światła laserowego, może wywołać powstawanie par elektronów 
+(q = $-e$, $m_e$) i dziur (q = $+e$, $m_d$). Przeciwnie naładowane elektrony i dziury
+ogą łączyć się w pary (ekscytony) i tworzyć gaz. 
+Proszę przeanalizować bardzo uproszczony model tego procesu:
+\begin{enumerate}
+
+\item  potraktować elektrony i dziury jako gaz nieoddziaływających klasycznych cząstek i obliczyć 
+       energię swobodną mieszaniny $N$ elektronów i $N$ dziur
+\item założyć że para elektron-dziura ma energię $\epsilon$ mniejszą niż suma energii swobodnych
+      elektronu i dziury, następnie obliczyć energię swobodną gazu złożonego z $N_p$ ekscytonów, 
+      traktując je jako klasyczne nieoddziałujące cząstki o masie $m_p = m_e + m_d$ 
+\item założyć że gazy elektronów, dziur i ekscytonów są w równowadze termodynamicznej
+      i $\mu_{e} + \mu_{d} = \mu_{p}$, gdzie $\mu_e$, $\mu_d$ i $\mu_p$ są potencjałami chemicznymi
+      elektronów, dziur i ekscytonów, odpowiednio i znaleźć stosunek $f = \frac{n_p}{n}$ gęstości ekscytonów, 
+      $n_p$, do całkowitej gęstości nośników ($n = n_e + n_d = 2n_e$).
+\end{enumerate}
+
+
+\begin{solution}
+
+Gaz elektronów i dziur traktujemy jako klasyczny gaz doskonały. Dla jednego składnika:
+\begin{align*}
+  F_i = -k_B \log Z_{i} \\
+  Z_{i} = \frac{V^{N_i}}{N_i!} \int exp(-\beta \sum_{j=1}^{N_i} \frac{\vec{p}_j^2}{2 m_i}) \prod_{j=1}^{N_i} \frac{d^3 p_j}{(2\pi\hbar)^3} = \\
+  \frac{V^{N_i}}{N_i! h^{3N_i}} \left[\int exp(-\beta \frac{\vec{p}_j^2}{2 m_i}) d^3 p \right]^{N_i} = \\
+    \frac{V^{N_i}}{N_i! h^{3N_i}} \left[ (2\pi m_i k_B T)^{3/2} \right]^{N_i} = 
+     \frac{V^{N_i}}{N_i!} \left( \frac{2\pi m_i}{\beta h^2} \right)^{3N_i/2} = \\
+      \frac{V^{N_i}}{N_i!} \lambda_i^{-3N_i}, \qquad \lambda_i = \sqrt{\frac{2\pi\hbar^2}{m_i k_B T}}
+\end{align*}
+
+Stąd energia swobodna dla elektronów i dziur:
+\begin{align*}
+  F_i = -k_B T \ln Z_i = -k_B T \ln \left[ \frac{V^{N_i}}{N_i!} \lambda_i^{-3N_i} \right] = \\
+  || \log(N!) \simeq N \log N - N || =
+  N_i k_B T \left[ \ln\left( \frac{N_i \lambda_i^3}{V} \right) - 1 \right]
+\end{align*}
+
+
+Energia swobodna jest addytywna, zatem dla mieszaniny elektronów i dziur:
+\begin{align*}
+  F_{e+d} = N_{e} k_B T \left[\ln\left(\frac{N_e\lambda_e^3}{V}\right)-1\right]
+  + N_{d} k_B T \left[\ln\left(\frac{N_d\lambda_d^3}{V}\right)-1\right]
+\end{align*}
+
+Dla ekscytonów (energia związania obniża energię o $\epsilon$):
+\begin{align*}
+  F_p = N_p k_B T \left[\ln\left(\frac{N_p\lambda_p^3}{V}\right)-1\right] - N_p\epsilon,
+  \qquad
+  \lambda_p = \sqrt{\frac{2\pi\hbar^2}{m_p k_B T}},\; m_p=m_e+m_d
+\end{align*}
+
+Potencjały chemiczne:
+\begin{align*}
+  \mu_e &= \Partial{F_e}{N_e}{T,V} = k_B T\ln(n_e\lambda_e^3), \\
+  \mu_d &= \Partial{F_d}{N_d}{T,V} = k_B T\ln(n_d\lambda_d^3), \\
+  \mu_p &= \Partial{F_p}{N_p}{T,V} = k_B T\ln(n_p\lambda_p^3)-\epsilon
+\end{align*}
+gdzie $n_i = N_i/V$.
+
+Warunek równowagi $\mu_e+\mu_d=\mu_p$:
+\begin{align*}
+  k_B T\ln(n_e\lambda_e^3) + k_B T\ln(n_d\lambda_d^3)
+  = k_B T\ln(n_p\lambda_p^3)-\epsilon \\
+  k_B T\ln(n_e n_d \lambda_e^3 \lambda_d^3) = k_B T\ln(n_p\lambda_p^3)-\epsilon \\
+  k_B T\ln(n_e n_d \lambda_e^3 \lambda_d^3) - k_B T\ln(n_p\lambda_p^3) = -\epsilon \\
+  \ln\left(\frac{n_e n_d \lambda_e^3 \lambda_d^3}{n_p\lambda_p^3}\right) = -\frac{\epsilon}{k_BT} 
+\end{align*}
+czyli:
+\begin{align*}
+  n_p = n_e n_d\, e^{\beta\epsilon}\,\frac{\lambda_e^3\lambda_d^3}{\lambda_p^3}
+\end{align*}
+
+$n=n_e+n_d=2n_e$ mamy $n_e=n_d=n/2$, więc:
+\begin{align*}
+  f = \frac{n_p}{n}
+  = \frac{n^{2}}{4n}\,e^{\beta\epsilon}\,\frac{\lambda_e^3\lambda_d^3}{\lambda_p^3}
+  = \frac{n}{4}\,e^{\beta\epsilon}\,\frac{\lambda_e^3\lambda_d^3}{\lambda_p^3}
+\end{align*}
+
+Ponieważ:
+\begin{align*}
+  \frac{\lambda_e^3\lambda_d^3}{\lambda_p^3}
+  = \left(\frac{h^2}{k_B T}\right)^{3/2}
+    \frac{(m_e+m_d)^{3/2}}{(m_e m_d)^{3/2}}
+  = \left(\frac{h^2}{m_r k_B T}\right)^{3/2},
+  \qquad
+  m_r^{-1}=m_e^{-1}+m_d^{-1}
+\end{align*}
+ostatecznie:
+\begin{align*}
+  f = \frac{n}{4}\,e^{\beta\epsilon}\left(\frac{h^2}{m_r k_B T}\right)^{3/2}
+\end{align*}
+
+Widzimy, że większe $\epsilon$ sprzyja tworzeniu ekscytonów, a wzrost $T$ je ogranicza
+(czynnik $T^{-3/2}$ oraz mniejsze $\beta\epsilon$).
+
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
