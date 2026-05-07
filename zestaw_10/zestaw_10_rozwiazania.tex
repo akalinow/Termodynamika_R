@@ -119,7 +119,7 @@ Zatem wielki rozkład kanonicznny ma postać:
 \begin{align*}
   p(N, E) = \frac{1}{\Xi} e^{-\beta E + \beta \mu N}
 \end{align*}
-gdzie $\Xi$ jest funkcją podziału:
+gdzie $\Xi$ jest (wielką) funkcją podziału:
 \begin{align*}
   \Xi = \sum_{N} \int e^{-\beta E + \beta \mu N} d\Gamma_{N}
 \end{align*}
@@ -204,10 +204,10 @@ Znaleźć odpowiednie wyrażenia na te wielkości w granicach $n \ll 1$ i  $n=2$
 
 Wielka funkcja podziału $\Xi$: 
 \begin{align*}
-  \Xi = \sum_{N=0}^{2N} z^N Z_N
+  \Xi = \sum_{M=0}^{2N} z^M Z_M
 \end{align*}
 
-Maksymalna liczba cząstek w układzie to $2N$, zatem sumujemy po $N$ od $0$ do $2N$.
+Maksymalna liczba cząstek w układzie to $2N$, zatem sumujemy po $M$ od $0$ do $2N$.
 
 \vskip 0.2cm
 
@@ -215,7 +215,7 @@ Funkcja podziału $Z_M$ dla $M$ cząstek zależy o liczby komórek obsadzonych p
 jedną: $n_{1}$ lub dwie: $2n_{2} = M - n_{1}$ cząstki. 
 Energia układu to $\epsilon n_2$.
 \begin{align*}
-Z(N, n_1, n_2) = \binom{N}{n_1} \binom{N-n_1}{n_2} e^{-\beta \epsilon n_2}
+Z(M, n_1, n_2) = \binom{M}{n_1} \binom{M-n_1}{n_2} e^{-\beta \epsilon n_2}
 \end{align*}
 
 Możemy próbować obliczyć wartość $Z(M)$, ale to nie będzie łatwe z uwagi na warunek
@@ -231,7 +231,7 @@ Przyjmujemy aktywność $z = e^{\beta \mu}$, wtedy:
 
 \vskip 0.2cm
 
-Sumy możemy zwinąć korzystając z wzoru Newtona:
+Sumy możemy zwinąć korzystając ze wzoru Newtona:
 \begin{align*}
   \sum_{k=0}^{N} \binom{N}{k} a^{k}b^{N-k} = (a + b)^N 
 \end{align*}
@@ -263,12 +263,12 @@ Energia na komórkę $e$:
 
 \begin{align*}
   e = \frac{1}{N} \langle U \rangle =  
-  -\frac{\partial \ln \Xi}{\partial \beta} + \mu n = \\
+  -\frac{\partial \ln \Xi}{\partial \beta} + \mu \langle M \rangle = \\
   -\frac{1}{N} \frac{1}{Z_{1}^{N}}  \left (\frac{\partial Z_{1}^{N}}{\partial \beta} \right)_{\mu} +
-  \frac{1}{N} \frac{1}{\beta Z_{1}^{N}} \left( \frac{\partial Z_{1}^{N}}{\partial \mu} \right)_{\beta} = \\
+  \frac{1}{N} \frac{\mu}{\beta Z_{1}^{N}} \left( \frac{\partial Z_{1}^{N}}{\partial \mu} \right)_{\beta} = \\
   -\frac{1}{N} \frac{1}{Z_{1}^{N}} 
   \left[ \left( \frac{\partial Z_{1}^{N}}{\partial \beta} \right)_{\mu} -
-    \left( \frac{\partial Z_{1}^{N}}{\partial \beta \mu} \right)_{\beta} \right] =\\
+    \mu \left( \frac{\partial Z_{1}^{N}}{\partial \beta \mu} \right)_{\beta} \right] =\\
     || \text{ drugi człon usuwa z pochonej człony z kombnacją}~ \beta \mu || = \\
     -\frac{1}{N} \frac{1}{Z_{1}^{N}} \left( \frac{\partial Z_{1}^{N}}{\partial \beta} \right)_{\beta\mu} = \\
     -\frac{1}{N} \frac{1}{Z_{1}^{N}} N Z_{1}^{N-1} \left( \frac{\partial Z_{1}}{\partial \beta} \right)_{\beta\mu} =
@@ -284,7 +284,8 @@ Ciśnienie $p$:
      || V = N v || =
      \frac{1}{\beta Z_{1}^{N}}\frac{\partial Z_{1}^{N}}{\partial (Nv)} = \\
      \frac{1}{\beta Z_{1}^{N}v}\frac{\partial Z_{1}^{N}}{\partial N} = 
-      \frac{1}{\beta Z_{1}^{N}v} Z_{1}^{N} \ln Z_{1} =
+      \frac{1}{\beta Z_{1}^{N}v} Z_{1}^{N} \ln Z_{1} = \\
+      || (a^{x})' = e^{x \ln a} || =
       \frac{1}{\beta v} \ln Z_{1} =
       \frac{1}{\beta v} \ln (1 + z + z^2 e^{-\beta \epsilon}) 
 \end{align*}
@@ -306,12 +307,12 @@ $n \ll 1$:
 Model nie uwzględnia ruchu cząstek, więc energia jest związana tylko 
 z oddziaływaniem, które pojawia się przy obsadzeniu komórki przez dwie cząstki.
 
-
 \begin{align*}
     p = \frac{1}{\beta v} \ln (1 + z + z^2 e^{-\beta \epsilon}) \simeq
-    \frac{1}{\beta v} (z + z^2 e^{-\beta \epsilon} - \frac{z^2}{2}) \simeq
-    ||\text{zachowujemy człony do rzędu}~{\cal O}(z)|| \simeq \frac{z}{\beta v} \simeq \\
-    \frac{n}{v} kT = \frac{n}{V/N} kT = \frac{N n}{V} kT
+    || \log(1+x) \simeq x || \simeq \\
+    \frac{1}{\beta v} (z + z^2 e^{-\beta \epsilon} - \frac{z^2}{2}) \simeq 
+    ||\text{zachowujemy człony do rzędu}~{\cal O}(z)|| \simeq \\
+    \frac{z}{\beta v} \simeq \frac{n}{v} kT = \frac{n}{V/N} kT = \frac{N n}{V} kT
 \end{align*}
 
 Gdzie $nN$ to liczba cząstek gazu. Uzyskaliśmy więc ciśnienie gazu doskonałego, 
@@ -326,7 +327,7 @@ $n=2$:
   n = \frac{z + 2 z^2 e^{-\beta \epsilon}}{1 + z + z^2 e^{-\beta \epsilon}} = 2-\delta\\
   z + 2 z^2 e^{-\beta \epsilon} = 2-\delta + (2 - \delta) z + (2 - \delta) z^2 e^{-\beta \epsilon} \\
   \delta z^2 e^{-\beta \epsilon} + (\delta - 1) z + \delta - 2 \simeq \\
-  || 2 - \delta \ll 1 || \simeq 
+  || z >> 1~\text{pomijamy człony mniejsze niż }~z^{1} || \simeq \\
   \delta z^2 e^{-\beta \epsilon} + (\delta - 1) z \simeq \\
   || \delta \ll 1 || \simeq
   \delta z^2 e^{-\beta \epsilon} - z = 0 \Rightarrow
@@ -407,7 +408,7 @@ Współczynnik adsorpcji:
 W przypadku gazu doskonałego, potencjał chemiczny jest związany 
 z ciśnieniem i temperaturą wzorem:
 \begin{align*}
-  z = e^{\beta \mu} = \frac{p \lambda^3}{k_B T} \qquad \lambda = \sqrt{\frac{2 \pi \hbar^2}{m k_B T}}
+  z = e^{\beta \mu} = \frac{p \lambda^3}{k_B T} \qquad \lambda = \sqrt{\frac{h^2}{2\pi m k_B T}}
 \end{align*}
 
 zatem:
@@ -418,14 +419,14 @@ zatem:
 \end{align*}
 
 Dla dużego ciśnienia: $ p \gg e^{-\beta \epsilon_0} \left[\frac{2\pi m}{h^{2}}\right]^{3/2} (k_B T)^{5/2}$,
-wszystkie centracje węzłów są zajęte:
+wszystkie węzły są zajęte:
 \begin{align*}
   \theta \simeq 1
 \end{align*}
 
 Dla dużej temperatury: 
 $k_B T \gg e^{-\beta \epsilon_0} \left[\frac{2\pi m}{h^{2}}\right]^{3/2}p^{-1}$,
-wszystkie centracje węzłów są wolne:
+wszystkie węzły są wolne:
 \begin{align*}
   \theta \simeq 0
 \end{align*}
@@ -438,7 +439,7 @@ wszystkie centracje węzłów są wolne:
 
 Naśwetlanie półprzewodnika wiązką światła laserowego, może wywołać powstawanie par elektronów 
 (q = $-e$, $m_e$) i dziur (q = $+e$, $m_d$). Przeciwnie naładowane elektrony i dziury
-ogą łączyć się w pary (ekscytony) i tworzyć gaz. 
+mogą łączyć się w pary (ekscytony) i tworzyć gaz. 
 Proszę przeanalizować bardzo uproszczony model tego procesu:
 \begin{enumerate}
 
@@ -463,7 +464,7 @@ Gaz elektronów i dziur traktujemy jako klasyczny gaz doskonały. Dla jednego sk
   \frac{V^{N_i}}{N_i! h^{3N_i}} \left[\int exp(-\beta \frac{\vec{p}_j^2}{2 m_i}) d^3 p \right]^{N_i} = \\
     \frac{V^{N_i}}{N_i! h^{3N_i}} \left[ (2\pi m_i k_B T)^{3/2} \right]^{N_i} = 
      \frac{V^{N_i}}{N_i!} \left( \frac{2\pi m_i}{\beta h^2} \right)^{3N_i/2} = \\
-      \frac{V^{N_i}}{N_i!} \lambda_i^{-3N_i}, \qquad \lambda_i = \sqrt{\frac{2\pi\hbar^2}{m_i k_B T}}
+      \frac{V^{N_i}}{N_i!} \lambda_i^{-3N_i}, \qquad \lambda_i = \sqrt{\frac{h^2}{2\pi m_i k_B T}}
 \end{align*}
 
 Stąd energia swobodna dla elektronów i dziur:
@@ -480,11 +481,11 @@ Energia swobodna jest addytywna, zatem dla mieszaniny elektronów i dziur:
   + N_{d} k_B T \left[\ln\left(\frac{N_d\lambda_d^3}{V}\right)-1\right]
 \end{align*}
 
-Dla ekscytonów (energia związania obniża energię o $\epsilon$):
+Dla ekscytonów (energia wiązania obniża energię o $\epsilon$):
 \begin{align*}
   F_p = N_p k_B T \left[\ln\left(\frac{N_p\lambda_p^3}{V}\right)-1\right] - N_p\epsilon,
   \qquad
-  \lambda_p = \sqrt{\frac{2\pi\hbar^2}{m_p k_B T}},\; m_p=m_e+m_d
+  \lambda_p = \sqrt{\frac{h^2}{2\pi m_p k_B T}},\; m_p=m_e+m_d
 \end{align*}
 
 Potencjały chemiczne:
