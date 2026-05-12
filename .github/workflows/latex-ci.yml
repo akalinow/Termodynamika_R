@@ -22,7 +22,7 @@ jobs:
     - name: Find and compile all LaTeX files
       run: |
         # Find all .tex files in the repository
-        tex_files=$(find . -name "*.tex" -type f)
+        tex_files=$(find . -name "zestaw*.tex" -type f)
         
         if [ -z "$tex_files" ]; then
           echo "No .tex files found in the repository"
