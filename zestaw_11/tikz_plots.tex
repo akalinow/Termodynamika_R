@@ -1,0 +1,148 @@
+\newcommand{\CarnotPVDiagram}{%
+\begin{tikzpicture}[scale=0.8]
+  % osie ukladu p-V
+  \draw[->] (0,0) -- (6.5,0) node[below] {$V$};
+  \draw[->] (0,0) -- (0,5.5) node[left] {$p$};
+
+  \coordinate (A) at (1.5, 4.0);   % poczatek, izoterma T1
+  \coordinate (B) at (3.5, 2.0);   % koniec izotermy T1, poczatek adiabaty
+  \coordinate (C) at (5.0, 1.0);   % koniec adiabaty, izoterma T2
+  \coordinate (D) at (2.0, 2.4);   % koniec izotermy T2, poczatek adiabaty do A
+
+  % izoterma AB (T1) - czerwona
+  \draw[thick, red, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (A) .. controls (2.0,3.0) .. (B) node[midway, above right] {};
+
+  % adiabata BC - niebieska
+  \draw[thick, blue, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (B) .. controls (3.8,1.7) .. (C);
+
+  % izoterma CD (T2) - czerwona przerywana
+  \draw[thick, red, dashed, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (C) .. controls (3.0,1.6) .. (D);
+
+  % adiabata DA - niebieska
+  \draw[thick, blue, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (D) .. controls (1.7,3.0) .. (A);
+
+  \fill (A) circle (1.5pt) node[above left] {$A$};
+  \fill (B) circle (1.5pt) node[above right] {$B$};
+  \fill (C) circle (1.5pt) node[below right] {$C$};
+  \fill (D) circle (1.5pt) node[below left] {$D$};
+
+  \node[red] at (3.4, 3.0) {$T_H$=const.};
+  \node[red] at (3.3, 1.0) {$T_C$=const.};
+  \node[blue] at (5.0, 1.8) {$\dbar Q = 0$};
+  \node[blue] at (0.7, 3.3) {$\dbar Q = 0$};
+\end{tikzpicture}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\CarnotTSDiagram}{%
+
+\begin{tikzpicture}[scale=0.8]
+  % osie ukladu T-S
+  \draw[->] (0,0) -- (6.5,0) node[below] {$S$};
+  \draw[->] (0,0) -- (0,5.5) node[left] {$T$};
+
+  \coordinate (Ats) at (1.5, 4.0);
+  \coordinate (Bts) at (4.8, 4.0);
+  \coordinate (Cts) at (4.8, 1.8);
+  \coordinate (Dts) at (1.5, 1.8);
+
+  % izotermy
+  \draw[thick, red, postaction={decorate}, decoration={markings, mark=at position 0.55 with {\arrow{Latex[length=3mm]}}}]
+    (Ats) -- (Bts);
+  \draw[thick, red, dashed, postaction={decorate}, decoration={markings, mark=at position 0.55 with {\arrow{Latex[length=3mm]}}}]
+    (Cts) -- (Dts);
+
+  % adiabaty (S = const.)
+  \draw[thick, blue, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (Bts) -- (Cts);
+  \draw[thick, blue, postaction={decorate}, decoration={markings, mark=at position 0.5 with {\arrow{Latex[length=3mm]}}}]
+    (Dts) -- (Ats);
+
+  \fill (Ats) circle (1.5pt) node[above left] {$A$};
+  \fill (Bts) circle (1.5pt) node[above right] {$B$};
+  \fill (Cts) circle (1.5pt) node[below right] {$C$};
+  \fill (Dts) circle (1.5pt) node[below left] {$D$};
+
+  \node[red] at (3.0, 4.4) {$T_H$};
+  \node[red] at (3.0, 1.4) {$T_C$};
+  \node[blue] at (5.6, 2.9) {$dS=0$};
+  \node[blue] at (0.8, 2.9) {$dS=0$};
+\end{tikzpicture}
+
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\CarnotEngineDiagram}[1][Carnot]{%
+\def\EngineType{#1}%
+\def\TypeCarnot{Carnot}%
+\def\TypeKPViolate{KPViolate}%
+\def\TypeCViolate{CViolate}%
+
+\begin{tikzpicture}[>=Latex, thick]
+	% Nodes
+	\node[draw, rounded corners, fill=red!15, minimum width=2.0cm, minimum height=1cm] (heater) at (0,0) {$T_H$};
+	\node[draw, circle, fill=gray!15, minimum width=1.5cm, minimum height=1cm] (engine) at (0,-2) {$S$};
+	\node[draw, rounded corners, fill=blue!15, minimum width=2.0cm, minimum height=1cm] (cooler) at (0,-4) {$T_C$};
+
+    \ifx\EngineType\TypeCarnot
+        \draw[->, red!70!black] (heater.south) -- node[right] {$Q_H$} (engine.north);
+        \draw[->, blue!70!black] (engine.south) -- node[right] {$Q_C$} (cooler.north);
+        \draw[->] (engine.east) -- ++(1,0) node[midway, above] {$W$};
+    \fi
+    %%%%%%%%%%%%%%%%%
+	\ifx\EngineType\TypeKPViolate
+        \draw[->, red!70!black] (heater.south) -- node[right] {$Q_H$} (engine.north);
+        \draw[->] (engine.east) -- ++(1,0) node[midway, above] {$W$};
+    \fi
+    %%%%%%%%%%%%%%%%%
+    \ifx\EngineType\TypeCViolate
+        \draw[->, red!70!black] (engine.north) -- node[right] {$Q_H$} (heater.south);
+        \draw[->, blue!70!black] (cooler.north) -- node[right] {$Q_C$} (engine.south);
+    \fi
+
+
+\end{tikzpicture}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\CarnotEngineDiagramA}{%
+
+\begin{tikzpicture}[>=Latex, thick]
+	% Nodes
+	\node[draw, rounded corners, fill=red!15, minimum width=2.0cm, minimum height=1cm] (heater) at (0,0) {$T_H$};
+	\node[draw, circle, fill=gray!15, minimum width=1.5cm, minimum height=1cm] (engine1) at (-1,-2) {$S$};
+    \node[draw, circle, fill=gray!15, minimum width=1.5cm, minimum height=1cm] (engine2) at (1,-2) {$S$};
+
+	\node[draw, rounded corners, fill=blue!15, minimum width=2.0cm, minimum height=1cm] (cooler) at (0,-4) {$T_C$};
+
+    \draw[->, red!70!black] (engine1.north) -- node[left] {$Q_C$} ([xshift=-10mm]heater.south);
+    \draw[->, blue!70!black] (cooler.north) -- node[left, xshift=-2mm] {$Q_C$} (engine1.south);
+
+    \draw[->, red!70!black] ([xshift=10mm]heater.south) -- node[right] {$W+Q_C$} (engine2.north);
+    \draw[->, blue!70!black] (engine2.south) -- node[right, xshift=2mm] {$Q_C$} (cooler.north);
+    \draw[->] (engine2.east) -- ++(1,0) node[midway, above] {$W$};
+
+\end{tikzpicture}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\CarnotEngineDiagramB}{%
+
+\begin{tikzpicture}[>=Latex, thick]
+	% Nodes
+	\node[draw, rounded corners, fill=red!15, minimum width=2.0cm, minimum height=1cm] (heater) at (0,0) {$T_H$};
+	\node[draw, circle, fill=gray!15, minimum width=1.5cm, minimum height=1cm] (engine1) at (1.5,-2) {$S$};
+    \node[draw, circle, fill=gray!15, minimum width=1.5cm, minimum height=1cm] (engine2) at (-1.5,-2) {$S$};
+
+	\node[draw, rounded corners, fill=blue!15, minimum width=2.0cm, minimum height=1cm] (cooler) at (0,-4) {$T_C$};
+
+    \draw[->, red!70!black] (engine1.north) -- node[right, xshift=2mm] {$Q_C+Q_H$} (heater.south);
+    \draw[->, blue!70!black] ([xshift=10mm]cooler.north) -- node[right, xshift=2mm] {$Q_C$} (engine1.south);
+
+    \draw[->, red!70!black] (heater.south) -- node[left, xshift=-2mm] {$Q_H$} (engine2.north);
+    \draw[->] (engine2.east) --  node[midway, above] {$W=Q_H$} (engine1.west);
+
+\end{tikzpicture}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

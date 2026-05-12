@@ -1,54 +1,465 @@
-\documentclass[a4paper,12pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\documentclass[11pt,a4paper]{article}
+
 \usepackage[polish]{babel}
-\usepackage{lmodern} % Ensure proper font rendering for Polish characters
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{amsfonts}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes,arrows.meta,decorations.markings}
 
-\title{TIFS R - Ćwiczenia tydzień 11}
-\author{}
-\date{}
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
 
-\begin{document}
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
 
-\maketitle
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
 
-\section*{Oscylatory, oscylatory, oscylatory...}
+% definition of inexact differential symbol:
+\newcommand{\dbar} {\ensuremath{\,\mathchar'26\mkern-12mu d}}
+\newcommand{\Partial}[3]{\left( \frac{\partial #1}{\partial #2} \right)_{#3}}
 
-Zadanie o układzie $N$ niezależnych trójwymiarowych kwantowych oscylatorów harmonicznych rozwiązywaliśmy przy okazji rozkładu mikrokanonicznego. Teraz zróbmy to szybko z kanonicznego.
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
 
-\subsection*{Zadanie 1}
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\ {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\ {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
-Korzystając z rozkładu kanonicznego znajdź energię swobodną i energię wewnętrzną układu $N$ niezależnych trójwymiarowych kwantowych oscylatorów harmonicznych.
+%dynamic solutions hiding
+\usepackage{comment}
 
-\subsection*{Rozwiązanie}
+\newif\ifshowsolutions
 
-Z niezależności:
-\[
-Z(N, V, T) = Z_1(V, T)^{3N}
-\]
-Gdzie $Z_1$ jest pojedynczym jednowymiarowym oscylatorem. Jego suma statystyczna jest równa:
-\[
-Z_1 = \sum_{n=0}^\infty e^{-\beta \hbar \omega \left(n + \frac{1}{2}\right)} = \frac{e^{-\frac{\beta \hbar \omega}{2}}}{1 - e^{-\beta \hbar \omega}} = \frac{1}{2 \sinh \frac{\beta \hbar \omega}{2}}
-\]
+\def\showsolutions{} %comment this line to hide solutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
 
-Zatem:
-\[
-Z(N, V, T) = \left(\frac{1}{2 \sinh \frac{\beta \hbar \omega}{2}}\right)^{3N}
-\]
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
 
-Energia swobodna:
-\[
-F = 3N \left(\frac{1}{2} \hbar \omega + kT \ln \left(1 - e^{-\beta \hbar \omega}\right)\right)
-\]
+\input{tikz_plots.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
 
-Energia wewnętrzna:
-\[
-U = -\frac{\partial}{\partial \beta} \ln Z = 3N \left(\frac{1}{2} \hbar \omega + \frac{\hbar \omega}{e^{\beta \hbar \omega} - 1}\right)
-\]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R \\
+  Zestaw XI: Lodówki, silniki, entropia
+  }} \\  
+\end{centering}
 
+\vspace{1cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę wykazać równianie Clausiusa dla cyklu Carnot, korzystając 
+ II zasady termodynamiki. 
+
+\begin{solution}
+
+ Z II zasady termodynamiki dla obiegu odwracalnego mamy:
+ \begin{align*}
+   \oint dS = \oint \frac{\dbar Q}{T} = 0 \Rightarrow \frac{Q_H}{T_H} + \frac{Q_C}{T_C} = 0.
+ \end{align*}
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę narysować cykl Carnota na płaszczyźnie $p$-$V$ i $T$-$S$,
+a następnie wyrazić przez ciepła pochłonięte $Q_H$, 
+oddane $Q_{C}$ i temperatury źródeł ciepła, $T_H$ i $T_C$:
+
+\begin{itemize}
+  \item sprawność silnika Carnota,
+  \item współczynnik wydajności lodówki,
+  \item współczynnik wydajności pompy cieplnej.
+\end{itemize}
+
+\begin{solution}
+
+Silnik: cykl obiegamy przez punkty $A \to B \to C \to D \to A$:
+
+\begin{center}
+\begin{minipage}[t]{0.49\textwidth}
+\centering
+
+\CarnotPVDiagram
+
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\centering
+
+\CarnotTSDiagram
+
+\end{minipage}
+\end{center}
+
+Sprawność silnika to stosunek uzyskanej pracy do ciepła pobranego z grzejnika:
+\begin{align*}
+  \eta = \frac{-W}{Q_H} = || \Delta U = 0 \Rightarrow -W = Q_H + Q_C || = \\
+   = \frac{Q_H + Q_C}{Q_H} = 1 + \frac{Q_C}{Q_H} =  \\
+   || \frac{Q_H}{T_H} + \frac{Q_C}{T_C} = 0 || = 1 - \frac{T_C}{T_H}.
+\end{align*}
+
+Lodówka i pompa cieplna to ten sam obieg, 
+ale w odwrotnym kierunku: $ A \to D \to C \to B \to A$.
+Definicje kosztu i zysku są różne:
+\begin{itemize}
+  \item lodówka: koszt to praca wykonana {\bf nad} układem: $W$, 
+         zysk to ciepło pobrane z chłodnicy: $Q_C$,
+\begin{align*}
+  \eta = \frac{Q_C}{W} = \frac{Q_C}{-(Q_H + Q_C)} = \frac{1}{-(Q_H/Q_C + 1)} = \\ 
+  \frac{1}{-(-T_H/T_C + 1)} = \frac{1}{T_H/T_C - 1} = \frac{T_C}{T_H - T_C}
+\end{align*}
+
+Zauważmy, że sprawność lodówki spada do zera, gdy $T_C \to 0$, 
+co oznacza, że nie można zbudować lodówki Carnota, która schładza do zera absolutnego.
+
+
+  \item pompa ciepła: koszt to praca wykonana {\bf nad} układem: $W$, zysk to ciepło oddane do grzejnika: $Q_H$.
+\begin{align*}
+  \eta = \frac{Q_H}{W} = \frac{Q_H}{-(Q_H + Q_C)} = 
+  \frac{1}{-(1 + Q_C/Q_H)} = \frac{1}{-(1 - T_C/T_H)} = \\
+  \frac{1}{T_C/T_H - 1} =    \frac{T_H}{T_C - T_H}
+\end{align*}
+\end{itemize}
+
+Znak jest sprawności ujemny ponieważ ciepło oddane do grzejnika 
+jest ujemne z punktu widzenia układu. Moduł sprawności jest dodatni, 
+a jego wartość jest większa niż 1: ciepło oddane do grzejnika 
+to więcej niż praca wykonana nad układem.
+Foldery reklamowe pomp ciepła cytują sprawności w okolicach 3-4.
+
+Jak zrobić pompę ciepła z lodówki?
+Lodówkę trzeba wystawić za okno z otwartymi drzwiami na zewnątrz, 
+a chłodnicą (z tyłu) w środku. W ten sposób lodówka będzie pompowała
+energię z zewnątrz ($T_C$) do środka ($T_H$).
+
+\newpage 
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+
+Proszę wykazać że sprawność silnika Carnota jest większa niż sprawność 
+dowolnego innego silnika cieplnego pracującego między tymi samymi temperaturami.
+
+\begin{solution}
+
+Sprawność silnika to
+\begin{align*}
+  \eta = \frac{-W}{Q_{+}} = \frac{Q_{+} + Q_{-}}{Q_{+}} = 
+          1 + \frac{Q_{-}}{Q_{+}}.
+\end{align*}
+
+Oszacujmy od dołu iloraz $|\frac{Q_{-}}{Q_{+}}|$. 
+Korzystamy z II termodynamiki w postaci Clausiusa:
+\begin{align*}
+  \oint \frac{\dbar Q}{T} \leq 0 
+\end{align*}
+
+Rozdzielamy cykl na części gdzie ciepło jest pobierane ($Q_{+}$) 
+lub oddawane ($Q_{-}$):
+\begin{align*}
+  \oint \frac{\dbar Q}{T} = \int_{+} \frac{\dbar Q}{T} - 
+   \left| \int_{-} \frac{\dbar Q}{T} \right| \leq 0
+\end{align*}
+
+Temperatura na wybranych odcinkach nie musi być stała - rozważamy
+dowolny cykl. Górne ograniczenie na odcinku "+"
+dostajemy przyjmując $T = T_{max}$. Podobnie dolne ograniczenie na odcinku "-"
+dostajemy przyjmując $T = T_{min}$. Otrzymujemy:
+\begin{align*}
+  \frac{1}{T_{max}} \int_{+} \dbar Q - 
+  \frac{1}{T_{min}} \left| \int_{-} \dbar Q \right| =
+  \frac{Q_{+}}{T_{max}} - \frac{|Q_{-}|}{T_{min}} \leq
+  \int_{+} \frac{\dbar Q}{T} - \left|\int_{-} \frac{\dbar Q}{T} \right| \leq 0
+\end{align*}
+
+Otrzymujemy więc nierówność:
+\begin{align*}
+  \frac{Q_{+}}{T_{max}} \leq \frac{|Q_{-}|}{T_{min}} \Rightarrow 
+  \left| \frac{Q_{-}}{Q_{+}} \right| \geq \frac{T_{min}}{T_{max}}.
+\end{align*}
+
+Stąd ograniczenie na efektywność silnika:
+\begin{align*}
+  \eta = 1 - \left|\frac{Q_{-}}{Q_{+}} \right| \leq 1 - \frac{T_{min}}{T_{max}}.
+\end{align*}
+
+{\bf Uwaga:} W - to całkowity bilans pracy, a 
+$Q_{+}$ to całkowite ciepło pobrane z grzejnika, a nie całkowity bilans ciepła. 
+
+Równość uzyskujemy dla procesu w którym $\oint \frac{\dbar Q}{T} = 0$, czyli 
+dla procesu odwracalnego.
+
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę przytoczyć II zasadę termodynamiki w postaci:
+\begin{itemize}
+  \item zdanaia o entropii (II$_{S}$)
+  \item Clausiusa (II$_{C}$),
+  \item Kelvina-Plancka (II$_{KP}$),
+\end{itemize}
+
+a następnie wykazać wynikanie:
+\begin{itemize}
+  \item II$_{S} \Rightarrow \text{II}_{KP}$,
+  \item II$_{S} \Rightarrow \text{II}_{C}$,
+  \item II$_{C} \Leftrightarrow \text{II}_{KP}$.
+\end{itemize}
+
+\begin{solution}
+
+  Sformułowania II zasady termodynamiki:
+\begin{itemize}
+  \item II$_{S}$: istnieje addytywna funkcja stan (entropia), 
+  która w układzie izolowanym nie maleje:
+  \begin{align*}
+    \Delta S \geq 0
+  \end{align*}
+  \item II$_{C}$: niemożliwy jest samorzutny przepływ ciepła 
+  z ciała o niższej temperaturze do ciała o wyższej temperaturze
+  \item II$_{KP}$: niemożliwy jest proces, którego
+      efektem jest pobór ciepła z jednego źródła i jego 
+      całkowite zamienienie na pracę. Perpetuum mobile II rodzaju, 
+      czyli silnik cieplny o sprawności 100\% jest niemożliwy.
+\end{itemize}
+
+\vskip 0.5cm
+Wynikania:
+
+\begin{itemize}
+  \item II$_{S} \Rightarrow \text{II}_{KP}$:
+  
+  rozważmy silnik, który łamie zasadę Kelvina-Plancka: 
+
+  \begin{center}
+    \CarnotEngineDiagram[KPViolate]
+  \end{center}
+
+  Pobiera ciepło $Q_H$ z otoczenia o temperaturze $T_H$ i całkowicie zamienia je na pracę: $W = Q_H$.
+  Zmiana entropii układu silnik+otoczenie w jednym cyklu wynosi:
+  \begin{align*}
+    \Delta S = \Delta S_{silnik} + \Delta S_{otoczenie} = 0 - \frac{Q_H}{T_H} < 0.
+  \end{align*}
+  
+  co przeczy II$_{S}$.
+
+  \newpage
+
+  \item II$_{S} \Rightarrow \text{II}_{C}$:
+  rozważmy silnik, który łamie zasadę Clausiusa:
+
+ \begin{center}
+    \CarnotEngineDiagram[CViolate]
+  \end{center}
+
+  Pobiera "samorzutnie", czyli bez wkładu pracy ciepło $Q_C$ z otoczenia 
+  o temperaturze $T_C$ i oddaje je do otoczenia o temperaturze $T_H > T_C$.
+  Zmiana entropii układu silnik+otoczenie w jednym cyklu wynosi:
+  \begin{align*}
+    \Delta S = \Delta S_{silnik} + \Delta S_{chłodnica} + \Delta S_{grzejnik} = \\
+    0 - \frac{Q_C}{T_\text{C}} + \frac{Q_H}{T_\text{H}} = \\
+    Q \left( \frac{1}{T_\text{H}} - \frac{1}{T_\text{C}} \right) = \\
+    Q \frac{T_\text{C} - T_\text{H}}{T_\text{H} T_\text{C}} < 0.
+  \end{align*}
+
+  co łamie II$_{S}$.
+
+\vskip 0.5cm
+
+ \item II$_{C} \Rightarrow \text{II}_{KP}$:
+ rozważmy układ, który łamie zasadę Clausiusa: pobiera ciepło $Q_\text{C}$ 
+ z otoczenia o temperaturze $T_\text{C}$ i oddaje je do otoczenia 
+ o temperaturze $T_\text{H}$ bez wkładu pracy. Łączymy ten układ z 
+ silnikiem Carnota, który pracuje między tymi samymi temperaturami i wykonuje 
+ pracę $W = Q_\text{C} (1 - T_\text{C}/T_\text{H})$ oddając do chłodnicy 
+ ciepło $Q_\text{C}$. Całość pobiera więc ciepło $Q_\text{H}$ 
+ z grzejnika, wykonuje pracę $W$, ale nie oddaje żadnego ciepła do chłodnicy,
+ łamiemy więc zasadę Kelvina-Plancka.
+
+\begin{center}
+\CarnotEngineDiagramA
+\end{center}
+
+\newpage
+
+ \item II$_{KP} \Rightarrow \text{II}_{C}$:
+  rozważmy układ, który łamie zasadę Kelvina-Plancka: pobiera ciepło $Q_\text{H}$ 
+  z otoczenia o temperaturze $T_\text{H}$ i całkowicie zamienia je na pracę 
+  $W = Q_\text{H}$. Łączymy ten układ z pompą ciepła Carnota, która pracuje 
+  między tymi samymi temperaturami i przenosi ciepło 
+  $Q_\text{C} = Q_\text{H} T_\text{C}/T_\text{H}$ z chłodnicy do grzejnika
+  używając pracy $W$. Całość pobiera więc ciepło $Q_\text{C}$ z chłodnicy 
+  i oddaje je do grzejnika bez wkładu pracy, łamiemy więc zasadę Clausiusa.
+
+\begin{center}
+\CarnotEngineDiagramB
+\end{center}
+
+\end{itemize}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Silnik Carnota pracuje między chłodnicą o stałej temperaturze $T_C$ i grzejnikiem
+o temperaturze $T_H > T_C$. Grzejnik to skończony układ, złożony z 
+$n$ moli gazu o cieple molowym $C_V$. Proszę obliczyć:
+\begin{itemize}
+   \item całkowitą pracę wykonaną przez silnik: $W$
+  \item całkowite ciepło pobrane z grzejnika: $Q_{pobrane}$
+  \item zmianę entropii grzejnika: $\Delta S_{H}$,
+\end{itemize}
+
+\begin{solution}
+
+Temperatura grzejnika się zmienia, więc sprawność silnika też się zmienia.
+Całkowita praca wykonana przez silnik to całka z pracy wykonanej w każdym cyklu,
+a praca wykonana w każdym cyklu to sprawność silnika razy ciepło pobrane w tym cyklu:
+\begin{align*}
+  W = \int dw = \int \eta dq = \int \left(1 - \frac{T_C}{T}\right) dq.
+\end{align*} 
+
+gdzie $dq$ jest ciepłem pobranym w cyklu. Zmieniamy zmienną całkowania z 
+$q$ na $T$ korzystając z faktu, że grzejnik to gaz o cieple molowym $C_V$:
+
+\begin{equation}
+dq = - n C_V d T.
+\end{equation}
+Możemy scałkować $dw$ od temperatury $T_1$ do $T_2$ (kiedy zbiornik ma temperaturę otoczenia), aby otrzymać całkowitą pracę:
+Całkę wykonujemy w granicach od $T_H$ do $T_C$:
+
+\begin{align}
+W = \int dw = \int_0^{mc (T_H-T_C)} \left(1-\frac{T_C}{T}\right) dq = 
+\int_{T_H}^{T_C} \left(1-\frac{T_C}{T}\right) (-n C_V dT) \\
+= n C_V \int_{T_C}^{T_H}\left(1-\frac{T_C}{T}\right) dT = 
+n C_V \left(T_H-T_C - T_C \log\left(\frac{T_H}{T_C}\right)\right) = \\
+|| Q_\text{pobrane} = n C_V (T_H - T_C) || =
+Q_\text{pobrane} - n C_V T_C \log\left(\frac{T_H}{T_C}\right)
+\end{align} 
+Możemy zauważyć, że $n C_V \left(T_H-T_C\right)$ to ciepło przekazane 
+w procesie, a ostatni wyraz to straty będące konsekwencją ograniczonej 
+efektywności silnika. 
+
+\vskip 0.5cm
+
+Zmiana entropii grzejnika to:
+\begin{align*}
+\Delta S_H = \int \frac{\dbar Q}{T} = \int \frac{dq}{T} = \int_{T_H}^{T_C} \frac{-n C_V dT}{T} = n C_V \log\left(\frac{T_H}{T_C}\right).
+\end{align*}
+
+
+Fakt z wykładu: praca układu w kontakcie z termostatem, o temperaturze $T_{C}$ wyraża 
+się przez zmianę energii swobodnej Helmholtza $F$ w jednym cyklu:
+\begin{align*}
+W = \Delta F = \Delta U - T_C \Delta S = n C_V (T_H - T_C) - n C_V T_C \log\left(\frac{T_H}{T_C}\right).
+\end{align*}
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Jaką maksymalną pracę można uzyskać łącząc ze sobą dwa naczynia o różnych objętościach $V_1$ i $V_2$
+utrzymywane w temperaturze $T_0$ i zawierające po $n$ moli tego samego gazu doskonałego o stałym cieple właściwym $C_V$?
+
+\begin{solution}
+
+Maksymalną zmianę uzyskamy w procesie odwracalnym (= brak dyssypacji energii), 
+w którym entropia układu nie zmienia się:
+\begin{align*}
+  \Delta S =&  S_3 - S_1 - S_2 = 0\\
+  S_1 =& nC_{V} \log\left(T_0\right) + n R \log\left({V_1}\right) - nR\log n + S_0\\
+  S_2 =& nC_{V} \log\left(T_0\right) + n R \log\left({V_2}\right) - nR\log n + S_0 \\
+  S_3 =& 2 n C_V \log\left(T\right) + 2n R \log\left({V_1 + V_2}\right) - 2 nR\log 2n + S_0 = \\
+  & 2 n C_V \log\left(T\right) + 2n R \log\left({V_1 + V_2}\right) - 2 nR\log n - 2nR\log 2 + S_0\\
+  \Delta S =& 2n C_V \log\left(\frac{T}{T_0}\right) + 
+  n R \log\left(\frac{(V_1 + V_2)^2}{V_1 V_2}\right) - nR\log 4 = \\
+  & 2n C_V \log\left(\frac{T}{T_0}\right) + n R \log\left(\frac{(V_1 + V_2)^2}{4V_1 V_2}\right) = 0
+\end{align*}
+
+Stąd temperatura końcowa po wymieszaniu gazów to:
+\begin{align*}
+T = T_0 \left(\frac{(V_1 + V_2)^2}{4V_1 V_2}\right)^{\frac{R}{2 C_V}}.
+\end{align*}
+
+Jeśli przemiana jest odwracalna to praca wykonana przez układ może być wykorzystana 
+do przywrócenia układu do stanu początkowego, a więc
+ 
+\begin{align*}
+dU = TdS + dW \Rightarrow 
+\Delta U = 2n C_V (T - T_0) = \int_{S_1+ S_2}^{S_3} TdS + W = \\
+0 + W = 
+2n C_V T_0 \left(\left(\frac{4V_1 V_2}{(V_1 + V_2)^2}\right)^{\frac{R}{2 C_V}} - 1\right) \\
+W = 2n C_V T_0 \left(\left(\frac{4V_1 V_2}{(V_1 + V_2)^2}\right)^{\frac{R}{2 C_V}} - 1\right)
+\end{align*}
+
+Praca jest ujemna, ponieważ $T < T_0$, a więc układ wykonuje pracę nad otoczeniem.
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
