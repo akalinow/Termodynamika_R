@@ -109,10 +109,11 @@ Proszę wypisać:
 
 \begin{solution}
   
-I zasada termodynamiki dla ustalonej liczby cząstek: 
+I zasada termodynamiki: 
 
 \begin{align*}
-  dU =   \dbar Q + \dbar W = || \text{dla pracy objętościowej} || =   \dbar Q - pdV
+  dU =   \dbar Q + \dbar W + \mu N= || \text{dla pracy objętościowej} || =
+         \dbar Q - pdV + \mu N
 \end{align*}
 
 Gdzie $Q>0$ oznacza ciepło dostarczone do układu, a $W>0$ pracę wykonaną nad układem.
@@ -245,10 +246,8 @@ iż stan układu wraca do stanu początkowego. Proszę:
 
 \begin{solution}
 
-%tikz diagram for Mayers cycle 
 \begin{center}
 \begin{tikzpicture}
-  % osie ukladu p-V
   \draw[->] (0,0) -- (6.5,0) node[right] {$V$};
   \draw[->] (0,0) -- (0,5.5) node[above] {$p$};
 
@@ -363,7 +362,6 @@ Proszę udowodnić równanie Clausiusa dla cyklu Carnota (izoterma-adiabata-izot
 
 \begin{solution}
 
-%tikz diagram for Carnot cycle
 \begin{center}
 \begin{tikzpicture}[scale=1.1]
   % osie ukladu p-V
@@ -448,7 +446,7 @@ a przemiany $BC$ i $DA$ są adiabatyczne:
 
 Dzielimy stronami równania dla adiabat $BC$ i $DA$:
 \begin{align*}
-  \frac{p_A V_B^{\gamma}}{p_B V_B^{\gamma}} = \frac{p_D V_D^{\gamma}}{p_C V_C^{\gamma}} \\
+  \frac{p_A V_A^{\gamma}}{p_B V_B^{\gamma}} = \frac{p_D V_D^{\gamma}}{p_C V_C^{\gamma}} \\
   \frac{p_A V_A V_A^{\gamma-1}}{p_B V_B V_B^{\gamma-1}} = \frac{p_D V_D V_D^{\gamma-1}}{p_C V_C V_C^{\gamma-1}} \\
   \frac{n R T_1 V_A^{\gamma-1}}{n R T_1 V_B^{\gamma-1}} = \frac{n R T_2 V_D^{\gamma-1}}{n R T_2 V_C^{\gamma-1}} \to \\
   \frac{V_A}{V_B} = \frac{V_D}{V_C} \to V_A V_C = V_B V_D
@@ -713,14 +711,16 @@ Układ jest izolowany, więc energia całkowita nie zmieni się podczas wyrówny
 \end{align*}
 
 Zmiana entropii układu:
-Entropia gazu doskonałego (wzór Sakur-Tetrode'a):
+Entropia gazu doskonałego (wzór Sackura-Tetrode):
 \begin{align*}
   S = N k_B \left[ \ln \left( \frac{V}{N} \right) + 
     \frac{3}{2} \ln \left( \frac{U}{N} \right) + \frac{5}{2} +
     \frac{3}{2} \ln \frac{4 \pi m}{3 h^{2}} \right] = \\
-  n R \left[ \ln V + \frac{3}{2} \ln T + const. \right]  = \\
-  || C_V = \frac{3}{2} R || =
-  n R \ln V + n C_V \ln T + const.
+  || U/N = C_V/N_A T \qquad N k_B = nN_A k_B = nR  || =  \\
+  n R \left[ \ln V + \frac{3}{2} \ln T - \ln N + const. \right]  = \\
+  || C_V = \frac{3}{2} R || = \\
+  n R \ln V + n C_V \ln T - n R \ln N + \text{const}(m, C_V) = \\
+  n R \ln V + n C_V \ln T + \text{const}(n, m, C_V)
 \end{align*}
 
 Zmiana entropii układu (objętość gazu się nie zmienia, więc 
