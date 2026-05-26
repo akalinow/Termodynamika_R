@@ -1,47 +1,601 @@
-\documentclass[a4paper,12pt]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[11pt,a4paper]{article}
+
 \usepackage[polish]{babel}
-\usepackage{amsmath,amssymb}
-\usepackage{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
 \usepackage[T1]{fontenc}
-\geometry{a4paper, margin=1in}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes,arrows.meta,decorations.markings}
 
-\title{TIFS R - Ćwiczenia Tydzień 13}
-\author{}
-\date{11 lutego 2026}
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
 
-\begin{document}
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
 
-\maketitle
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
 
-\section*{Bozony}
+% definition of inexact differential symbol:
+\newcommand{\dbar} {\ensuremath{\,\mathchar'26\mkern-12mu d}}
+\newcommand{\Partial}[3]{\left( \frac{\partial #1}{\partial #2} \right)_{#3}}
 
-\subsection*{Zadanie 1}
-Rozważmy cząstki podlegające statystyce B-E w $d$ wymiarach. Przyjmij, że dla tych cząstek relacja pomiędzy energią i pędem jest w postaci $E \sim |p^\sigma|$. Znaleźć warunek, który muszą spełniać $d$ i $\sigma$, aby miała miejsce kondensacja B-E.
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
 
-\textbf{Rozwiązanie:} Patrz plik \texttt{bec.pdf}.
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\ {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\ {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
-\subsection*{Zadanie 2}
-Rozważ gaz bozonów o masach $m$ i spinie $s = 0$ zamknięty w objętości $V$. Załóżmy, że energia pojedynczej cząstki dana jest przez:
-\begin{equation}
-E = \frac{p^2}{2m} + n\Delta
-\end{equation}
-gdzie $\Delta > 0$ jest pewną stałą dodatnią, a $n$ jest liczbą całkowitą równą $0$ bądź $1$. Wyznacz formułę na temperaturę krytyczną $T_c$ takiego gazu, przy której następuje kondensacja. Następnie rozważ granicę $\Delta \gg kT$ - czy w tej granicy $T_c$ jest większe czy mniejsze od temperatury krytycznej w przypadku, gdy $E = \frac{p^2}{2m}$?
+%dynamic solutions hiding
+\usepackage{comment}
 
-\textbf{Rozwiązanie:} Patrz 10.4 w książce Cini.
+\newif\ifshowsolutions
 
-\section*{Model Isinga}
+\def\showsolutions{} %comment this line to hide solutions
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
 
-Na wykładzie był model Isinga, rozwiązany w przybliżeniu pola średniego, z wyprowadzeniem równania samozgodnego na $m$, omówieniem przejść fazowych i krajobrazu energii swobodnej. Do tego dwa zadania z Kubo.
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
 
-\subsection*{Zadanie 3}
-Oblicz ciepło właściwe w modelu ferromagnetyka Isinga z wykorzystaniem przybliżenia pola średniego. Zbadaj w szczególności jego zachowanie w pobliżu temperatury krytycznej, a także dla $T \ll T_c$. Jaka będzie zmiana entropii $\Delta S = S(T) - S(0)$ dla $T > T_c$?
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
 
-\textbf{Rozwiązanie:} Patrz zadanie 1 ze strony 322 w książce Kubo. Równanie samozgodne (5.18), które jest punktem wyjścia tego rozwiązania, było na wykładzie.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R \\
+  Zestaw XIII: Oscylatory kwantowe
+  }} \\  
+\end{centering}
 
-\subsection*{Zadanie 4}
-Rozważmy antyferromagnetyczny kryształ, w którym każdy atom ma spin $S$. Sąsiednie spiny mają oddziaływanie wymiany $2|J|S_i \cdot S_j$, które ustawia spiny antyrównolegle. Zakłada się, że struktura kryształu jest taka, że cała sieć może być podzielona na dwie podsieci ($A$ i $B$). Spiny należące do każdej podsieci mają tendencję do ustawiania się równolegle, ale antyrównolegle do drugiej podsieci (model antyferromagnetyka Van Vlecka). Oblicz podatność paramagnetyczną $\chi$ w temperaturach powyżej temperatury krytycznej, używając przybliżenia pola średniego.
+\vspace{1cm}
 
-\textbf{Rozwiązanie:} Patrz zadanie 3 ze strony 322 w książce Kubo. Można sobie uprościć życie i wziąć spiny Isingowskie ($\pm 1$). Jeszcze jedno - na wykładzie nie wypisywałem czynnika $\mu_0$ (momentu magn. pojedynczego spinu), uznając go za jednostkowy.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
 
+Proszę znaleźć ogólną postać wektora natężenia pola elektrycznego w próżni, 
+który spełnia równania Maxwella. 
+
+\begin{solution}
+
+Równania Maxwella w próżni:
+\begin{align*}
+\nabla \cdot \vec{E} = 0 & & 
+\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t} \\
+\nabla \cdot \vec{B} = 0 & &
+\nabla \times \vec{B} = \frac{1}{c^2} \frac{\partial \vec{E}}{\partial t}
+\end{align*}
+
+Zmierzamy do równania falowego:
+\begin{align*}
+\partial^{\mu} \partial_{\mu} \vec{E} = 
+|| \partial^{\mu} = \left( \frac{1}{c} \frac{\partial}{\partial t}, -\nabla \right) || =
+\left(\frac{1}{c^2} \frac{\partial^2}{\partial t^2} - \nabla^2\right) \vec{E} = 0
+\end{align*}
+
+Drugą pochodną przestrzenną uzyskujemy z rotacji rotacji pola elektrycznego:
+\begin{align*}
+\nabla \times (\nabla \times \vec{E}) =
+|| A \times (B \times C) = B(A \cdot C) - C(A \cdot B) || = \\
+\nabla (\nabla \cdot \vec{E}) - \nabla^2 \vec{E} = -\nabla^2 \vec{E} =
+\end{align*}
+
+Z drugiej strony:
+\begin{align*}
+\nabla \times (\nabla \times \vec{E}) =
+- \nabla \times \frac{\partial}{\partial t}\vec{B} =
+- \frac{\partial}{\partial t}(\nabla \times \vec{B}) =
+- \frac{1}{c^2} \frac{\partial^2 \vec{E}}{\partial t^2}
+\end{align*}
+
+Ostatecznie:
+\begin{align*}
+- \nabla^2 \vec{E} = - \frac{1}{c^2} \frac{\partial^2 \vec{E}}{\partial t^2} \Rightarrow
+\left(\frac{1}{c^2} \frac{\partial^2}{\partial t^2} - \nabla^2\right) \vec{E} = 0
+\end{align*}
+
+Równianie rozwiążemy w przestrzeni odwrotnej, do której przechodzimy 
+za pomocą transformaty Fouriera:
+\begin{align*}
+\vec{E}(\vec{r},t) = \int \frac{d^3 k}{(2\pi)^3} \, e^{i\vec{k} \cdot \vec{r} } \vec{E}(\vec{k},t) \\
+\end{align*}
+
+Wstawiamy tę postać do pierwszego równania Maxwella:
+\begin{align*}
+\nabla \cdot \vec{E} = 0 \Rightarrow
+\int \frac{d^3 k}{(2\pi)^3} \,e^{i\vec{k} \cdot \vec{r} } \vec{k} \cdot \vec{E}(\vec{k},t) = 0
+\end{align*}
+
+Człony podcałkowe oscylują w przestrzeni z różnymi częstościami: 
+$1/k_{i}$ jest różne dla różnych $\vec{k}$, więc każdy z nich musi być 
+oddzielnie równy zero:
+
+\begin{align*}
+\vec{k} \cdot \vec{E}(\vec{k},t) = 0
+\end{align*}
+
+Wektor $\vec{k}$ wyznacza płaszczyznę, w której leży wektor $\vec{E}(\vec{k},t)$, 
+więc $\vec{E}(\vec{k},t)$ można rozłożyć na dwie składowe (polaryzacje):
+\begin{align*}
+\vec{E}(\vec{k},t) = E_1(\vec{k},t) \hat{e}_1 + E_2(\vec{k},t) \hat{e}_2
+\end{align*}
+  
+Polaryzacje są niezależne, więc możemy rozwiązać równanie falowe dla 
+każdej z nich osobno:
+\begin{align*}
+\left(\frac{1}{c^2} \frac{\partial^2}{\partial t^2} + k^2\right) E_i(\vec{k},t) = 0
+\end{align*}
+
+Otrzymaliśmy równanie typu
+\begin{align*}
+  \ddot{x} + \omega^2 x = 0
+\end{align*}
+
+czyli oscylator harmoniczny o częstości $\omega = ck$.
+Jego rozwiązaniem jest:
+\begin{align*}
+\vec{E}_{i}(\vec{k},t) = \vec{E}_{i}(\vec{k}, 0) e^{\pm i\omega t} \qquad 
+\omega = ck
+\end{align*}
+
+Wracamy do przestrzeni rzeczywistej:
+\begin{align*}
+\vec{E}(\vec{r},t) = 
+\int \frac{d^3 k}{(2\pi)^3} \, e^{i\vec{k} \cdot \vec{r} } 
+\left( \vec{E}(\vec{k}, 0) e^{-i\omega t} + 
+\vec{E}^{*}(\vec{k}, 0) e^{i\omega t} \right) \quad \vec{E}(\vec{k}, 0) = E_1(\vec{k}, 0) \hat{e}_1 + E_2(\vec{k}, 0) \hat{e}_2
+\end{align*}
+
+Podsumowanie: pole elektromagnetyczne w próżni można traktować jako
+układ kwantowych oscylatorów harmonicznych o różnych $\omega$. Dla każdego 
+$\omega$ mamy dwa oscylatory (dwa kierunki polaryzacji).
+Energia tego pola jest sumą energii tych oscylatorów.
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę znaleźć energię swobodną, $F$, oraz 
+energię wewnętrzną, $U$ układu $N$ niezależnych,
+trójwymiarowych kwantowych oscylatorów harmonicznych. 
+Proszę skorzystać z rozkładu kanonicznego.
+
+\begin{solution}
+
+Energie swobodna i wewnętrzną wyrażają się następująco:
+\begin{align*}
+F &= -k_B T \ln Z \\
+U &=  - \frac{\partial \ln Z}{\partial \beta} 
+\end{align*}
+
+Wystarczy więc znaleźć sumę statystyczną $Z$. 
+Oscylatory są niezależne między sobą oraz względem 
+wymiarów, więc:
+
+\begin{align*}
+  Z(N,V,T) = Z_1(V,T)^N = Z_1D(V,T)^{3N} \\
+\end{align*}
+
+gdzie $Z_1$ jest sumą statystyczną pojedynczego oscylatora,
+a $Z_{1D}$ jest sumą statystyczną jednowymiarowego oscylatora.
+
+Obliczamy $Z_{1D}$:
+\begin{align*}
+Z_{1D} = \sum_{n=0}^{\infty} e^{-\beta E_n} = 
+|| E_n = \hbar \omega (n + 1/2) || = \\
+\sum_{n=0}^{\infty} e^{-\beta \hbar \omega (n + 1/2)} = 
+e^{-\beta \hbar \omega / 2} \sum_{n=0}^{\infty} e^{-\beta \hbar \omega n} = \\
+\frac{e^{-\beta \hbar \omega / 2}}{1 - e^{-\beta \hbar \omega}} =
+\frac{1}{e^{\beta \hbar \omega/2} - e^{-\beta \hbar \omega/2}} = \\
+\frac{1}{2 \sinh(\beta \hbar \omega / 2)}
+\end{align*}
+
+Energia swobodna:
+\begin{align*}
+F = -k_B T \ln Z = -3N k_B T \ln Z_{1D} = 
+3N k_B T \ln \left( \frac{1 - e^{-\beta \hbar \omega}}{e^{-\beta \hbar \omega / 2}} \right) = \\
+3N k_B T \left(\beta \hbar \omega / 2 + \ln(1 - e^{-\beta \hbar \omega}) \right) = \\
+3N \left( \frac{\hbar \omega}{2} + k_B T \ln(1 - e^{-\beta \hbar \omega}) \right)
+\end{align*}
+
+Energia wewnętrzna:
+\begin{align*}
+U = - \frac{\partial \ln Z}{\partial \beta} =
+-3N \frac{\partial \ln Z_{1D}}{\partial \beta} =
+-3N \frac{\partial}{\partial \beta} \left( -\frac{\beta \hbar \omega}{2} - \ln(1 - e^{-\beta \hbar \omega}) \right) = \\
+3N \left( \frac{\hbar \omega}{2} + \frac{\hbar \omega e^{-\beta \hbar \omega}}{1 - e^{-\beta \hbar \omega}} \right) = 
+3N \hbar \omega \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega} - 1} \right)
+\end{align*}
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę znaleźć energię swobodną, $F$, oraz energię wewnętrzną, $U$ 
+układu $N$ niezależnych, jednowymiarowych kwantowych oscylatorów harmonicznych 
+o częstościach danych rozkładem $g(\omega)$:
+\begin{align*}
+  N = \int_0^{\Omega} g(\omega) d\omega
+\end{align*}
+
+\begin{solution}
+
+Korzystamy ze wzorów na energię swobodną i wewnętrzną dla
+pojedynczego oscylatora, a następnie całkujemy po rozkładzie częstości:
+\begin{align*}
+F =& \int_0^{\Omega} d\omega \, g(\omega) \left( \frac{\hbar \omega}{2} + k_B T \ln(1 - e^{-\beta \hbar \omega}) \right) \\
+U =& \int_0^{\Omega} d\omega \, g(\omega) \hbar \omega \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega} - 1} \right)
+\end{align*}
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę znaleźć wyrażenie na gęstość stanów pola elektromagnetycznego 
+we wnęce o objętości $V$, a następnie energię wewnętrzną, $U$, tego 
+pola w temperaturze $T$.
+
+\begin{solution}
+
+Ograniczenie na dostępne stany pola elektromagnetycznego we wnęce o objętości $V$ 
+wynika z warunków brzegowych. Przyjmujemy periodyczne warunki brzegowe:
+\begin{align*}
+  e^{i \vec{k} \vec{r}} = e^{i \vec{k} (\vec{r} + L\hat{e}_x)} = e^{i \vec{k} \vec{r}} \\
+  e^{i \vec{k} \vec{r}} = e^{i \vec{k} (\vec{r} + L\hat{e}_y)} = e^{i \vec{k} \vec{r}} \\
+  e^{i \vec{k} \vec{r}} = e^{i \vec{k} (\vec{r} + L\hat{e}_z)} = e^{i \vec{k} \vec{r}} \\
+\end{align*}
+
+Stąd:
+\begin{align*}
+  e^{i k_x L_x} = 1 \Rightarrow k_x L_x = 2\pi n_x, \quad n_x \in \mathbb{Z} \\
+  e^{i k_y L_y} = 1 \Rightarrow k_y L_y = 2\pi n_y, \quad n_y \in \mathbb{Z} \\
+  e^{i k_z L_z} = 1 \Rightarrow k_z L_z = 2\pi n_z, \quad n_z \in \mathbb{Z} \\
+  \vec{k} = \frac{\omega}{c} = \frac{2\pi}{L} (n_x, n_y, n_z) \\
+  \vec{\omega} = \frac{2\pi c}{L} (n_x, n_y, n_z) \\
+\end{align*}
+
+Stany występują więc w odstępach co $\Delta \omega = \frac{2\pi c}{L}$,
+więc objętość jednego stanu, o ustalonej częstości $\omega$, wynosi:
+\begin{align*}
+  \Delta \omega_x \Delta \omega_y \Delta \omega_z = 
+  \left( \frac{2\pi c}{L} \right)^3 = 
+  || V = L^3 || =
+  \frac{8\pi^3 c^3}{V} \\
+\end{align*}
+
+Gęstość stanów $g(\omega)$ obliczymy jako pochodną liczby stanów 
+$N(\omega)$ o częstości mniejszej niż $\Omega$ po $\omega$:
+\begin{align*}
+  g(\omega) = 2\frac{d}{d\omega} \int_0^{\Omega} g(\omega) d\omega = 
+  2\frac{dN}{d\omega}\vline_{\Omega} \\
+\end{align*}
+
+Pochodną mnożymy przez liczbę wewnętrznych stopni swobody.
+W przypadku pola elektromagnetycznego są to 2 - dwa 
+kierunki polaryzacji, lub rzutu spinu fotonu na kierunek propagacji.
+
+\vskip 0.5cm
+
+W granicy dużych wartości $\Omega$ możemy przyjąć, że liczba stanów 
+o częstości mniejszej niż $\Omega$ to iloraz objętości sfery o promieniu 
+$\Omega$ i objętości pojedynczego stanu:
+
+\begin{align*}
+  N(\Omega) =&  \frac{4}{3} \pi \Omega^{3}  \left( \frac{L}{2\pi c} \right)^3 =
+  \frac{V}{6\pi^2 c^3} \Omega^3 \\
+  g(\Omega) =& 2\frac{dN}{d\Omega} = \frac{V \Omega^{2}}{\pi^2 c^3}
+\end{align*}
+
+Energia wewnętrzna gazu fotonowego we wnęce ma postać:
+\begin{align*}
+  U = \int_0^{\infty} d\omega \, g(\omega) \hbar \omega \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega} - 1} \right) = \\
+  \int_0^{\infty} d\omega \, \frac{V \omega^{2}}{\pi^2 c^3} \hbar \omega \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega} - 1} \right) = \\
+  U_{0} + \frac{V \hbar}{\pi^2 c^3}\int_0^{\infty} d\omega \, \frac{\omega^3}{e^{\beta \hbar \omega} - 1} = \\
+  || x = \beta \hbar \omega || = \\
+   U_{0} +
+  \frac{V \hbar}{\pi^2 c^3} \left( \frac{1}{\beta \hbar} \right)^4 \int_0^{\infty} dx \, \frac{x^3}{e^{x} - 1} = \\\
+\end{align*}
+
+Uzyskany rozkład to rozkład gęstości energii promieniowania Plancka:
+\begin{align*}
+  f(\omega) = \frac{\hbar \omega^3}{\pi^2 c^3} \frac{1}{e^{\beta \hbar \omega} - 1}
+\end{align*}
+
+Obliczamy całkę:
+\begin{align*}
+  \int_0^{\infty} dx \, \frac{x^3}{e^{x} - 1} = 
+  \int_0^{\infty} dx \, \frac{x^3 e^{-x}}{1 - e^{-x}} = \\
+  || \frac{e^{-x}}{1 - e^{-x}} = \sum_{n=0}^{\infty} e^{-nx} || =
+  \int_0^{\infty} dx \, x^3 \sum_{n=0}^{\infty} e^{-nx} = \\
+  \sum_{n=0}^{\infty} \int_0^{\infty} dx \, x^3 e^{-nx} 
+\end{align*}
+
+\begin{align*}
+  \int_0^{\infty} dx \, x^3 e^{-nx} =
+  \frac{d^3}{dn^3} \int_0^{\infty} dx \, e^{-nx} =
+  \frac{d^3}{dn^3} \frac{1}{n} =
+  \frac{6}{n^4}
+\end{align*}
+
+\begin{align*}
+  \int_0^{\infty} dx \, \frac{x^3}{e^{x} - 1} = 
+  \sum_{n=0}^{\infty} \frac{6}{n^4} = 
+  6 \zeta(4) = 
+  \frac{\pi^4}{15}
+\end{align*}
+
+Ostatecznie energia wewnętrzna gazu fotonowego we wnęce wynosi:
+\begin{align*}
+  U = U_{0} + \frac{V \hbar}{\pi^2 c^3} \left( \frac{1}{\beta \hbar} \right)^4 \frac{\pi^4}{15} = 
+  U_{0} +
+  \frac{\pi^2 V (k_B T)^4}{15 \hbar^3 c^3} = \\
+  U_{0} + \sigma V T^4
+\end{align*}
+
+Otrzymaliśmy wyrażenie na gęstość energii promieniowania Plancka:
+\begin{align*}
+  U \sim V T^4 
+\end{align*}
+
+Prawo Stefana-Boltzmanna dotyczy jednak natężenia promieniowania, 
+czyli energii przenoszonej przez jednostkę powierzchni w jednostce czasu.
+Całkujemy tylko strumień, który leci "do góry", czyli w zakresie 
+$\theta \in [0, \pi/2]$ i $\phi \in [0, 2\pi]$
+\begin{align*}
+  dI = u (c \cos \theta) \frac{d\Omega}{4\pi} \\
+  I = \frac{U}{V} \frac{c}{4\pi} \int_0^{\pi/2} \cos \theta\frac{d\Omega}{4\pi}  =
+  \frac{\pi^2 k_B^4}{60 \hbar^3 c^2} T^4
+\end{align*}
+
+\newpage 
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+W niskich temperaturach przybliżenie harmoniczne jest wystarczające do 
+opisu drgań sieci krystalicznej.  Zakładając, że drgania zachodzą przy 
+jednej częstości: $\omega_0$ (model Einsteina) proszę:
+\begin{itemize}
+  \item obliczyć ciepło właściwe, $c_V$,
+  \item znaleźć zachowanie $c_V$  dla dużych i małych temperatur.
+\end{itemize}
+
+Wynik porównać z ciepłem właściwym aluminium 
+$c_V \approx 24.2 \frac{J}{\mathrm{mol}\cdot K}$ w temperaturze pokojowej.
+
+%\href{https://link.springer.com/article/10.1007/BF00503647}{Desai, P.D. Thermodynamic properties of aluminum. Int J Thermophys 8, 621–638 (1987)}.  
+
+\begin{solution}
+
+Ciepło właściwe jest zdefiniowane jako:
+\begin{align*}
+  c_V = \frac{1}{N} \left( \frac{\partial U}{\partial T} \right)_V
+\end{align*}
+
+Poszukujemy więc energii wewnętrznej $U$ sieci.
+\begin{align*}
+  U = \int g(\omega) \hbar \omega \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega} - 1} \right) d\omega = \\
+  || g(\omega) = 3N \delta(\omega - \omega_0) || = \\
+  3N \hbar \omega_0 \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega_0} - 1} \right)
+\end{align*}
+
+Różniczkujemy:
+\begin{align*}
+  c_V = \frac{1}{N} \left( \frac{\partial U}{\partial T} \right)_V = \frac{1}{N} \frac{\partial}{\partial T} \left( 3N \hbar \omega_0 \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega_0} - 1} \right) \right) = \\
+  3 \hbar \omega_0 \frac{\partial}{\partial T} \left( \frac{1}{e^{\beta \hbar \omega_0} - 1} \right) = \\
+  3 \hbar \omega_0 \frac{1}{(e^{\beta \hbar \omega_0} - 1)^2} e^{\beta \hbar \omega_0} \frac{\hbar \omega_0}{k_B T^2} = \\
+  3 k_B\left( \frac{\hbar \omega_0}{k_B T} \right)^2 \frac{e^{\beta \hbar \omega_0}}{(e^{\beta \hbar \omega_0} - 1)^2} = \\
+  || T_E = \frac{\hbar \omega_0}{k_B} || = \\
+  3 k_B \left( \frac{T_E}{T} \right)^2 \frac{e^{T_E/T}}{(e^{T_E/T} - 1)^2}
+\end{align*}
+
+Temperatura Einsteina $T_E$ wyznacza skalę temperatur:
+$T \gg T_E$ - wysoka temperatura, $T \ll T_E$ - niska temperatura.
+
+\begin{itemize}
+  \item  $T \gg T_E$:
+  \begin{align*}
+    c_V \approx 3 k_B \left( \frac{T_E}{T} \right)^2 \frac{1 + T_E/T}{(1 + T_E/T - 1)^2} 
+    = 3 k_B \left( \frac{T_E}{T} \right)^2 \frac{1 + T_E/T}{(T_E/T)^2}  \\
+    || T_E/T \ll 1 || \approx 3 k_B
+  \end{align*}
+
+  \item $T \ll T_E$:
+  \begin{align*}
+    c_V \approx 3 k_B \left( \frac{T_E}{T} \right)^2 \frac{e^{T_E/T}}{e^{2T_E/T}} =
+    3 k_B \left( \frac{T_E}{T} \right)^2 e^{-T_E/T}
+  \end{align*}
+\end{itemize}
+
+Ciepło właściwe aluminium w temperaturze pokojowej wynosi
+\begin{align*}
+  c_V \approx 24.2 \frac{J}{\text{mol} \cdot K} = 
+  24.2 \frac{J}{N_A \cdot K} \\
+  \frac{c_V}{k_B} =  \frac{c_V N_A}{k_B N_A} = 
+  \frac{c_V \frac{J}{N_A \cdot K} N_A  }{R \frac{J}{K}}  = \\
+  \frac{24.2}{8.314} = 2.91
+\end{align*}
+
+Zachowanie niskotemperaturowe nie pasuje do modelu. Zależność opisująca dane ma postać:
+\begin{align*}
+  c_V \sim \alpha T + \beta T^3 \qquad 
+  \alpha = 0.0135 \frac{J}{\mathrm{mol}\cdot K^2}
+\end{align*}
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{aluminium_specific_heat.png}
+\end{center}  
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+W niskich temperaturach przybliżenie harmoniczne jest wystarczające do 
+opisu drgań sieci krystalicznej. Proszę obliczyć ciepło właściwe, $c_V$, 
+sieci krystalicznej przyjmując, rozkład częstości drgań jest dany przez
+(model Debye'a):
+\begin{align*}
+    g(\omega) = \begin{cases}
+    \frac{3V}{2\pi^2 v_0^3} \omega^2, & \omega < \omega_D \\
+    0, & \omega > \omega_D
+    \end{cases}
+\end{align*}
+
+Proszę wyznaczyć $\omega_D$ zakładając, że sieć krystaliczna składa 
+się z $N$ atomów.
+
+\begin{solution}
+
+Ciepło właściwe jest zdefiniowane jako:
+\begin{align*}
+  c_V = \frac{1}{N} \left( \frac{\partial U}{\partial T} \right)_V
+\end{align*}
+
+Poszukujemy energii wewnętrznej $U$ sieci:
+\begin{align*}
+  U = \int_0^{\omega_D} g(\omega) \hbar \omega \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega} - 1} \right) d\omega = \\
+  \int_0^{\omega_D} d\omega \, \frac{3V}{2\pi^2 v_0^3} \omega^2 \hbar \omega \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega} - 1} \right) = \\
+  \frac{3V \hbar}{2\pi^2 v_0^3} \int_0^{\omega_D} d\omega \, \omega^3 \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega} - 1} \right)
+\end{align*}
+
+Najpierw obliczamy ciepło właściwe, a następnie wykonujemy całkę:
+\begin{align*}
+  c_V = \frac{1}{N} \left( \frac{\partial U}{\partial T} \right)_V = 
+  \frac{3 V \hbar}{2\pi^2 v_0^3 N} \int_0^{\omega_D} d\omega \, \omega^3 \frac{\partial}{\partial T} \left( \frac{1}{2} + \frac{1}{e^{\beta \hbar \omega} - 1} \right) = \\
+  \frac{3 V \hbar}{2\pi^2 v_0^3 N} \int_{0}^{\omega_D} d\omega \, \hbar  \omega^4 \frac{1}{(e^{\beta \hbar \omega} - 1)^2} e^{\beta \hbar \omega} \frac{1}{k_B T^2} = \\
+  \frac{3 V \hbar^2}{2\pi^2 v_0^3 N k_B T^2} \int_{0}^{\omega_D} d\omega \, \omega^4 \frac{e^{\beta \hbar \omega}}{(e^{\beta \hbar \omega} - 1)^2} = \\
+  || x = \beta \hbar \omega  \qquad T_D = \hbar \omega_D / k_B || = \\
+  \frac{3 V \hbar^2}{2\pi^2 v_0^3 N k_B T^2} \frac{1}{\hbar^{5}\beta^5} \int_0^{T_D/T} dx \, \frac{x^4 e^{x}}{(e^{x} - 1)^2} = \\
+ \frac{3 V k_B}{2\pi^2 v_0^3  N \hbar^3 \beta^3} \int_0^{T_D/T} dx \, \frac{x^4 e^{x}}{(e^{x} - 1)^2} = \\
+ || c_V \sim k_B \Rightarrow \left[\frac{2\pi^2 v_0^3  N \hbar^3}{3 V} \right] =  [\beta^3] \quad \Rightarrow
+     \frac{1}{9}T_D^{3} = \frac{2\pi^2 v_0^3  N \hbar^3}{3 V k_B^3} \Rightarrow
+     T_D^{3} = \left( \frac{6\pi^2 v_0^3  N \hbar^3}{V k_B^3} \right) || \\
+  9 k_B \left( \frac{T}{T_D} \right)^3 \int_0^{T_D/T} dx \, \frac{x^4 e^{x}}{(e^{x} - 1)^2}
+\end{align*}
+
+Postacie graniczne:
+\begin{itemize}
+  \item $T \gg T_D$:
+      w całym zakresie całkowania $x \ll 1$:
+  \begin{align*}
+    \frac{x^{4}e^{x}}{(e^{x} - 1)^2} \approx \frac{x^{4}(1 + x)}{x^2} \approx x^2 \\
+    c_V \approx 9 k_B \left( \frac{T}{T_D} \right)^3 \int_0^{T_D/T} dx \, x^2 = 
+    9 k_B \left( \frac{T}{T_D} \right)^3 \frac{(T_D/T)^3}{3} = 
+    3 k_B
+  \end{align*}  
+  \item $T \ll T_D$:
+    górna granica zmierza do nieskończoności:
+  \begin{align*}
+    c_V \approx 9 k_B \left( \frac{T}{T_D} \right)^3 \int_0^{\infty} dx \, \frac{x^{4}e^{x}}{(e^{x} - 1)^2}
+  \end{align*}
+\end{itemize}
+
+\begin{align*}
+  \int_0^{\infty} dx \, \frac{x^{4}e^{x}}{(e^{x} - 1)^2} = 
+  x^{4} \int _0^{\infty} \frac{e^{x}}{(e^{x} - 1)^2} dx  - 
+    \int_0^{\infty} 4 x^3 \int _0^{\infty} \frac{e^{x}}{(e^{x} - 1)^2} dx = \\ 
+    || \int \frac{e^{x}}{(e^{x} - 1)^2} dx = 
+       \int \frac{1}{(z - 1)^2}dz = -\frac{1}{z - 1} = -\frac{1}{e^{x} - 1} || = \\
+     -\left.\frac{x^4}{e^{x} - 1}\right|_0^{\infty} +
+    4 \int_0^{\infty} dx \, \frac{x^3}{e^{x} - 1} = 
+    4 \int_0^{\infty} dx \, \frac{x^3}{e^{x} - 1} =
+    4 \cdot 6\zeta(3) = \frac{24\pi^4}{90} = \frac{4\pi^4}{15}
+\end{align*}
+
+\begin{align*}
+  c_V \approx 9 k_B \left( \frac{T}{T_D} \right)^3 \frac{4\pi^4}{15} = 
+  \frac{12\pi^4}{5} k_B \left( \frac{T}{T_D} \right)^3
+\end{align*}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Zakładając, że sieć krystaliczna składa się z $N$ atomów, których drgania są opisane 
+rozkładem częstości drgań Debye'a:
+\begin{align*}
+    g(\omega) = \begin{cases}
+    \frac{3V}{2\pi^2 v_0^3} \omega^2, & \omega < \omega_D \\
+    0, & \omega > \omega_D
+    \end{cases}
+\end{align*}
+
+Znaleźć wyrażenie na temperaturę Debye'a: $T_D = \hbar \omega_D /k_B$.
+
+\begin{solution}
+
+Poszukujemy $\omega_D$, które wyznacza górną granicę częstości drgań w sieci krystalicznej.
+Mamy N trójwymiarowych oscylatorów harmonicznych, więc liczba stanów o częstości mniejszej 
+niż $\omega_D$ musi być równa $3N$:
+
+\begin{align*}
+  3N = \int_0^{\omega_D} g(\omega) d\omega = 
+  \int_0^{\omega_D} d\omega \, \frac{3V}{2\pi^2 v_0^3} \omega^2 =
+  \frac{V}{2\pi^2 v_0^3} \omega_D^3 \Rightarrow \\
+  \omega_D^3 = \frac{6\pi^2 v_0^3 N}{V} \Rightarrow 
+  T_D^3 = \left( \frac{6\pi^2 v_0^3 N \hbar^3}{V k_B^3} \right)
+\end{align*}
+
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
