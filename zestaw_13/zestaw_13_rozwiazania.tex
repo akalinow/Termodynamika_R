@@ -1,5 +1,8 @@
 \documentclass[11pt,a4paper]{article}
 
+\newif\ifshowsolutions
+%\def\showsolutions{} %comment this line to hide solutions
+
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{polski}
@@ -69,9 +72,6 @@
 %dynamic solutions hiding
 \usepackage{comment}
 
-\newif\ifshowsolutions
-
-\def\showsolutions{} %comment this line to hide solutions
 \ifdefined\showsolutions
   \showsolutionstrue
 \else
@@ -320,7 +320,7 @@ Gęstość stanów $g(\omega)$ obliczymy jako pochodną liczby stanów
 $N(\omega)$ o częstości mniejszej niż $\Omega$ po $\omega$:
 \begin{align*}
   g(\omega) = 2\frac{d}{d\omega} \int_0^{\Omega} g(\omega) d\omega = 
-  2\frac{dN}{d\omega}\vline_{\Omega} \\
+  \left. 2\frac{dN}{d\omega}\right|_{\Omega} \\
 \end{align*}
 
 Pochodną mnożymy przez liczbę wewnętrznych stopni swobody.
@@ -382,7 +382,7 @@ Ostatecznie energia wewnętrzna gazu fotonowego we wnęce wynosi:
   U = U_{0} + \frac{V \hbar}{\pi^2 c^3} \left( \frac{1}{\beta \hbar} \right)^4 \frac{\pi^4}{15} = 
   U_{0} +
   \frac{\pi^2 V (k_B T)^4}{15 \hbar^3 c^3} = \\
-  U_{0} + \sigma V T^4
+  U_{0} + \tilde{\sigma} V T^4
 \end{align*}
 
 Otrzymaliśmy wyrażenie na gęstość energii promieniowania Plancka:
@@ -397,7 +397,7 @@ $\theta \in [0, \pi/2]$ i $\phi \in [0, 2\pi]$
 \begin{align*}
   dI = u (c \cos \theta) \frac{d\Omega}{4\pi} \\
   I = \frac{U}{V} \frac{c}{4\pi} \int_0^{\pi/2} \cos \theta\frac{d\Omega}{4\pi}  =
-  \frac{\pi^2 k_B^4}{60 \hbar^3 c^2} T^4
+  \frac{\pi^2 k_B^4}{60 \hbar^3 c^2} T^4 = \sigma T^4
 \end{align*}
 
 \newpage 
@@ -496,8 +496,7 @@ sieci krystalicznej przyjmując, rozkład częstości drgań jest dany przez
     \end{cases}
 \end{align*}
 
-Proszę wyznaczyć $\omega_D$ zakładając, że sieć krystaliczna składa 
-się z $N$ atomów.
+gdzie $v_0$ jest prędkością dźwięku w sieci, a $\omega_D$ jest częstością Debye'a.
 
 \begin{solution}
 
@@ -575,8 +574,9 @@ rozkładem częstości drgań Debye'a:
     0, & \omega > \omega_D
     \end{cases}
 \end{align*}
-
-Znaleźć wyrażenie na temperaturę Debye'a: $T_D = \hbar \omega_D /k_B$.
+gdzie $v_0$ jest prędkością dźwięku w sieci, a $\omega_D$ jest częstością Debye'a.
+Proszę obliczyć  $\omega_D$, a następnie znaleźć wyrażenie na temperaturę 
+Debye'a: $T_D = \hbar \omega_D /k_B$.
 
 \begin{solution}
 
