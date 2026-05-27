@@ -1,40 +1,824 @@
-\documentclass[a4paper,12pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\documentclass[11pt,a4paper]{article}
+
+\newif\ifshowsolutions
+\def\showsolutions{} %comment this line to hide solutions
+
 \usepackage[polish]{babel}
-\usepackage{lmodern} % Ensure proper font rendering for Polish characters
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{amsfonts}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes,arrows.meta,decorations.markings}
 
-\title{TIFS R - Ćwiczenia tydzień 12}
-\author{}
-\date{}
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
 
-\begin{document}
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
 
-\maketitle
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
 
-\section*{Statystyki kwantowe i własności fermionów}
+% definition of inexact differential symbol:
+\newcommand{\dbar} {\ensuremath{\,\mathchar'26\mkern-12mu d}}
+\newcommand{\Partial}[3]{\left( \frac{\partial #1}{\partial #2} \right)_{#3}}
 
-\subsection*{Zadanie 1}
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
 
-Dwie nieoddziałujące cząstki znajdują się w studni potencjału o poziomach energetycznych $E_n = n \varepsilon$. Dodatkowo, $n$-ty poziom energetyczny jest zdegenerowany $2n + 1$ razy. Rozważmy osobno przypadek, gdy:
-\begin{enumerate}
-    \item Cząstki są bozonami o zerowym spinie.
-    \item Cząstki są fermionami o spinie $\frac{1}{2}$.
-    \item Cząstki podlegają statystyce Boltzmanna o spinie $s$.
-\end{enumerate}
-Zakładając, że energia nie zależy od wartości spinu:
-\begin{enumerate}
-    \item[a)] Znajdź liczbę mikrostany odpowiadające danej wartości $E = N \varepsilon$.
-    \item[b)] Znajdź kanoniczną sumę statystyczną układu, jeżeli założymy, że jest on w kontakcie z termostatem o temperaturze $T$.
-\end{enumerate}
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\ {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\ {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
-\subsection*{Rozwiązanie}
+%dynamic solutions hiding
+\usepackage{comment}
 
-Rozwiązanie jest w Dalvicie - zad. 4.1. Poświęćcie trochę czasu na omówienie nierówności między odpowiednimi funkcjami rozkładu (punkt c u Dalvita).
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
 
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+
+\input{tikz_plots.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R \\
+  Zestaw XII: Równowaga fazowa i termodynamika powierzchni \\
+  }} 
+\end{centering}
+
+\vspace{1cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę naszkicować kółko Borna i odczytać z niego:
+\begin{itemize}
+  \item pary zmiennych niezależnych dla danego potencjału termodynamicznego,
+  \item różniczki potencjałów
+  \item tożsamości Maxwella,
+\end{itemize}
+
+
+\begin{solution}
+
+\DrawBornCircle
+
+{\bf Zmienne niezależne potencjałów:} zmienne sąsiadujące z danym potencjałem na kółku Borna:
+\begin{align*}
+&U(S,V), &&H(S,p), &&F(T,V), &&G(T,p)
+\end{align*}
+
+{\bf Różniczki potencjałów:} przy różniczce zmiennej niezależnej stoi zmienna z przeciwnego 
+końca kółka, ze znakiem zależnym od zgodności z kierunkiem strzałki:
+\begin{align*}
+&dU = T\,dS - p\,dV, &&dH = T\,dS + V\,dp,\\
+&dF = -S\,dT - p\,dV, &&dG = -S\,dT + V\,dp \\
+\end{align*}
+
+Jeśli uwzględnimy zmianę liczby cząstek, to do każdego potencjału dodajemy $\sum_i \mu_i dN_i$.
+
+\vskip 0.5cm
+
+{\bf Tożsamości Maxwella:} dla każdego potencjału rysujemy dla półkola kończące się
+na jego zmiennych niezależnych. Zmienne na drodze łuku: $A \rightarrow B \rightarrow C$ składają się
+na pochodną:
+\begin{align*}
+  \left(\frac{\partial A}{\partial B} \right)_C
+\end{align*}
+
+Znak pochodnej zależy od zgodności kierunku łuku z kierunkiem strzałki
+\begin{align*}
+U: & -\left(\frac{\partial T}{\partial V}\right)_S = \left(\frac{\partial p}{\partial S}\right)_V, &
+F: & \left(\frac{\partial S}{\partial V}\right)_T = \left(\frac{\partial p}{\partial T}\right)_V, \\
+G: & \left(\frac{\partial S}{\partial p}\right)_T = -\left(\frac{\partial V}{\partial T}\right)_p, &
+H: & \left(\frac{\partial T}{\partial p}\right)_S = \left(\frac{\partial V}{\partial S}\right)_p
+\end{align*}
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozpatrzmy pojemnik przedzielony przegrodą  zawierający
+$N_{A}$ i $N_{B}$ jednoatomowych gazów doskonałych A i B w każdym z dwóch przedziałów. 
+Ciśnienie i temperatura gazów są ustalone przez kontakt z otoczeniem. 
+Proszę pokazać, że proces mieszania na skutek usunięcia przegrody jest 
+nieodwracalny.
+
+\begin{solution}
+
+Zmiennymi niezależnymi dla układu są $T$ i $p$, więc potencjałem termodynamicznym 
+użytecznym dla analizy tego procesu jest potencjał Gibbsa $G$. 
+W ogólności $dG \le 0$, gdzie równość zachodzi tylko dla procesów odwracalnych.
+Poszukujemy więc wartości $G$ przed i po usunięciu przegrody.
+
+\begin{align*}
+  dG = -S\,dT + V\,dp + \sum_i \mu_i dN_i = || T=const.\quad p=const. || = \sum_i \mu_i dN_i \\
+  G = \sum_i \mu_i N_i
+\end{align*}
+
+Potencjał chemiczny gazu doskonałego ma postać:
+\begin{align*}
+  \mu_i = k_BT \log( \frac{p}{kT_B} \lambda^3 ) = 
+          k_BT \left[\log p  - \log(kT_B) + 3\log\lambda \right] = \\
+          k_BT \log p + f(T)       
+\end{align*} 
+
+Wydzieliliśmy część zależną od ciśnienia i temperatury.
+Temperatura jest stała, więc $f(T)$ jest stałe. 
+Ciśnienie całkowite jest stałe, ale po zmieszaniu gazów, 
+ciśnienie mieszaniny jest sumą ciśnień poszczególnych gazów, 
+więc ich ciśnienia parcjalne się zmienią:
+\begin{align*}
+  p = (n_A+n_B)\frac{RT}{V} \quad p_{i} = n_i\frac{RT}{V} \\
+  \frac{p_{i}}{p} = \frac{n_i}{n_A + n_B} = \frac{N_i}{N_A + N_B} = \frac{N_{i}}{N}
+\end{align*}
+
+Potencjały Gibbsa przed i po usunięciu przegrody:
+\begin{align*}
+  G_{przed}=& \sum_i \mu_i N_i = Nk_BT \log p  + Nf(T) \\ 
+  G_{po} =& \sum_i \mu_i N_i = k_BTN_A \log p_A + k_BT N_B\log p_B + Nf(T) = \\
+  & k_BT N_A \log\left( \frac{N_{A}}{N}p\right) + 
+    k_BT N_B\log\left( \frac{N_{B}}{N}p \right) + Nf(T) = \\
+\end{align*}
+
+Zmiana potencjału Gibbsa:
+\begin{align*}
+  \Delta G = G_{po} - G_{przed} = 
+  k_BT N_A \log\left( \frac{N_{A}}{N}p  \right) +
+  k_BT N_B\log\left( \frac{N_{B}}{N}p \right) - 
+  k_BT N \log p = \\
+  k_BT N_A \log\left( \frac{N_{A}}{N} \right) +
+  k_BT N_B\log\left( \frac{N_{B}}{N} \right) = 
+  k_BT N \left[ \frac{N_A}{N} \log \frac{N_A}{N} + \frac{N_B}{N} \log \frac{N_B}{N} \right] = \\
+  || f_i = \frac{N_i}{N} || = 
+  k_BT N \sum_i f_i \log f_i
+\end{align*}
+
+Otrzymaliśmy średnią wartości mniejszych od zera 
+(logarytm ułamku), z wagami będącymi ułamkami (udziałami molowymi),
+więc średnia nie może być większa niż 0. Stąd:
+\begin{align*}
+  \Delta G < 0
+\end{align*}
+
+więc proces jest nieodwracalny.
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę znaleźć zmianę entropii w sytuacji opisanej w poprzednim zadaniu. 
+Korzystając z:
+\begin{itemize}
+  \item wzoru na funkcję Gibbsa,
+  \item wzoru Sakura-Tetrode 
+\end{itemize}
+
+\begin{solution}
+
+Funkcja Gibbsa:
+\begin{align*}
+G = U - TS + pV
+\end{align*}
+
+W naszym przypadku temperatura i ciśnienie są stałe, więc: energia wewnętrzna też jest stała.
+Zmiana wartości funkcji Gibbsa przy ustalonych $p$ i $T$ ma więc postać:
+\begin{align*}
+  \Delta G = -T\Delta S + p\Delta V
+\end{align*}
+
+W naszym przypadku łączy zbiorniki, $\Delta V = 0$, więc:
+\begin{align*}
+  \Delta G = -T\Delta S  \Rightarrow \Delta S = -\frac{\Delta G}{T} 
+  = -k_B N \sum_i f_i \log f_i
+\end{align*}
+
+Zmianę entropii wynikającą z mieszania frakcji, tutaj gazów $A$ i $B$, 
+nazywamy entropią mieszania.
+
+Bezpośrednio ze wzoru Sakura-Tetrode'a:
+\begin{align*}
+  S_{i} = N_{i}k_B \left[ \log\left( \frac{V_{i}}{N_{i}\lambda_{i}^3} \right) + \frac{5}{2} \right] \quad \lambda_{i} = \frac{h}{\sqrt{2\pi m_i k_B T}}
+\end{align*}
+
+Entropia przed i po usunięciu przegrody:
+\begin{align*}
+  S_{przed} =
+  N_Ak_B \left[ \log\left( \frac{V_{A}}{N_A\lambda_{A}^3} \right) + \frac{5}{2} \right] +
+  N_Bk_B \left[ \log\left( \frac{V_{B}}{N_B\lambda_{B}^3} \right) + \frac{5}{2} \right] \\
+  S_{po} =
+  N_Ak_B \left[ \log\left( \frac{V_A+V_B}{N_A\lambda_{A}^3} \right) + \frac{5}{2} \right] +
+  N_Bk_B \left[ \log\left( \frac{V_A+V_B}{N_B\lambda_{B}^3} \right) + \frac{5}{2} \right]
+\end{align*}
+
+Zmiana entropii:
+\begin{align*}
+  \Delta S = S_{po} - S_{przed} =
+  N_Ak_B \log\left( \frac{V_A+V_B}{V_A} \right) +
+  N_Bk_B \log\left( \frac{V_A+V_B}{V_B} \right) = \\
+  || pV = Nk_BT \quad p,T=const.  \Rightarrow N_{i} \sim V_{i} || = \\
+  N_Ak_B \log\left( \frac{N_A+N_B}{N_A} \right) +
+  N_Bk_B \log\left( \frac{N_A+N_B}{N_B} \right) = \\
+  || N = N_A + N_B \quad f_i = \frac{N_i}{N} || = \\
+  k_B N \sum_i f_i \log\left( \frac{1}{f_i} \right) = -k_B N \sum_i f_i \log f_i
+\end{align*}
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\zadanie[]
+
+Proszę znaleźć entropię mieszania wygenerowaną przy izotermicznym i izobarycznym 
+połączeniu dwu zbiorników zawierających odpowiednio $N_A$ i $N_B$ cząstek {\bf tego} 
+samego gazu doskonałego.
+
+\begin{solution}
+  
+Entropia przed połączeniem zbiorników:
+
+\begin{align*}
+  S_{przed} =
+  N_Ak_B \left[ \log\left( \frac{V_{A}}{N_A\lambda^3} \right) + \frac{5}{2} \right] +
+  N_Bk_B \left[ \log\left( \frac{V_{B}}{N_B\lambda^3} \right) + \frac{5}{2} \right] 
+\end{align*}
+
+Entropia po połączeniu zbiorników:
+\begin{align*}
+  S_{po} =
+  (N_A+N_B)k_B \left[ \log\left( \frac{V_A+V_B}{(N_A+N_B)\lambda^3} \right) + \frac{5}{2} \right]
+\end{align*}
+
+Zmiana entropii:
+\begin{align*}
+  \Delta S = S_{po} - S_{przed} = \\
+  (N_A+N_B)k_B \log\left( \frac{V_A+V_B}{N_A + N_B} \right) -
+  N_Ak_B \log\left( \frac{V_A}{N_A} \right) -
+  N_Bk_B \log\left( \frac{V_B}{N_B} \right) = \\
+  || pV = Nk_BT \Rightarrow V/N = k_BT/p = const. || = \\
+  (N_A+N_B)k_B \log\left( \frac{V}{N} \right) -
+  N_Ak_B \log\left( \frac{V}{N} \right) -
+  N_Bk_B \log\left( \frac{V}{N} \right) = 0
+\end{align*}
+
+Mieszanie dwu zbiorników zawierających ten sam gaz doskonały nie generuje entropii mieszania,
+więc proces jest odwracalny - można z powrotem oddzielić zbiorniki i uzyskać dwa zbiory 
+nierozróżnialnych cząstek tego samego rodzaju. W przypadku mieszania różnych gazów, 
+proces jest nieodwracalny, bo odwrócenie procesu wymagałoby rozdzielenia cząstek różnych gazów.
+
+\newpage
+
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Roztwór idealny to roztwór, w którym poszczególne składniki nie 
+zmieniają właściwości pod wpływem obecności innych składników, 
+a jedynym efektem mieszania jest wzrost entropii. Proszę wyrazić 
+potencjał chemiczne składników roztworu przez potencjały chemiczne 
+czystych składników, $\mu_{0i}$ i ich udziały, $f_i = \frac{N_i}{N}$.
+
+
+\begin{solution}
+
+Mieszanie zachodzi w stałych temperaturze i ciśnieniu, więc 
+potencjałem termodynamicznym użytecznym do analizy tego procesu 
+jest potencjał Gibbsa $G$:
+\begin{align*}
+  dG = -S\,dT + V\,dp + \sum_i \mu_i dN_i = || T=const.\quad p=const. || = \sum_i \mu_i(p,T) dN_i
+\end{align*}
+
+Inaczej:
+\begin{align*}
+  \left( \frac{\partial G}{\partial N_i} \right)_{p,T,N_{j\neq i}} = \mu_i(p,T)
+\end{align*}
+
+Całkujemy tutaj $dG$ dla ustalonych $p$ i $T$, 
+więc $\mu$ jest funkcją $p$ i $T$. Potencjały chemiczne składników mieszaniny są
+inne niż czystych składników, więc $\mu_i(p,T) \neq \mu_{0i}(p,T)$. Możemy jednak
+wyrazić funkcję Gibbsa mieszaniny jako sumę:
+\begin{align*}
+  G = \sum_i G_i(p,T) + \Delta G_{mix} = \sum_i \mu_{0i}(p,T) N_i + \Delta G_{mix}
+\end{align*}
+
+Związana potencjału Gibbsa związana z mieszaniem:
+\begin{align*}
+  \Delta G_{mix} = k_B T N \sum_i f_i \log f_i = -T\Delta S_{mix}
+\end{align*}
+
+Ostatecznie funkcja Gibbsa mieszaniny:
+\begin{align*}
+  G = \sum_i \mu_{0i}(p,T) N_i + k_B T N \sum_i f_i \log f_i
+\end{align*}
+
+
+Potencjały chemiczne składników:
+\begin{align*}
+  \mu_i = \left( \frac{\partial G}{\partial N_i} \right)_{p,T,N_{j\neq i}} = 
+  \left( \frac{\partial}{\partial N_i} \sum_j \mu_{0j} N_j \right)_{p,T,N_{j\neq i}} + 
+  \left( \frac{\partial}{\partial N_i} k_B T N \sum_j f_j \log f_j \right)_{p,T,N_{j\neq i}} = \\
+  \left( \frac{\partial}{\partial N_i} \sum_j \mu_{0j} N_j \right)_{p,T,N_{j\neq i}} + 
+\left( \frac{\partial}{\partial N_i} k_B T \sum_j N_j \log \frac{N_j}{\sum_{k} N_k} \right)_{p,T,N_{j\neq i}} = \\
+  \mu_{0i}(p,T) + k_B T \left[ \log \frac{N_i}{\sum_{k} N_k} + 1 - \sum_j \frac{N_j}{\sum_{k} N_k} \right] =
+\mu_{0i}(p,T) + k_B T \log f_i 
+\end{align*}
+
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważmy lotny rozpuszczalnik R i substancję nielotną S, 
+która jest rozpuszczana w tym rozpuszczalniku. Oznaczmy ciśnienie pary nasyconej 
+nad czystym rozpuszczalnikiem w temperaturze $T$ jako $p_0(T)$, a ciśnienie nad 
+roztworem S w R, o stężeniu $x$, jako $p(T)$. Traktując parę jako gaz doskonały, 
+proszę wykazać prawo Raoulta:
+\begin{align*}
+\frac{p_0 - p}{p_0} = x
+\end{align*}
+
+\begin{solution}
+
+W stanie równowagi $dS=0$ dwie fazy rozpuszczalnika: para i ciecz
+mają równe potencjały chemiczne, ciśnienie i temperaturę. 
+\begin{align*}
+\mu_{R}^{para}(p,T) = \mu_{R}^{ciecz}(p,T,x)
+\end{align*}
+
+W przypadku czystego rozpuszczalnika mamy $x=0$, więc:
+\begin{align*}
+\mu_{R}^{para}(p_0,T) = \mu_{R}^{ciecz}(p_0,T,0)
+\end{align*}
+
+Korzystamy z potencjału chemicznego rozpuszczalnika w roztworze idealnym:
+\begin{align*}
+\mu_{R}^{ciecz}(p,T,x) = \mu_{R}^{ciecz}(p,T,0) + k_B T \log(1-x) \approx 
+\mu_{R}^{ciecz}(p,T,0) - k_B T x
+\end{align*}
+
+Zakładamy, że zmiana ciśnienia pary jest niewielka:
+\begin{align*}
+  p = p_0 + \delta p
+\end{align*}
+
+i rozwijamy potencjał chemiczny pary w szereg:
+\begin{align*}
+\mu_{R}^{para}(p,T) &= \mu_{R}^{para}(p_0,T) + \left( \frac{\partial \mu_{R}^{para}}{\partial p} \right)_{p_0,T} \delta p  \\
+\mu_{R}^{ciecz}(p,T, x) &= \mu_{R}^{ciecz}(p_0,T) + \left( \frac{\partial \mu_{R}^{ciecz}}{\partial p} \right)_{p_0,T} \delta p
+\end{align*}
+
+Przyrównujemy obie postacie:
+\begin{align*}
+\mu_{R}^{para}(p_0,T) + \left( \frac{\partial \mu_{R}^{para}}{\partial p} \right)_{p_0,T} \delta p  =
+\mu_{R}^{ciecz}(p_0,T) + \left( \frac{\partial \mu_{R}^{ciecz}}{\partial p} \right)_{p_0,T} \delta p - k_B T x  \\
+|| \mu_{R}^{ciecz}(p_0,T) = \mu_{R}^{para}(p_0,T) || =
+\left( \frac{\partial \mu_{R}^{para}}{\partial p} \right)_{p_0,T} \delta p  =
+\left( \frac{\partial \mu_{R}^{ciecz}}{\partial p} \right)_{p_0,T} \delta p - k_B T x 
+\end{align*}
+
+Pochodne potencjału chemicznego po ciśnieniu znajdujemy korzystając z 
+relacji Gibbsa-Duhema:
+\begin{align*}
+  d(SUP) = 0 \\
+  0 = -S\,dT + V\,dp - Nd \mu \Rightarrow \left( \frac{\partial \mu}{\partial p} \right)_{T} = \frac{V}{N} = v
+\end{align*}
+
+Wracamy do równania:
+\begin{align*}
+v_{para} \delta p = v_{ciecz} \delta p - k_B T x \\
+(v_{para} - v_{ciecz}) \delta p = - k_B T x \\
+\frac{v_{para} - v_{ciecz}}{p_{0}} \delta p = - \frac{k_B T x}{p_0} \\
+|| v_{ciecz} \ll v_{para} \quad p_0 v_{para} = k_B T || \\
+\frac{p_0 - p}{p_0} = x
+\end{align*}
+
+
+
+\newpage 
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważmy parę nasyconą w pobliżu płaskiej powierzchni cieczy i kropli o promieniu $r$.
+Ciśnienie pary w pobliżu powierzchni to $p_0$, 
+a w pobliżu kropli $p$. Zakładając, że ciecz jest nieściśliwa: 
+$\left(\frac{\partial v}{\partial p}\right)_T = 0$,
+a para jest gazem doskonałym, wykaż, że:
+\begin{align*}
+\ln\frac{p}{p_0} = \frac{v_c}{k_BT}\left(p - p_0 + \frac{2\sigma}{r}\right)
+\end{align*}
+gdzie $\sigma$ jest napięciem powierzchniowym, zaś $v_c$ objętością właściwą cieczy.
+
+\begin{solution}
+
+Korzystamy z równości potencjałów chemicznych:
+\begin{align*}
+  \mu^{para}(p,T) = \mu^{ciecz}(p,T)
+\end{align*}
+
+Rozwijamy potencjał chemiczny cieczy wokół $p_0$:
+\begin{align*}
+  \mu^{ciecz}(p,T) = \mu^{ciecz}(p_0,T) + \left( \frac{\partial \mu^{ciecz}}{\partial p} \right)_{p_0,T} (p - p_0) = \\
+  || \text{nieściśliwość:}~\frac{\partial v}{\partial p} = 0 \Rightarrow v_c = f(T) \\
+     \left(\frac{\partial \mu }{\partial p} \right)_{T} = \frac{V}{N} = v_c = f(T)|| = \\
+    = \mu^{ciecz}(p_0,T) + v_c(p - p_0) \\
+\end{align*}
+
+W przypadku kropli, ciśnienie cieczy wewnątrz kropli jest większe niż na powierzchni
+o wkład od napięcia powierzchniowego:
+\begin{align*}
+p_{in} = p_{out} + \frac{2\sigma}{r}
+\end{align*}
+
+więc w cieczy mamy
+\begin{align*}
+  p_{in} - p_0 = p + \frac{2\sigma}{r} - p_0
+\end{align*}
+
+Wracamy do równości potencjałów chemicznych dla pary i cieczy w środku kropli:
+\begin{align*}
+  \mu^{para}(p,T) = \mu^{ciecz}(p + \frac{2\sigma}{r},T) \\
+  \mu^{para}(p,T) - \mu^{para}(p_0,T) = \mu^{ciecz}(p + \frac{2\sigma}{r},T) - \mu^{ciecz}(p_0,T) \\
+  || \text{gaz doskonały:}~\mu^{para}(p,T) = \mu^{para}(p_0,T) + k_B T \log\left( \frac{p}{p_0} \right) || = \\
+  k_B T \log\left( \frac{p}{p_0} \right) = v_c\left(p + \frac{2\sigma}{r} - p_0\right) \\
+  \ln\frac{p}{p_0} = \frac{v_c}{k_B T}\left(p - p_0 + \frac{2\sigma}{r}\right)
+\end{align*}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Kropla cieczy nieściśliwej znajduje się w równowadze mechanicznej (ale niekoniecznie chemicznej!) z parą o ciśnieniu
+$p$ i temperaturze $T$. Wyznaczyć zależność potencjału chemicznego kropli od jej promienia $r$. Korzystając z wyników
+poprzedniego zadania przeanalizować zachowanie układu ciecz+para w zależności od wartości $r$.
+
+\begin{solution}
+
+Potencjał chemiczny nieściśliwej cieczy ma postać:
+\begin{align*}
+  \mu^{ciecz}(p,T) = \mu^{ciecz}(p_0,T) + v_c(p - p_0)
+\end{align*}
+
+Aplikujemy ten związek do cieczy w środku kropli, pamiętając, że ciśnienie 
+wewnątrz kropli jest większe o wkład od napięcia powierzchniowego:
+\begin{align*}
+  \mu^{ciecz}(p + \frac{2\sigma}{r},T) = \mu^{ciecz}(p,T) + 
+   v_c\left(p + \frac{2\sigma}{r} - p\right) = \\
+  \mu^{ciecz}(p,T) + \frac{2\sigma v_c}{r}
+\end{align*}
+
+Zauważmy że w ogólności nie mamy równowagi chemicznej, więc 
+cząsteczki wody będą migrować między parą a kroplą, aż do osiągnięcia 
+równowagi chemicznej. Kierunek migracji wyznacza wzrost entropii:
+\begin{align*}
+  \Delta S = \Delta S_{para} + \Delta S_{ciecz} = \\
+   \frac{\partial S_{para}}{\partial N_{para}} dN_{para} + 
+   \frac{\partial S_{ciecz}}{\partial N_{ciecz}} dN_{ciecz} = \\
+   || dN_{ciecz} = -dN_{para} \quad \mu = -T \left(\frac{\partial S}{\partial N}\right)_{T,V} || = \\
+   \frac{1}{T} \left( \mu^{para} - \mu^{ciecz} \right) dN_{ciecz} \geq 0 \Rightarrow \\
+    \mu^{ciecz} \geq \mu^{para} \Rightarrow dN_{ciecz} \leq 0 \\
+    \mu^{ciecz} \leq \mu^{para} \Rightarrow dN_{ciecz} \geq 0
+\end{align*}
+
+
+W ustalonych warunkach $p$ i $T$ potencjał chemiczny kropli 
+maleje z jej promieniem. Dla dowolnego promienia kropla {\bf nie jest} 
+w równowadze chemicznej z parą:
+\begin{itemize}
+  \item dla $r < r_c$ potencjał chemiczny kropli jest większy niż 
+  potencjał chemiczny pary, więc ciecz będzie odparowywać, a kropla będzie się kurczyć,
+  \item dla $r = r_c$ potencjały chemiczne są równe, więc układ jest w równowadze 
+  chemicznej,
+  \item dla $r > r_c$ potencjał chemiczny kropli jest mniejszy niż 
+  potencjał chemiczny pary, więc para będzie skraplać się na kropli, 
+  a kropla będzie rosnąć.
+\end{itemize}
+
+Wartość promienia krytycznego $r_c$ można znaleźć z równania:
+\begin{align*}
+  \ln\frac{p}{p_0} = \frac{v_c}{k_B T}\left(p - p_0 + \frac{2\sigma}{r}\right) \\
+  \frac{2\sigma v_c}{r_c} = k_B T \ln\frac{p}{p_0} - v_c(p - p_0) \\
+  r_c = \frac{2\sigma v_c}{k_B T \ln\frac{p}{p_0} - v_c(p - p_0)}
+\end{align*}
+
+\newpage   
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Na płaszczyźnie $(H, T)$ krzywa współistnienia fazy normalnej (n) i nadprzewodzącej (s) przewodnika jest parabolą
+opisywaną równaniem
+\[
+H_c(T) = H_0\left(1 - \frac{T^2}{T_c^2}\right)
+\]
+
+W fazie nadprzewodzącej indukcja magnetyczna $\vec{B}$ znika, nawet przy 
+$\vec{H} \neq 0$ (efekt Meissnera). W fazie normalnej podatność magnetyczna,
+$\chi = \frac{M}{H}$, jest praktycznie równa zeru, w fazie nadprzewodzącej jest 
+równa $-1$. Proszę:
+\begin{itemize}
+  \item pokazać, że przejście faza normalna --- faza nadprzewodząca przy 
+        $T = T_c$ jest przejściem  fazowym  drugiego rodzaju 
+  \item wyznaczyć skok ciepła właściwego $c_H$ w tym punkcie.
+\end{itemize}
+
+Efekty związane ze zmianami objętości układu zaniedbać.  
+
+\vskip 0.2cm
+
+{\bf Wskazówki:}
+\begin{itemize}
+  \item indukcja magnetyczna w magnetyku:
+  \begin{align*}
+    \vec{B} = \mu_{0}(\vec{H} + \vec{\cal M}) = \mu_0 \vec{H}(1 + \chi)
+  \end{align*}
+  \item różniczka energii wewnętrznej magnetyka:
+  \begin{align*}
+    dU = T\,dS -p dV + \mu_0 H d {\cal  M} + \mu dN
+  \end{align*}
+  \item ${\cal M}$ - namagnesowanie, 
+        $M = \frac{{\cal M}}{V}$ - magnetyzacja
+\end{itemize}
+
+
+\begin{solution}
+
+Stan magnetyka, przy stałym ciśnieniu i objętości jest opisany przez zmienne 
+termodynamiczne: $H$, ${\cal M}$, $T$. Natężenie pola magnetycznego $H$ 
+odpowiada ciśnieniu, $\mu_0{\cal M}$ odpowiada objętości.
+Zwiększenie $H$ powoduje zwiększenie ${\cal M}$, więc $H$ odpowiada $-p$.
+Do analizy przejść używamy funkcji Gibbsa. Standardowo zależy ona od 
+$p$ i $T$, więc w przypadku magnetyka, przy stałym $p$ i $V$, zależy od 
+$H$ i $T$: $G = G(H,T)$. Przy stałym $H$ i $T$ funkcja Gibbsa zależy od $N$, 
+więc $G = \mu N$ i $\mu = \mu(H,T)$.
+
+\vskip 0.2cm
+
+Przypomnienie klasyfikacji przejść fazowych:
+\begin{itemize}
+  \item przejście fazowe pierwszego rodzaju: 
+        entropia i objętość układu skaczą w punkcie przejścia fazowego, 
+        a potencjał Gibbsa jest ciągły, ale jego pochodna nie jest ciągła,
+  \item przejście fazowe drugiego rodzaju: entropia i objętość układu są 
+        ciągłe w punkcie przejścia fazowego, a potencjał Gibbsa jest ciągły, 
+        a jego pochodna jest ciągła, ale druga pochodna nie jest ciągła:
+        \begin{align*}
+          \left( \frac{\partial G}{\partial T} \right)_H = -S \quad \text{ciągła} \\
+          \frac{1}{n}\left( \frac{\partial^2 G}{\partial T^2} \right)_p = 
+          -\frac{1}{n}\left( \frac{\partial S}{\partial T} \right)_p = 
+          -\frac{C_H}{T} \quad \text{nieciągła}
+        \end{align*}
+\end{itemize}
+
+Zbadamy pochodne potencjału chemicznego dla przemiany drugiego rodzaju:
+\begin{align*}
+\left( \frac{\partial \mu}{\partial H} \right)_T -  \text{ciągła} \quad
+\left( \frac{\partial^{2} \mu}{\partial H^{2}} \right)_T - \text{nieciągła}
+\end{align*}
+
+Poszukujemy różniczki potencjału chemicznego magnetyka. Korzystamy z równania 
+Gibbsa-Duhema:
+\begin{align*}
+  d(SUP) = 0 \\
+  0 = -S\,dT + V\,dp  - \mu_0 H d {\cal  M}  - N\,d\mu = \\
+  -S\,dT + V\,dp -  \mu_0 H d (\chi H) -  N\,d\mu = \\
+  -S\,dT + V\,dp -  \mu_0 H \chi dH -  N\,d\mu = \\
+  -S\,dT + V\,dp -  \mu_0 {\cal M} dH -  N\,d\mu \Rightarrow \\
+  d\mu = -\frac{S}{N} dT + \frac{V}{N} dp - \mu_0 M \frac{V}{N} dH = \\
+  - s dT + v dp - \mu_0 M v dH
+\end{align*}
+
+Przy stałej temperaturze i objętości:
+\begin{align*}
+\left( \frac{\partial \mu}{\partial H} \right)_{T,V} = 
+- \mu_0 v M = - \mu_0 v \chi H \\
+\end{align*}
+
+Natężenie pola magnetycznego, $H$, jest ciągłe - zmiana pochodzi "z zewnątrz" 
+układu. Podatność magnetyczna $\chi$ skacze z $0$ do $-1$ w punkcie przejścia fazowego:
+\begin{align*}
+\left( \frac{\partial \mu}{\partial H} \right)_{T,V} = 
+\begin{cases}
+0 & \text{dla fazy normalnej} \\
+\mu_0 vH & \text{dla fazy nadprzewodzącej}
+\end{cases}
+\end{align*}
+
+Z drugiej strony przejście fazowe następuje dla $H = H_c(T_0) = 0$,
+więc pierwsza pochodna jest ciągła.
+
+Druga pochodna:
+\begin{align*}
+\left( \frac{\partial^2 \mu}{\partial H^2} \right)_{T,V} = 
+\begin{cases}
+0 & \text{dla fazy normalnej} \\
+\mu_0 v & \text{dla fazy nadprzewodzącej}
+\end{cases}
+\end{align*}
+
+Tutaj mamy skok, bo zależność od $H$ znika. Druga pochodna jest więc nieciągła
+$\Rightarrow$ przejście fazowe jest przejściem drugiego rodzaju.
+
+Przy przejścia fazowych drugiego rodzaju następuje skok funkcji odpowiedzi:
+ciepła właściwego, podatności magnetycznej, ściśliwości, itp. W naszym przypadku
+skok ciepła właściwego:
+\begin{align*}
+\frac{1}{N}\left( \frac{\partial^2 G}{\partial T^2} \right)_H = 
+-\frac{1}{N}\left( \frac{\partial S}{\partial T} \right)_H = -\frac{c_H}{T} \\
+\Delta c_H = T_{c} \left[
+\left( \frac{\partial s}{\partial T} \right)_H^{s} - 
+\left( \frac{\partial s}{\partial T} \right)_H^{n} \right] 
+\end{align*}
+
+Gdzie indeksy $s$ i $n$ oznaczają fazę nadprzewodzącą i normalną.
+Szukamy pochodnej entropii po temperaturze. 
+W równowadze faz normalna --- nadprzewodząca, potencjały chemiczne obu faz są równe:
+\begin{align*}
+\mu^{n}(H_c(T),T) = 
+|| \chi^{n} = 0 || = \mu^{n}(T) = 
+\mu^{s}(H_c(T),T)
+\end{align*}
+
+Zmierzamy w kierunku pochodnej s po temperaturze, 
+więc wypiszmy różniczki potencjałów chemicznych obu faz:
+\begin{align*}
+d\mu^{n} =& -s^{n} dT \\
+d\mu^{s} =& -s^{s} dT + v dp - \mu_0 M v dH = \\
+          & || dp = 0 \quad M = \chi^{s} H = -H || = \\
+& -s^{s} dT + \mu_0 H v dH
+\end{align*}
+
+Wstawiamy do równości potencjałów chemicznych:
+\begin{align*}
+d\mu^{n} = d\mu^{s} \Rightarrow \\
+-s^{n} dT = -s^{s} dT + \mu_0 H v dH \\
+s^{s} - s^{n} = \mu_0 H v \frac{dH}{dT} 
+\end{align*}
+
+Różniczkujemy jeszcze raz. \\
+{\bf Uwaga:} liczmy pochodną zupełną po temperaturze, $H$ jest funkcją $T$:
+ $H = H_c(T)$, więc pojawi się człon 
+ $\frac{\partial s}{\partial H} \frac{\partial H}{\partial T}$:
+\begin{align*}
+\left( \frac{\partial s}{\partial T} \right)_H^{s} +
+\left( \frac{\partial s}{\partial H} \right)^{s}\frac{\partial H}{\partial T}
+- 
+\left( \frac{\partial s}{\partial T} \right)_H^{n} = 
+\mu_0 v \left[ \frac{dH_c}{dT} \right]^2 + \mu_0 H_c v \frac{d^2 H_c}{dT^2}
+\end{align*}
+
+Korzystamy z tożsamości Maxwella dla potencjału Gibbsa.
+W zmiennych (p,T) mamy:
+\begin{align*}
+\left( \frac{\partial s}{\partial p} \right)_T = 
+-\left( \frac{\partial v}{\partial T} \right)_p \Rightarrow
+\left( \frac{\partial s}{\partial H} \right)_T = 
+\mu_0 v \left( \frac{\partial M}{\partial T} \right)_H
+\end{align*}
+
+W fazie nadprzewodzącej $M = -H$, więc 
+$\left( \frac{\partial M}{\partial T} \right)_H = 0$, czyli 
+$\left( \frac{\partial s}{\partial H} \right)_T = 0$. 
+
+Ostatecznie skok ciepła właściwego:
+\begin{align*}
+\Delta c_H = T_{c} \left[
+\left( \frac{\partial s}{\partial T} \right)_H^{s} - 
+\left( \frac{\partial s}{\partial T} \right)_H^{n} \right] = \\
+\mu_0 v T_c \left[ \frac{dH_c}{dT} \right]^2 + \mu_0 H_c v T_c \frac{d^2 H_c}{dT^2} = \\
+|| H_c(T_c) = 0 || = \\
+\mu_0 v T_c \left[ -2H_0 \frac{T}{T_c^2} \right]^2 = 
+\frac{4\mu_0 v H_0^2}{T_c}
+\end{align*}
+
+Związek nosi nazwę wzoru Rutgersa.
+
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę wyznaczyć $T_c$, $V_c$ punktu krytycznego gazu van der Waalsa. 
+Następnie, proszę:
+\begin{itemize}
+\item  wykazać, że ściśliwość izotermiczna $\kappa_T$ przy
+$V = V_c$ i  $\varepsilon = \frac{T - T_c}{T_c} \ll 1$ zachowuje się jak 
+$\varepsilon^{-\gamma}$. 
+\item wyliczyć wykładnik krytyczny $\gamma$
+\end{itemize}
+
+\begin{solution}
+
+Równanie stanu gazu van der Waalsa:
+\begin{align*}
+p = \frac{NRT}{V - Nb} - \frac{aN^2}{V^2}
+\end{align*}
+
+Punkt krytyczny gazu van der Waalsa znajduje się w miejscu, gdzie krzywa 
+izotermy ma punkt przegięcia:
+\begin{align*}
+\left( \frac{\partial p}{\partial V} \right)_{T_c} = 0 \qquad
+\left( \frac{\partial^2 p}{\partial V^2} \right)_{T_c} = 0
+\end{align*}
+
+Obliczamy pochodne:
+\begin{align*}
+\frac{\partial p}{\partial V} = -\frac{NRT}{(V - Nb)^2} + \frac{2aN^2}{V^3} \Rightarrow
+NRT_cV^{3}_c = 2aN^2(V_c - Nb)^2 \\
+\frac{\partial^2 p}{\partial V^2} = \frac{2NRT_c}{(V_c - Nb)^3} - \frac{6aN^2}{V_c^4} \Rightarrow
+NRT_cV^{4}_c = 3aN^2(V_c - Nb)^3 \\
+V_c = \frac{3}{2}(V_c - Nb) \Rightarrow V_c = 3Nb \\
+NRT_c(3Nb)^3 = 2aN^2(2Nb)^2 \Rightarrow T_c = \frac{8a}{27bR}
+\end{align*}
+
+Ściśliwość izotermiczna:
+\begin{align*}
+\kappa_T = -\frac{1}{V} \left( \frac{\partial V}{\partial p} \right)_T = 
+-\frac{1}{V} \left( \frac{\partial p}{\partial V} \right)^{-1}_T
+\end{align*} 
+
+Obliczamy dla $V = V_c$ :
+\begin{align*}
+\left( \frac{\partial p}{\partial V} \right)_T =
+-\frac{NR(T_c + \varepsilon T_c)}{(V_c - Nb)^2} + \frac{2aN^2}{V_c^3} = \\
+-\frac{NRT_c}{(V_c - Nb)^2} + \frac{2aN^2}{V_c^3} + 
+\frac{NRT_c}{(V_c - Nb)^2} \varepsilon = \\
+\frac{NRT_c}{(2Nb)^2} \varepsilon = \frac{RT_c}{4Nb^2} \varepsilon
+\end{align*}
+
+Więc:
+\begin{align*}
+\kappa_T = -\frac{1}{V_c} \left( \frac{\partial p}{\partial V} \right)^{-1}_T = 
+-\frac{1}{3Nb} \frac{4Nb^2}{RT_c} \varepsilon^{-1} = 
+-\frac{4b}{3RT_c} \varepsilon^{-1} = \\
+-\frac{4b}{3RT_c} \varepsilon^{\kappa} \qquad \kappa = -1
+\end{align*}
+
+
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

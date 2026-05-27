@@ -1,0 +1,37 @@
+\newcommand{\DrawBornCircle}{%
+\begin{center}
+\begin{tikzpicture}[>=Latex, thick, font=\small]
+  \def\Rcircle{2.7}
+
+  % Born circle outline
+  \draw[gray!60] (0,0) circle (\Rcircle);
+
+  \node[draw, rounded corners, fill=yellow!20, minimum width=1.2cm] (S) at (0,\Rcircle) {Sun};
+  \node[draw, rounded corners, fill=green!20, minimum width=1.2cm] (V) at (\Rcircle,0) {valley};
+  \node[draw, rounded corners, fill=blue!20, minimum width=1.2cm] (T) at (0,-\Rcircle) {tree};
+  \node[draw, rounded corners, fill=orange!20, minimum width=1.2cm] (p) at (-\Rcircle,0) {peak};
+
+  \node at (0,\Rcircle+0.65) {$S$};
+  \node at (0.7*\Rcircle+0.35,0.7*\Rcircle+0.35) {$U$};
+
+  \node at (\Rcircle+0.95,0) {$V$};
+  \node at (0.7*\Rcircle+0.35,-0.7*\Rcircle-0.35) {$F$};
+
+  \node at (0,-\Rcircle-0.65) {$T$};
+  \node at (-0.7*\Rcircle-0.35,-0.7*\Rcircle-0.35) {$G$};
+
+  \node at (-\Rcircle-0.95,0) {$p$};
+  \node at (-0.7*\Rcircle-0.35,0.7*\Rcircle+0.35) {$H$};
+
+  \draw[->, red!70!black] (S) -- (T);
+  \draw[->, red!70!black] (p) -- (V);
+
+  \def\Router{4}
+  \draw[->, gray!60] (0:\Router) arc[start angle=0, end angle=-180, radius=\Router];
+
+  \def\Router{5}
+  \draw[->, gray!60] (90:\Router) arc[start angle=90, end angle=270, radius=\Router];
+
+\end{tikzpicture}
+\end{center}
+}
