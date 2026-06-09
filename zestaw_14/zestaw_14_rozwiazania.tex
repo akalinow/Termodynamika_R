@@ -1,39 +1,660 @@
-\documentclass[a4paper,12pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\documentclass[11pt,a4paper]{article}
+
+\newif\ifshowsolutions
+\def\showsolutions{} %comment this line to hide solutions
+
 \usepackage[polish]{babel}
-\usepackage{lmodern} % Ensure proper font rendering for Polish characters
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{indentfirst}
+\usepackage{wrapfig}    % for wrapping figures, tables
+\usepackage{isotope}
+\usepackage{hyperref}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{amsfonts}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\usepackage{bm}
+\usepackage{gensymb}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xspace}
+\xspaceaddexceptions{[]\{\}}
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes,arrows.meta,decorations.markings}
 
-\title{TIFS R - Ćwiczenia tydzień 14 i ostatni}
-\author{}
-\date{}
+%
+%
+%fixpagesize
+\pagestyle{empty}
+\addtolength{\textwidth}{4cm}
+\addtolength{\textheight}{6cm}
+\addtolength{\evensidemargin}{-3cm}
+\addtolength{\oddsidemargin}{-2cm}
+\addtolength{\topmargin}{-3cm}
+\parindent=0cm
 
-\begin{document}
+%
+%
+% Changes figure placing algorithm
+\renewcommand{\topfraction}{1}       % maximal fraction of a page allowed for figures
+\renewcommand{\textfraction}{0.15}   % minimal number of text for figure-text shared pages
+\renewcommand{\floatpagefraction}{0.95} % if two above does not help, this could do the job 
+                                        % must be: floatpagefraction < topfraction !!!!
+\renewcommand{\textfraction}{0} % minimum fraction of page, which must be  devoted to text
+\renewcommand{\topfraction}{1}  % maximum fraction at top, which can be occupied whit floats
+\setcounter{totalnumber}{400}   % increase the number of floats for one page
+\setcounter{topnumber}{200}     % at all/top/bottom.
+\setcounter{bottomnumber}{200}  %
 
-\maketitle
+%
+%
+%small distance in list/item/enum for enumitem package
+\setlist[itemize,enumerate]{topsep=0em}
+\setlist{noitemsep}
 
-\section*{Wszechświat}
+% definition of inexact differential symbol:
+\newcommand{\dbar} {\ensuremath{\,\mathchar'26\mkern-12mu d}}
+\newcommand{\Partial}[3]{\left( \frac{\partial #1}{\partial #2} \right)_{#3}}
 
-Na wykładzie było trochę o ewolucji Wszechświata i trochę o układach z grawitacją, częściowo na podstawie notatek Kipa Thorne'a (załączam). Kolaps grawitacyjny i w szczególności czarne dziury zostały wskazane jako ścieki entropii we Wszechświecie. Pojawił się wzór na entropię i temperaturę czarnej dziury.
+%Nuclear notations: usage \nucl{235}{92}{U}. Math mode optional
+\newcommand{\nucl}[3]{\ensuremath{
+  \phantom{\ensuremath{^{#1}_{#2}}}
+  \llap{\ensuremath{^{#1}}}
+  \llap{\ensuremath{_{\rule{0pt}{.75em}#2}}}
+  \mbox{#3} } 
+} 
 
-\subsection*{Zadanie 1}
+%print zadanie #
+\newcounter{zadanie}\newcommand{\zadanie}[1][]{\addtocounter{zadanie}{1} ~\\ {\bf \emph{Zadanie \arabic{zadanie} #1 }} \\}
+\newcounter{zaddom}\newcommand{\zaddom}[1][]{\addtocounter{zaddom}{1} ~\\ {\bf \emph{Zadanie domowe \arabic{zaddom} #1 }} \\}
 
-Czarna dziura o masie $M$ znajduje się w środku sferycznego pudła o objętości $V$ dużo większej od objętości dziury $V^{1/3} \gg \frac{2GM}{c^2}$. Pudło to wypełnione jest promieniowaniem o całkowitej energii $E - M c^2$ (a zatem całkowita energia układu to $E$). Czarna dziura emituje promieniowanie Hawkinga, może też pochłaniać promieniowanie wypełniające pudło, co powoduje, że zarówno masa dziury, $M$, jak i energia promieniowania będą się zmieniać.
+%dynamic solutions hiding
+\usepackage{comment}
 
-Załóż, że podczas tej ewolucji promieniowanie jest zawsze w stanie równowagi termodynamicznej, a zatem jego temperatura, $T$, spełnia $\sigma T^4 V = E - M c^2$.
+\ifdefined\showsolutions
+  \showsolutionstrue
+\else
+  \showsolutionsfalse
+\fi
 
-\begin{enumerate}
-    \item Zbadaj zależność entropii układu od ułamka energii zawartej w czarnej dziurze, $x = \frac{M c^2}{E}$. Pokaż, w szczególności, że:
-    \[
-    \frac{dS}{dx} = \frac{\sigma V^{3/4} T}{1-x} - \frac{T}{T_H}
-    \]
-    gdzie $T_H = \frac{\hbar c^3}{8\pi GM k}$ jest temperaturą czarnej dziury. Zinterpretuj otrzymany wzór.
-    \item Wykreśl bezwymiarową entropię $S' = \frac{S \hbar c^5}{4\pi k G E^2}$ jako funkcję $x$ dla różnych wartości $V$. Gdzie znajdują się maksima lokalne tego wykresu w zależności od $V$? W jakich przypadkach czarna dziura przeżywa po tym, jak cały układ osiągnie stan równowagi?
+\ifshowsolutions
+  \newenvironment{solution}{\vspace{1cm} \par\textbf{Rozwiązanie.} \vspace{1cm}}{}
+\else
+  \excludecomment{solution}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}   
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{centering}
+  {\bf {\Large
+  Termodynamika i Fizyka Statystyczna R \\
+  Zestaw XIV: Statystyki kwantowe
+    }} \\  
+\end{centering}
+
+\vspace{1cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Dwie nieoddziałujące cząstki znajdują się w studni potencjału o poziomach 
+energetycznych $E_n = n\varepsilon$, gdzie $n$-ty poziom energetyczny jest 
+$2n + 1$ razy zdegenerowany, a energia nie zależy od spinu. Rozważmy trzy 
+rodzaje cząstek:
+
+\begin{enumerate}[label=\roman*)]
+\item skalary - cząstki o spinie $0$
+\item fermiony o spinie $\frac{1}{2}$
+%\item klasyczne, nierozróżnialne, cząstki o spinie $s$,
+%      podlegające statystyce Maxwell-Boltzmanna
 \end{enumerate}
 
+Proszę znaleźć:
+\begin{enumerate}[label=\alph*)]
+\item liczbę mikrostanów odpowiadającą danej wartości $E = N\varepsilon$
+\item kanoniczną sumę statystyczną układu w kontakcie z termostatem o temperaturze $T$
+\end{enumerate}
+
+{\bf Wskazówki:} 
+\begin{align*}
+  \sum_{n=0}^{N} n^2 = \frac{1}{6}N(N+1)(2N+1)
+\end{align*}
+
+\begin{solution}
+
+Cząstki są opisanie trzema liczbami kwantowymi: 
+orbitalną, magnetyczną i spinową:
+\begin{align*}
+|n_1, m_1, s_1; n_2, m_2, s_2\rangle,
+\end{align*}
+
+Mikrostany dzielimy na symetryczne i antysymetryczne względem zamiany cząstek.
+Krotności w obu grupach zależą od tego, czy $l_1$ i $l_2$ są równe, czy różne:
+\begin{align*}
+\begin{cases}
+(2l_{1}+1)(2l_{2}+1)  & \text{ symetrycznych i antysymetrycznych } l_1 \neq l_2 \\
+(2l+1)(2l+1 - l) = (2l+1)(l + 1) & \text{symetrycznych dla } l_1 = l_2 = l \\
+\frac{1}{2}[(2l+1)(2l+1) - (2l+1)] = (2l+1)(l) & \text{antysymetrycznych dla } l_1 = l_2 = l
+\end{cases}
+\end{align*}
+
+W przypadku $l_{1}=l_{2}$:
+\begin{itemize}
+  \item symetryczne: od krotności drugiej cząstki odejmujemy $l$,
+         ponieważ stany  $|l_1, m_1; l, m_2\rangle $ i $|l, m_2; l_1, m_1\rangle$ są identyczne
+  \item antysymetryczne: odejmujemy konfiguracje w których obie cząstki mają
+        ten sam stan, a wynik dzielimy przez dwa ponieważ stany  $|l_1, m_1; l, m_2\rangle $ i 
+        $|l, m_2; l_1, m_1\rangle$ są identyczne.
+\end{itemize}
+
+\vskip 0.5cm
+
+Zliczamy konfiguracje:
+
+
+\begin{itemize}
+\item skalary:
+
+Warunek na energię $E = N\varepsilon$ oznacza, że $l_2 = N - l_1$.
+Sumujemy liczby mikrostanów dla każdej konfiguracji $l_1$ i $l_2$ 
+spełniającej ten warunek. Suma przebiega do $l_1 = N/2$ lub $l_1= (N-1)/2$,
+zależnie od parzystości $N$. Powyżej $N/2$ $l_1$ i $l_2$ zamieniają się miejscami, 
+co daje równoważną konfigurację. 
+
+\begin{align*}
+\Omega_{odd}^{BE}(N) = 
+\sum_{l=0}^{(N-1)/2} (2l+1)(2(N-l)+1) = \\
+ = \frac{1}{3}N^3 + N^2 + \frac{7}{6}N + \frac{1}{2}
+\end{align*}
+
+W przypadku parzystego $N$ musimy uwzględnić oddzielnie 
+konfigurację $l_1 = l_2 = N/2$, która jest jedyną konfiguracją, 
+w której obie cząstki mają ten sam stan energetyczny.
+
+\begin{align*}
+\Omega_{even}^{BE}(N) = 
+\sum_{l=0}^{N/2-1} (2l+1)(2(N-l)+1) + (2N/2+1)(N/2+1) = \\
+\frac{1}{3}N^3 + N^2 + \frac{5}{3}N + 1
+\end{align*}
+
+\item fermiony:
+\begin{align*}
+\Omega_{odd}^{FD}(N) = 
+4\sum_{l=0}^{N/2-1} (2l+1)(2(N-l)+1) + (2N/2+1)(N/2+1) = \\
+4 \Omega_{odd}^{BE}(N)
+\end{align*}
+
+{\bf Uwaga:} czynnik 4 wynikający z uwzględnienia spinu jest nietrywialny:
+nie każda konfiguracja spinowa może być połączone z każdą konfiguracją orbitalną.
+Całkowita funkcja falowa musi być antysymetryczna, czyli:
+\begin{align*}
+\psi_{total} = \psi_{orbital} \cdot \psi_{spin} = 
+\begin{cases}
+\text{even} (\text{symmetric, any L}) \cdot \text{symmetric} (\text{S=1, tryplet}) \\
+\text{odd} (\text{antisymmetric, any L}) \cdot \text{antisymmetric} (\text{S=0, singlet})
+\end{cases}
+\end{align*}
+
+Stanów o nieparzystym $L$ jest tyle samo co o parzystym $L$, więc
+sumaryczny czynnik związany ze spinem wynosi 
+$3 \cdot (2L_1+1)(2L_2+1) + 1 \cdot (2L_1+1)(2L_2+1) = 4 (2L_1+1)(2L_2+1)$.
+
+\begin{align*}
+\Omega_{even}^{FD}(N) = 
+\sum_{l=0}^{N/2-1} (2l+1)(2(N-l)+1) + (2N/2+1)(N/2+1) + 3(2N/2+1)(N/2) = \\
+4 \left( \frac{1}{3}N^3 + N^2 + \frac{11}{2}N + \frac{1}{4} \right) = 
+4 \Omega_{even}^{BE}(N) + N - \frac{1}{2}
+\end{align*}
+  
+\item cząstki klasyczne:
+\begin{align*}
+\Omega^{MB}(N) = \frac{1}{2!}(2s+1)^{2}\sum_{l=0}^{N} (2l+1)[2(N-l)+1] = \\
+(2s+1)^{2} \left(\frac{1}{3}N^3 + N^2 + \frac{7}{6}N + \frac{1}{2}\right)
+\end{align*}
+\end{itemize}
+
+Wprowadźmy krotności mikrostanów na spinowy stopień swobody:
+\begin{align*}
+\tilde{\Omega}_{odd}^{BE}(N) = \tilde{\Omega}_{odd}^{BE}(N) \\
+\tilde{\Omega}_{odd}^{FD}(N) =  \frac{1}{4}\Omega_{odd}^{FD}(N) =  \tilde{\Omega}_{odd}^{BE}(N) \\
+\tilde{\Omega}^{MB}(N) = \frac{1}{(2s+1)^2}\tilde{\Omega}^{MB}(N) = \tilde{\Omega}_{odd}^{BE}(N) \\
+\tilde{\Omega}_{even}^{BE}(N) = \tilde{\Omega}^{MB}(N) + \frac{N+1}{2} \\
+\tilde{\Omega}_{even}^{FD}(N) = \tilde{\Omega}^{MB}(N) - \frac{N+1}{4} 
+\end{align*}
+
+Kanoniczna suma statystyczna jest sumą po wszystkich stanach
+energetycznych, ważoną ich degeneracją:
+\begin{align*}
+Z(T) = \sum_{N=0}^{\infty} \Omega(N) e^{-\beta N \varepsilon}
+\end{align*}
+
+Sumę można podzielić na wyrazy typu
+\begin{align*}
+\sum_{N=0}^{\infty} N^k e^{-\beta N \varepsilon} = 
+\left(-\frac{1}{\varepsilon}\right)^k \frac{\partial^k}{\partial \beta^k} \sum_{N=0}^{\infty} e^{-\beta N \varepsilon} = \\
+= \left(-\frac{1}{\varepsilon}\right)^k \frac{\partial^k}{\partial \beta^k} \frac{1}{1 - e^{-\beta \varepsilon}} 
+\end{align*}
+
+
+\begin{align*}
+  Z_{odd}^{BE}(T) = \frac{1}{3}Z_{3}(T) + Z_{2}(T) + \frac{7}{6}Z_{1}(T) + \frac{1}{2}Z_{0}(T) = \\
+  = \frac{1}{3} \left(-\frac{1}{\varepsilon}\right)^3 \frac{\partial^3}{\partial \beta^3} \frac{1}{1 - e^{-\beta \varepsilon}} + 
+    \left(-\frac{1}{\varepsilon}\right)^2 \frac{\partial^2}{\partial \beta^2} \frac{1}{1 - e^{-\beta \varepsilon}} + 
+    \frac{7}{6} \left(-\frac{1}{\varepsilon}\right) \frac{\partial}{\partial \beta} \frac{1}{1 - e^{-\beta \varepsilon}} + 
+    \frac{1}{2} \cdot \frac{1}{1 - e^{-\beta \varepsilon}} = \\
+  = \frac{1}{3} \left[
+    \frac{e^{-\beta \varepsilon}}{(1 - e^{-\beta \varepsilon})^{2}} +
+    \frac{6e^{-2\beta \varepsilon}}{(1 - e^{-\beta \varepsilon})^{3}} +
+    \frac{6e^{-3\beta \varepsilon}}{(1 - e^{-\beta \varepsilon})^{4}}
+    \right] + \\
+    \frac{e^{-\beta \varepsilon}}{(1 - e^{-\beta \varepsilon})^{2}} +
+    \frac{2e^{-2\beta \varepsilon}}{(1 - e^{-\beta \varepsilon})^{3}} + \\
+    \frac{7}{6} \frac{e^{-\beta \varepsilon}}{(1 - e^{-\beta \varepsilon})^{2}} + \\
+    \frac{1}{2} \frac{1}{1 - e^{-\beta \varepsilon}} = \\
+    \frac{1}{2} \frac{(1 + e^{-\beta \varepsilon})^{2}}{(1 - e^{-\beta \varepsilon})^{4}} +
+\end{align*}
+
+Obliczenie z użyciem WolphramAlpha (trzeba dopisać brakujące znaki + między członami):
+\href{https://www.wolframalpha.com/input?i=%5Bd%5E3%2Fdx%5E3+%281%2F3%2F%281-e%5Ex%29%29%5D+++%2B+%5Bd%5E2%2Fdx%5E2+%281%2F%281-e%5Ex%29%29%5D+%2B++%5Bd%2Fdx+%287%2F6%2F%281-e%5Ex%29%29%5D+%2B++1%2F2%2F%281-e%5Ex%29}{link}
+
+
+\begin{align*}
+  Z_{even}^{BE}(T) = Z_{odd}^{BE}(T) + \frac{1}{2}Z_{1}(T)  + \frac{1}{2}Z_{0}(T)
+  = Z_{odd}^{BE}(T) + 
+  \frac{1}{2} \cdot \frac{e^{-2\beta \varepsilon}}{(1 - e^{-2\beta \varepsilon})^{2}} + 
+  \frac{1}{2} \cdot \frac{1}{1 - e^{-2\beta \varepsilon}} = \\
+  Z_{odd}^{BE}(T) + \frac{1}{2} \frac{1}{(1 - e^{-2\beta \varepsilon})^{2}}
+\end{align*}
+
+Fermiony:
+
+\begin{align*}
+  Z_{odd}^{FD}(T) = 4 Z_{odd}^{BE}(T) \\
+  Z_{even}^{FD}(T) = 4 Z_{odd}^{BE}(T) - Z_{1}(T) - \frac{1}{2}Z_{0}(T) = \\
+  4 Z_{odd}^{BE}(T) - \frac{e^{-2\beta \varepsilon}}{(1 - e^{-2\beta \varepsilon})^{2}} - \frac{1}{2} \cdot \frac{1}{1 - e^{-2\beta \varepsilon}} = \\
+  4 Z_{odd}^{BE}(T) - \frac{1}{2} \frac{1 + e^{-2\beta \varepsilon}}{(1 - e^{-2\beta \varepsilon})^{2}}
+\end{align*}
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ jednowymiarowy gaz (np. w drucie kwantowym) złożony z $N$ nieoddziałujących, 
+nierelatywistycznych, fermionów o spinie $\frac{1}{2}$ i temperaturze $T=0$. 
+Długość drutu wynosi $L$. Proszę znaleźć:
+\begin{enumerate}[label=\alph*)]
+\item energię Fermiego $E_F$ 
+\item energię wewnętrzną jako funkcję $E_F$ i $N$
+\end{enumerate}
+
+\begin{solution}
+
+Cząstki nie oddziaływają ze sobą, więc ich funkcje falowe spełniają 
+równanie swobodne. Cząstki są nierelatywistyczne, więc 
+możemy użyć równania Schrödingera zamiast Diraca.
+\begin{align*}
+i\hbar \frac{d}{dt} \psi(x,t) = -\frac{\hbar^2}{2m} \frac{d^2}{dx^2} \psi(x,t)
+\end{align*}  
+
+Rozwiązaniem są fale płaskie:
+\begin{align*}
+\psi(x,t) = e^{i(kx - \omega t)} \qquad \omega = \frac{\hbar k^2}{2m}
+\end{align*}
+
+Kwantyzację energii uzyskujemy przez narzucenie warunków brzegowych.
+Użyjemy warunków wymuszających znikanie funkcji falowej na końcach drutu:
+\begin{align*}
+\psi(0) = \psi(L) = 0 \qquad \Rightarrow \qquad k = \frac{n\pi}{L} \qquad n \in \mathbb{N} \\
+E = \frac{\hbar^2 k^2}{2m} = \frac{\pi^2 \hbar^2 n^2}{2mL^2}
+\end{align*}
+
+
+Energię Fermiego $E_F$ uzyskujemy przez znalezienie
+liczby kwantowej $n_F$, do której są zapełnione stany. 
+Dla $N$ fermionów o spinie $\frac{1}{2}$, każdy stan kwantowy może 
+być zajęty przez dwie cząstki o przeciwnych stanach spinowych.
+\begin{align*}
+N = \sum_{n=1}^{n_F} (2s+1) = 2 n_F \qquad \Rightarrow 
+\qquad n_F = \frac{N}{2} \\
+E_F = \frac{\pi^2 \hbar^2 n_F^2}{2mL^2} = 
+\frac{\pi^2 \hbar^2 N^2}{8 m L^2}
+\end{align*}
+
+Całkowita energia wewnętrzna jest sumą energii wszystkich 
+zapełnionych stanów:
+\begin{align*}
+U = \sum_{n=1}^{n_F} (2s+1) \cdot \frac{\pi^2 \hbar^2 n^2}{2mL^2} = 
+\frac{\pi^2 \hbar^2}{2mL^2} \cdot 2 \sum_{n=1}^{n_F} n^2 = 
+|| L \rightarrow \infty  \Rightarrow \sum \rightarrow \int || = \\
+= \frac{\pi^2 \hbar^2}{2mL^2} \cdot 2 \int_{0}^{n_F} n^2 dn =
+\frac{\pi^2 \hbar^2}{2mL^2} \cdot 2 \cdot \frac{1}{3} n_F^3 =
+\frac{\pi^2 \hbar^2 N^3}{24 m L^2} = \frac{N}{3} E_F
+\end{align*}
+
+Wariant z periodycznymi warunkami brzegowymi:
+\begin{align*}
+\psi(0) = \psi(L) \qquad \Rightarrow \qquad k = \frac{2n\pi}{L}  \\
+E = \frac{\hbar^2 k^2}{2m} = \frac{2\pi^2 \hbar^2 n^2}{mL^2} 
+\end{align*}
+
+Przy periodycznych warunkach brzegowych rozwiązaniem jest fala biegnąca:
+\begin{align*}
+\psi(x,t) = e^{i(\pm kx - \omega t)} \qquad k = \frac{2n\pi}{L}, \quad n \in \mathbb{Z}
+\end{align*}
+
+więc dla każdego $n$ mamy dwa stany o tej samej energii, co daje dodatkową degenerację.
+
+\begin{align*}
+N = \sum_{n=0}^{n_F} 2(2s+1) = 4n_F \qquad \Rightarrow 
+\qquad n_F = \frac{N}{4} \\
+E_F = \frac{2\pi^2 \hbar^2 n_F^2}{mL^2} = 
+\frac{\pi^2 \hbar^2 N^2}{8 m L^2} \\
+U = \sum_{n=0}^{n_F} 2(2s+1) \cdot \frac{2\pi^2 \hbar^2 n^2}{mL^2} = 
+\frac{2\pi^2 \hbar^2}{mL^2} \cdot 4 \sum_{n=1}^{n_F} n^2 = 
+|| L \rightarrow \infty  \Rightarrow \sum \rightarrow \int || = \\
+\frac{2\pi^2 \hbar^2}{mL^2} \cdot 4 \cdot \frac{1}{3} n_F^3 =
+\frac{8\pi^2 \hbar^2 N^3}{3\cdot16\cdot4 m L^2} = \frac{N}{3} \frac{\pi^2 \hbar^2 N^2}{8 m L^2} = \frac{N}{3} E_F
+\end{align*}
+
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Moment magnetyczny swobodnego elektronu jest równy magnetonowi Bohra 
+$\mu_B = \frac{e\hbar}{2m}$. Energię elektronu w zewnętrznym
+polu magnetycznym możemy przybliżyć jako sumę energii kinetycznej 
+i składnika $- 2\mu_B \vec{s} \cdot \vec{B}$.
+Proszę wyznaczyć podatność magnetyczną
+gazu elektronów 
+$$
+\chi = \lim_{B\to 0}\frac{\partial M}{\partial B}
+$$
+gazu tego jako funkcję temperatury. 
+Przyjąć, że gaz jest mocno zdegenerowany, tj. $T \ll T_F$.
+
+\begin{solution}
+
+Magnetyzacja jest sumą momentów magnetycznych wszystkich elektronów:
+\begin{align*}
+M = \frac{1}{V} \sum_{\text{stany}} \mu_B \cdot s \cdot f(E) = \\
+= \frac{1}{V} \sum_{n_x, n_y, n_z} \sum_{s_z=-1/2}^{s_z=1/2} \frac{2\mu_B \cdot s_z }{e^{\beta (E - \mu)} + 1} = \\
+= \frac{1}{V} \sum_{n_x, n_y, n_z} \sum_{s_z=-1/2}^{s_z=1/2} \frac{2\mu_B \cdot s_z }{e^{\beta (E_{kin} - 2\mu_B s_z B - \mu)} + 1} =
+\end{align*}
+
+Sumę po liczbach falowych zamieniamy na całkę po energii. Zamykamy cząstki w sześciennej 
+studni potencjału o objętości $V$ i stosujemy warunki brzegowe wymuszające 
+znikanie funkcji falowej na ścianach studni:
+\begin{align*}
+\psi(0) = \psi(L) = 0 \qquad \Rightarrow \qquad k_i = \frac{n_i \pi}{L} \qquad n_i \in \mathbb{N} \\
+E_{kin} = \frac{\hbar^2 k^2}{2m} = \frac{\pi^2 \hbar^2}{2mL^2} (n_x^2 + n_y^2 + n_z^2)
+\end{align*}
+
+Dla dużych $V$ możemy przyjąć, że liczby kwantowe $n_i$ są ciągłe, a sumę po nich 
+zamienić na całkę. Granice całkowania przebiegają jedynie dodatnie wartości $n_i$, 
+więc całkujemy tylko po 1/8 sfery w przestrzeni $n_x, n_y, n_z$.
+\begin{align*}
+\sum_{n_x, n_y, n_z} = \frac{1}{8}\int dn_x dn_y dn_z = \frac{1}{8}\int 4\pi n^2 dn = \\
+\frac{1}{8} \int 4\pi \left( \frac{2mL^2}{\pi^2 \hbar^2} E_{kin} \right) \cdot 
+\frac{mL^2}{\pi^2 \hbar^2} \frac{1}{n} dE_{kin} = \\
+\frac{1}{8} \int 4\pi \left( \frac{2mL^2}{\pi^2 \hbar^2} E_{kin} \right) \cdot 
+\frac{mL^2}{\pi^2 \hbar^2} \left(\frac{\pi^2 \hbar^2}{2mL^2 E_{kin}}\right)^{1/2} dE_{kin} = \\
+\frac{1}{8} \int 4\pi \left( \frac{2mL^2}{\pi^2 \hbar^2} E_{kin} \right) \cdot 
+\frac{1}{2}\frac{2mL^2}{\pi^2 \hbar^2} \left(\frac{\pi^2 \hbar^2}{2mL^2 E_{kin}}\right)^{1/2} dE_{kin} = \\
+\frac{1}{8} \int 2\pi \left( \frac{2mL^2}{\pi^2 \hbar^2} \right)^{3/2} \cdot 
+E_{kin}^{1/2} dE_{kin} = \\
+L^{3} \frac{1}{8} \int \frac{2}{\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \cdot 
+\sqrt{E_{kin}} dE_{kin} = \\
+= V \int \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \sqrt{E_{kin}} dE_{kin}
+\end{align*}
+
+Ostatecznie:
+
+\begin{align*}
+\lim_{V \to \infty} \frac{1}{V} \sum_{n_x, n_y, n_z} = \int \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \sqrt{E_{kin}} dE_{kin}
+\end{align*}
+
+Stąd magnetyzacja jest równa:
+\begin{align*}
+M = \int \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \sqrt{E_{kin}} dE_{kin} \sum_{s_z=-1/2}^{s_z=1/2} \frac{2\mu_B \cdot s_z }{e^{\beta (E_{kin} - 2\mu_B s_z B - \mu)} + 1} = \\
+= \int \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \sqrt{E_{kin}} dE_{kin} \frac{\mu_B}{e^{\beta (E_{kin} - \mu_B B - \mu)} + 1} - \\
+  \int \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \sqrt{E_{kin}} dE_{kin} \frac{\mu_B}{e^{\beta (E_{kin} + \mu_B B - \mu)} + 1} 
+\end{align*}
+
+Korzystamy z rozwinięcia Sommerfelda, które jest uzasadnione, ponieważ gaz jest mocno zdegenerowany:
+\begin{align*}
+\int_{0}^{\infty} \frac{f(E)}{e^{\beta (E - \mu)} + 1} dE = \int_{0}^{\mu} f(E) dE + \frac{\pi^2}{6} (k_B T)^2 f'(\mu) + \ldots
+\end{align*}
+
+Dla członu z $s_z = 1/2$ mamy:
+\begin{align*}
+\int \sqrt{E_{kin}} dE_{kin} \frac{\sqrt{E_{kin}} dE_{kin}}{e^{\beta (E_{kin} - \mu_B B - \mu)} + 1}  \simeq \\
+\int_0^{\mu + \mu_B B} \sqrt{E_{kin}} dE_{kin} + \frac{\pi^2}{6} (k_B T)^2 \cdot \frac{1}{2\sqrt{\mu + \mu_B B}} = \\
+\frac{2}{3} (\mu + \mu_B B)^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu + \mu_B B}} = \\
+|| \mu_{+} = \mu + \mu_B B || = \\
+\frac{2}{3} \mu_{+}^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu_{+}}}
+\end{align*}
+
+Dla członu z $s_z = -1/2$ mamy:
+\begin{align*}
+\int \sqrt{E_{kin}} dE_{kin} \frac{\sqrt{E_{kin}} dE_{kin}}{e^{\beta (E_{kin} + \mu_B B - \mu)} + 1}  \simeq \\  
+\int_0^{\mu - \mu_B B} \sqrt{E_{kin}} dE_{kin} + \frac{\pi^2}{6} (k_B T)^2 \cdot \frac{1}{2\sqrt{\mu - \mu_B B}} = \\
+\frac{2}{3} (\mu - \mu_B B)^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu - \mu_B B}} = \\
+|| \mu_{-} = \mu - \mu_B B || = \\
+\frac{2}{3} \mu_{-}^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu_{-}}}
+\end{align*}
+
+Ostatecznie magnetyzacja jest równa:
+\begin{align*}
+M = \frac{\mu_B}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2}  \left[
+\left( \frac{2}{3} \mu_{+}^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu_{+}}} \right) - 
+\left( \frac{2}{3} \mu_{-}^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu_{-}}} \right)
+\right] = \\
+M = \frac{\mu_B}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+\frac{2}{3} ( \mu_{+}^{3/2} - \mu_{-}^{3/2} ) +
+\frac{\pi^2}{12} (k_B T)^2 \left( \frac{1}{\sqrt{\mu_{+}}} - \frac{1}{\sqrt{\mu_{-}}} \right)
+\right] 
+\end{align*}
+
+Liczymy podatność magnetyczną:
+\begin{align*}
+\chi = \lim_{B \to 0} \frac{\partial M}{\partial B} = \\
+= \frac{\mu_B}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+\frac{2}{3} \cdot \frac{3}{2} \cdot 2 \mu_B \sqrt{\mu} -
+\frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{2} \cdot 2 \mu_B \cdot \frac{1}{\mu^{3/2}}
+\right] = \\
+= \frac{\mu_B^2}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+2 \sqrt{\mu} - \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\mu^{3/2}} \right]
+\end{align*}
+
+\newpage
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę wyrazić potencjał chemiczny gazu Fermiego w temperaturze $T$ 
+i polu magnetycznym $B$ jako funkcję energii Fermiego $E_F$ i temperatury $T$,
+dla mocno zdegenerowanego gazu, tj. $T \ll T_F$ i w granicy słabego pola 
+magnetycznego $B \to 0$.
+
+
+\begin{solution}
+
+Poziom energii Fermiego wynika z liczby fermionów w gazie. 
+Energia Fermiego $E_F$ jest też równa potencjałowi chemicznemu $\mu$ 
+w temperaturze $T=0$. Liczba fermionów jest dana przez całkę po gęstości stanów, ważoną funkcją Fermiego-Diraca:
+\begin{align*}
+N = \int_{0}^{\infty} \frac{g(E)}{e^{\beta (E - \mu)} + 1} = \\
+= \int_{0}^{\infty} \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \sqrt{E} dE 
+\left[
+\frac{1}{e^{\beta (E - \mu_B B - \mu)} + 1} +
+\frac{1}{e^{\beta (E + \mu_B B - \mu)} + 1}
+\right]
+\end{align*}
+
+Korzystamy z rozwinięcia Sommerfelda, które jest uzasadnione, ponieważ gaz 
+jest mocno zdegenerowany:
+\begin{align*}
+\int_{0}^{\infty} \frac{f(E)}{e^{\beta (E - \mu)} + 1} dE = \int_{0}^{\mu} f(E) dE + \frac{\pi^2}{6} (k_B T)^2 f'(\mu) + \ldots
+\end{align*}
+
+Dla członu z $s_z = 1/2$ mamy:
+\begin{align*}
+\int \sqrt{E} dE \frac{\sqrt{E} dE}{e^{\beta (E - \mu_B B - \mu)} + 1}  \simeq \\
+\int_0^{\mu + \mu_B B} \sqrt{E} dE + \frac{\pi^2}{6} (k_B T)^2 \cdot \frac{1}{2\sqrt{\mu + \mu_B B}} = \\
+\frac{2}{3} (\mu + \mu_B B)^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu + \mu_B B}} = \\
+|| \mu_{+} = \mu + \mu_B B || = \\
+\frac{2}{3} \mu_{+}^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu_{+}}}
+\end{align*}
+
+Dla członu z $s_z = -1/2$ mamy:
+\begin{align*}
+\int \sqrt{E} dE \frac{\sqrt{E} dE}{e^{\beta (E + \mu_B B - \mu)} + 1}  \simeq \\  
+\int_0^{\mu - \mu_B B} \sqrt{E} dE + \frac{\pi^2}{6} (k_B T)^2 \cdot \frac{1}{2\sqrt{\mu - \mu_B B}} = \\
+\frac{2}{3} (\mu - \mu_B B)^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu - \mu_B B}} = \\
+|| \mu_{-} = \mu - \mu_B B || = \\
+\frac{2}{3} \mu_{-}^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu_{-}}}
+\end{align*}
+
+Suma:
+\begin{align*}
+N = \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+\frac{2}{3} ( \mu_{+}^{3/2} + \mu_{-}^{3/2} ) +
+\frac{\pi^2}{12} (k_B T)^2 \left( \frac{1}{\sqrt{\mu_{+}}} + \frac{1}{\sqrt{\mu_{-}}} \right)
+\right]
+\end{align*}
+
+W granicy słabego pola magnetycznego $B \to 0$ mamy $\mu_{+} \simeq \mu_{-} \simeq \mu$, więc:
+\begin{align*}
+N = \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+\frac{2}{3} \cdot 2 \mu^{3/2} + \frac{\pi^2}{12} (k_B T)^2 \cdot 2 \cdot \frac{1}{\sqrt{\mu}} \right]
+\end{align*}
+
+Zauważmy że czynniki liczbowe można wyrazić przez energię Fermiego $E_F$ wstawiając
+$T=0$ i korzystając z faktu, że $\mu(T=0) = E_F$:
+\begin{align*}
+N = \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+\frac{4}{3} E_F^{3/2}\right] 
+\end{align*}
+
+Mamy więc:
+\begin{align*}
+\frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+\frac{4}{3} E_F^{3/2}\right] =
+\frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+\frac{4}{3} \mu^{3/2} + \frac{\pi^2}{6} (k_B T)^2 \cdot \frac{1}{\sqrt{\mu}} \right] \\
+1 = \frac{\mu^{3/2}}{E_F^{3/2}} + \frac{\pi^2}{8} (k_B T)^2 \cdot \frac{1}{E_F^{3/2} \sqrt{\mu}} \\
+1 = \left( \frac{\mu}{E_F} \right)^{3/2} \left[1 + \frac{\pi^2}{8} \frac{(k_B T)^2}{\mu^2}  \right]
+\end{align*}
+
+Teraz możemy rozwiązać to równanie względem $\mu$.
+Temperatura jest dużo mniejsza niż temperatura Fermiego, 
+więc $\mu$ jest bliskie $E_F$, a więc $\frac{(k_B T)^2}{\mu^2} \ll 1$.
+
+\begin{align*}
+\left( \frac{\mu}{E_F} \right)^{3/2} = \frac{1}{1 + \frac{\pi^2}{8} \frac{(k_B T)^2}{\mu^2}} \simeq 
+1 - \frac{\pi^2}{8} \frac{(k_B T)^2}{\mu^2} \\
+\frac{\mu}{E_F} = \left( 1 - \frac{\pi^2}{8} \frac{(k_B T)^2}{\mu^2} \right)^{2/3} \simeq 
+1 - \frac{\pi^2}{12} \frac{(k_B T)^2}{\mu^2} \\
+\mu = E_F - \frac{\pi^2}{12} \frac{(k_B T)^2}{E_F} =
+|| T_F = \frac{E_F}{k_B} || = 
+E_F \left( 1 - \frac{\pi^2}{12} \left( \frac{T}{T_F} \right)^2 \right)
+\end{align*}
+
+\newpage
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Proszę wyrazić podatność magnetyczną gazu Fermiego w temperaturze $T$
+i polu magnetycznym $B$ jako funkcję energii Fermiego $E_F$ i temperatury $T$,
+dla mocno zdegenerowanego gazu, tj. $T \ll T_F$ i w granicy słabego pola magnetycznego 
+$B \to 0$. Proszę skorzystać z następujących związków:
+
+\begin{align*}
+\chi = \lim_{B \to 0} \frac{\partial M}{\partial B} = \\
+= \frac{\mu_B^2}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+2 \sqrt{\mu} - \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{\mu^{3/2}} \right] \\
+\mu = E_F \left( 1 - \frac{\pi^2}{12} \left( \frac{T}{T_F} \right)^2 \right) \\
+N = \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+\frac{4}{3} E_F^{3/2}\right]
+\end{align*}
+
+
+\begin{solution}
+Wyrażamy czynniki liczbowe przez energię Fermiego $E_F$:
+\begin{align*}
+N = \frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} \left[
+\frac{4}{3} E_F^{3/2}\right] \qquad \Rightarrow \qquad
+\frac{1}{4\pi^{2}} \left( \frac{2m}{\hbar^2} \right)^{3/2} = \frac{3N}{4 E_F^{3/2}}
+\end{align*}
+
+Wyrażamy $\mu$ przez $E_F$:
+\begin{align*}
+\mu = E_F \left( 1 - \frac{\pi^2}{12} \left( \frac{T}{T_F} \right)^2 \right) \Rightarrow 
+\sqrt{\mu} = \sqrt{E_F} \left( 1 - \frac{\pi^2}{12} \left( \frac{T}{T_F} \right)^2 \right)^{1/2} \simeq
+\sqrt{E_F} \left( 1 - \frac{\pi^2}{24} \left( \frac{T}{T_F} \right)^2 \right)
+\end{align*}
+
+Drugi człon w $\chi$ zawiera $\mu^{-3/2}$. Popatrzmy na niego:
+\begin{align*}
+\mu(T) = E_F - \alpha T^2 \\
+\mu^{-3/2} = \frac{1}{(E_F - \alpha T^2)^{3/2}} = \frac{1}{E_F^{3/2}} \left( 1 - \frac{\alpha T^2}{E_F} \right)^{-3/2} \simeq
+\frac{1}{E_F^{3/2}} \left( 1 + \frac{3}{2} \frac{\alpha T^2}{E_F} \right)
+\end{align*}
+
+Wstawiamy do $\chi$ postacie $\mu$:
+\begin{align*}
+\chi \simeq \frac{3N \mu_B^2}{4 E_F^{3/2}} \left[
+2 \sqrt{E_F} \left( 1 - \frac{\pi^2}{24} \left( \frac{T}{T_F} \right)^2 \right) - \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{E_F^{3/2}} \left(1 + \frac{3}{2} \frac{\alpha T^2}{E_F}
+\right) \right] \simeq \\
+|| \text{ zochowujemy człony do rzędu } T^2 || = \\
+= \frac{3N \mu_B^2}{4 E_F^{3/2}} \left[
+2 \sqrt{E_F} \left(1 - \frac{\pi^2}{24} \left( \frac{T}{T_F} \right)^2 \right)
+- \frac{\pi^2}{12} (k_B T)^2 \cdot \frac{1}{E_F^{3/2}}
+\right] = \\
+= \frac{3N \mu_B^2}{2 E_F} \left[
+1 - \frac{\pi^2}{24} \left( \frac{T}{T_F} \right)^2 - \frac{\pi^2}{24} \left( \frac{T}{T_F} \right)^2
+\right] = \\
+= \frac{3N \mu_B^2}{2 E_F} \left[
+1 - \frac{\pi^2}{12} \left( \frac{T}{T_F} \right)^2
+\right] = || \chi_0 = \frac{3N \mu_B^2}{2 E_F} || = \\
+\chi_0 \left[
+1 - \frac{\pi^2}{12} \left( \frac{T}{T_F} \right)^2
+\right]
+\end{align*}
+
+
+\newpage
+\end{solution}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zadanie[]
+
+Rozważ kondensat Bosego dla dowolnego prawa dyspersji w $D$ wymiarach.
+Załóż zależność między energią i pędem postaci
+$$
+\varepsilon \propto p^s.
+$$
+Znajdź relację między $D$ i $s$, aby kondensacja Bosego mogła wystąpić.
+
+
+\begin{solution}
+
+
+
+\newpage
+\end{solution}
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
